@@ -20,7 +20,7 @@ export const LogoConfiguration = () => {
             <p className='ms-3'>width={160}</p>
             <p className='ms-3'>height={50}</p>
             <p className='ms-3'>quality={100}</p>
-            <p className='ms-3'>className=&#x27;dark:hidden&#x27;</p>
+            <p className='ms-3'>className='dark:hidden'</p>
             <p>/&#x3E;</p>
             <p className='ms-2'>&#x3C;Image</p>
             <p className='ms-5'>
@@ -30,7 +30,7 @@ export const LogoConfiguration = () => {
             <p className='ms-5'>width={160}</p>
             <p className='ms-5'>height={50}</p>
             <p className='ms-5'>quality={100}</p>
-            <p className='ms-5'>className=&#x27;dark:block hidden&#x27;</p>
+            <p className='ms-5'>className='dark:block hidden'</p>
             <p className='ms-2'>/&#x3E;</p>
             <p className='ms-2'>&#x3C;/Link&#x3E;</p>
           </div>
