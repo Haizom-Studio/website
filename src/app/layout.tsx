@@ -10,6 +10,13 @@ import SessionProviderComp from "@/components/nextauth/SessionProvider";
 import { AuthDialogProvider } from "./context/AuthDialogContext";
 const inter = Inter({ subsets: ["latin"] });
 
+export const metadata = {
+  title: {
+    default: "Haizom Studio",
+    template: "%s | Haizom Studio",
+  },
+  description: "Delivering innovative, reliable engineering solutions—from concept to execution.",
+};
 
 export default function RootLayout({
   children,
