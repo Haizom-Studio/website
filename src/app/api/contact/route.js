@@ -1,6 +1,6 @@
 export const runtime = 'edge';
 
-export async function POST(req, context) {
+export async function POST(req) {
   try {
     const data = await req.json();
 
@@ -21,8 +21,15 @@ export async function POST(req, context) {
       }, { status: 400 });
     }
 
-    // ✅ Access Cloudflare D1
-    const db = context.env.DB;
+    // 🔥 FIX: Access Cloudflare env correctly
+    const db = globalThis.DB;
+
+    if (!db) {
+      return Response.json({
+        success: false,
+        message: "DB not connected"
+      }, { status: 500 });
+    }
 
     // 🔍 Check duplicate
     const existing = await db.prepare(
