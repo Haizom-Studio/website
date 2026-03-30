@@ -136,14 +136,20 @@ const ContactForm = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
+  // ✅ FIXED TYPE
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = async (e) => {
+  // ✅ FIXED TYPE
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
     setLoading(true);
 
@@ -157,7 +163,7 @@ const ContactForm = () => {
       const data = await res.json();
 
       if (data.success) {
-        alert('Appointment submitted!');
+        alert('Appointment submitted successfully!');
         setForm({
           firstName: '',
           lastName: '',
@@ -168,7 +174,7 @@ const ContactForm = () => {
           time: '',
         });
       } else {
-        alert(data.message || 'Error');
+        alert(data.message || 'Something went wrong');
       }
     } catch (err) {
       alert('Network error');
@@ -178,14 +184,42 @@ const ContactForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
 
-      <input name="firstName" value={form.firstName} onChange={handleChange} placeholder="First Name" required />
-      <input name="lastName" value={form.lastName} onChange={handleChange} placeholder="Last Name" />
+      {/* First Name */}
+      <input
+        name="firstName"
+        value={form.firstName}
+        onChange={handleChange}
+        placeholder="First Name"
+        required
+      />
 
-      <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="Email" required />
+      {/* Last Name */}
+      <input
+        name="lastName"
+        value={form.lastName}
+        onChange={handleChange}
+        placeholder="Last Name"
+      />
 
-      <select name="service" value={form.service} onChange={handleChange} required>
+      {/* Email */}
+      <input
+        name="email"
+        type="email"
+        value={form.email}
+        onChange={handleChange}
+        placeholder="Email"
+        required
+      />
+
+      {/* Service */}
+      <select
+        name="service"
+        value={form.service}
+        onChange={handleChange}
+        required
+      >
         <option value="">Select Service</option>
         <option value="web">Web Development</option>
         <option value="mobile">Mobile App Development</option>
@@ -194,16 +228,37 @@ const ContactForm = () => {
         <option value="uiux">UI/UX Design</option>
       </select>
 
-      <select name="specialist" value={form.specialist} onChange={handleChange}>
+      {/* Specialist */}
+      <select
+        name="specialist"
+        value={form.specialist}
+        onChange={handleChange}
+      >
         <option value="">Choose Specialist</option>
         <option value="embedded">Embedded Designer</option>
         <option value="full-stack">Full Stack Developer</option>
         <option value="firmware">Firmware Engineer</option>
       </select>
 
-      <input name="date" type="date" value={form.date} onChange={handleChange} required />
-      <input name="time" type="time" value={form.time} onChange={handleChange} required />
+      {/* Date */}
+      <input
+        name="date"
+        type="date"
+        value={form.date}
+        onChange={handleChange}
+        required
+      />
 
+      {/* Time */}
+      <input
+        name="time"
+        type="time"
+        value={form.time}
+        onChange={handleChange}
+        required
+      />
+
+      {/* Submit */}
       <button type="submit">
         {loading ? 'Submitting...' : 'Make an appointment'}
       </button>
