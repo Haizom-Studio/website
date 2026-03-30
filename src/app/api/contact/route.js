@@ -21,13 +21,13 @@ export async function POST(req) {
       }, { status: 400 });
     }
 
-    // 🔥 FIX: Access Cloudflare env correctly
-    const db = globalThis.DB;
+    // ✅ Correct way for your setup
+    const db = process.env.DB;
 
     if (!db) {
       return Response.json({
         success: false,
-        message: "DB not connected"
+        message: "DB not connected (binding issue)"
       }, { status: 500 });
     }
 
