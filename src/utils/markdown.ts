@@ -5,7 +5,15 @@ import { join } from "path";
 const postsDirectory = join(process.cwd(), "markdown/Blog");
 
 export function getPostSlugs() {
-  return fs.readdirSync(postsDirectory);
+  return fs
+    .readdirSync(postsDirectory)
+    .filter((name) => name.endsWith(".mdx"));
+}
+
+export function postExists(slug: string) {
+  const realSlug = slug.replace(/\.mdx$/, "");
+  const fullPath = join(postsDirectory, `${realSlug}.mdx`);
+  return fs.existsSync(fullPath);
 }
 
 export function getPostBySlug(slug: string, fields: string[] = []) {  

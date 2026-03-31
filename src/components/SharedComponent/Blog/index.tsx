@@ -27,7 +27,7 @@ const Blog: React.FC = () => {
             Latest blog & news
           </h2>
           <Link
-            href='#'
+            href='/blog'
             className='flex items-center gap-3 text-base text-midnight_text dark:text-white dark:hover:text-primary font-medium hover:text-primary sm:pb-0 pb-3'
             data-aos='fade-left'
             data-aos-delay='200'

@@ -4,16 +4,27 @@ import { Blog } from "@/types/blog";
 import { format } from "date-fns";
 import Link from "next/link";
 
+const FALLBACK_COVER = "/images/blog/blog_1.png";
+
+function coverImageSrc(coverImage?: string) {
+  if (!coverImage || typeof coverImage !== "string") return FALLBACK_COVER;
+  const t = coverImage.trim();
+  if (!t) return FALLBACK_COVER;
+  if (t.startsWith("/")) return t;
+  return `/${t}`;
+}
+
 const BlogCard = ({ blog }: { blog: Blog }) => {
-    const { title, coverImage, excerpt, date, slug } = blog;
+    const { title, coverImage, date, slug } = blog;
+    const postHref = slug ? `/blog/${encodeURIComponent(slug)}` : "/blog";
     return (
         <>
             <div className="group mb-0 relative">
                 <div className="mb-8 overflow-hidden rounded-sm">
-                    <Link href={`/blog/#!`} aria-label="blog cover" className="block">
+                    <Link href={postHref} aria-label={title ? `Read: ${title}` : "Read blog post"} className="block">
                         <Image
-                            src={`/venus-nextjs/${coverImage!}`}
-                            alt="imageeee"
+                            src={coverImageSrc(coverImage)}
+                            alt={title ? `${title} cover` : "Blog post cover"}
                             className="w-full transition group-hover:scale-125"
                             width={408}
                             height={272}
@@ -24,13 +35,13 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
                 </div>
                 <div className="absolute top-0 bg-primary py-2 ml-4 mt-4 px-5 rounded-sm">
                     <span className="text-white font-medium text-sm">
-                        Pricing
+                        Blog
                     </span>
                 </div>
                 <div>
                     <h3>
                         <Link
-                            href={`/blog/${slug}`}
+                            href={postHref}
                             className="mb-4 inline-block font-semibold text-dark text-black hover:text-primary dark:text-white dark:hover:text-primary text-[22px] leading-tight"
                         >
                             {title}
