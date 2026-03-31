@@ -1,19 +1,27 @@
-import type { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 
-/** Demo credentials — override with NEXTAUTH_DEMO_USER / NEXTAUTH_DEMO_PASSWORD in production. */
-const demoUser = process.env.NEXTAUTH_DEMO_USER ?? "admin";
-const demoPass = process.env.NEXTAUTH_DEMO_PASSWORD ?? "admin123";
+/** Demo credentials — override with NEXTAUTH_DEMO_USER / NEXTAUTH_DEMO_PASSWORD or AUTH_DEMO_* in production. */
+const demoUser =
+  process.env.NEXTAUTH_DEMO_USER ??
+  process.env.AUTH_DEMO_USER ??
+  "admin";
+const demoPass =
+  process.env.NEXTAUTH_DEMO_PASSWORD ??
+  process.env.AUTH_DEMO_PASSWORD ??
+  "admin123";
 
 const secret =
-  process.env.NEXTAUTH_SECRET ||
+  process.env.AUTH_SECRET ??
+  process.env.NEXTAUTH_SECRET ??
   (process.env.NODE_ENV === "development"
     ? "dev-only-nextauth-secret-min-32-chars-long!"
     : undefined);
 
-export const authOptions: NextAuthOptions = {
+export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true,
   providers: [
-    CredentialsProvider({
+    Credentials({
       id: "credentials",
       name: "Credentials",
       credentials: {
@@ -28,7 +36,7 @@ export const authOptions: NextAuthOptions = {
         ) {
           return {
             id: "1",
-            name: credentials.username,
+            name: credentials.username as string,
             email: `${credentials.username}@user.local`,
           };
         }
@@ -38,4 +46,4 @@ export const authOptions: NextAuthOptions = {
   ],
   session: { strategy: "jwt", maxAge: 30 * 24 * 60 * 60 },
   secret,
-};
+});
