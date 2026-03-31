@@ -1,0 +1,73 @@
+const GITHUB_API = "https://api.github.com";
+
+type PutContentBody = {
+  message: string;
+  content: string;
+  branch?: string;
+  sha?: string;
+};
+
+export async function githubPutFile(params: {
+  owner: string;
+  repo: string;
+  path: string;
+  contentBytes: Buffer;
+  message: string;
+  branch: string;
+  token: string;
+}): Promise<{ commitSha?: string }> {
+  const { owner, repo, path, contentBytes, message, branch, token } = params;
+  const encodedPath = path.split("/").map(encodeURIComponent).join("/");
+  const url = `${GITHUB_API}/repos/${owner}/${repo}/contents/${encodedPath}`;
+
+  const existing = await fetch(`${url}?ref=${encodeURIComponent(branch)}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+    },
+  });
+
+  let sha: string | undefined;
+  if (existing.ok) {
+    const data = (await existing.json()) as { sha?: string };
+    sha = data.sha;
+  } else if (existing.status !== 404) {
+    const err = await existing.text();
+    throw new Error(`GitHub GET ${path}: ${existing.status} ${err}`);
+  }
+
+  const body: PutContentBody = {
+    message,
+    content: contentBytes.toString("base64"),
+    branch,
+    ...(sha ? { sha } : {}),
+  };
+
+  const put = await fetch(url, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!put.ok) {
+    const err = await put.text();
+    throw new Error(`GitHub PUT ${path}: ${put.status} ${err}`);
+  }
+
+  const result = (await put.json()) as { commit?: { sha?: string } };
+  return { commitSha: result.commit?.sha };
+}
+
+export function parseGithubRepo(repo: string): { owner: string; name: string } {
+  const parts = repo.trim().split("/").filter(Boolean);
+  if (parts.length !== 2) {
+    throw new Error('GITHUB_REPO must be "owner/repo"');
+  }
+  return { owner: parts[0], name: parts[1] };
+}
