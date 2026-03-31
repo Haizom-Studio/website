@@ -1,14 +1,18 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { ADMIN_BLOG_PREVIEW_STORAGE_KEY } from "@/lib/admin-blog-preview";
 
 export default function AdminBlogPublishPage() {
+  const router = useRouter();
   const [title, setTitle] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [publishLoading, setPublishLoading] = useState(false);
+  const [previewLoading, setPreviewLoading] = useState(false);
 
   function readFileAsDataUrl(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -64,6 +68,50 @@ export default function AdminBlogPublishPage() {
       setImageFile(null);
     } finally {
       setPublishLoading(false);
+    }
+  }
+
+  async function handlePreview() {
+    if (!title.trim() || !content.trim()) {
+      toast.error("Add a title and content to preview");
+      return;
+    }
+    setPreviewLoading(true);
+    try {
+      let coverForPreview = "/images/blog/blog_1.png";
+      if (imageFile) {
+        coverForPreview = await readFileAsDataUrl(imageFile);
+      }
+      const res = await fetch("/api/admin/blog/preview", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          title: title.trim(),
+          excerpt: excerpt.trim() || undefined,
+          content: content.trim(),
+          coverImage: coverForPreview.startsWith("data:")
+            ? "/images/blog/blog_1.png"
+            : undefined,
+        }),
+      });
+      const data = (await res.json().catch(() => ({}))) as Record<
+        string,
+        unknown
+      >;
+      if (!res.ok) {
+        toast.error(
+          typeof data.error === "string" ? data.error : "Preview failed"
+        );
+        return;
+      }
+      sessionStorage.setItem(
+        ADMIN_BLOG_PREVIEW_STORAGE_KEY,
+        JSON.stringify(data)
+      );
+      router.push("/admin/blog/preview");
+    } finally {
+      setPreviewLoading(false);
     }
   }
 
@@ -133,12 +181,21 @@ export default function AdminBlogPublishPage() {
           </p>
         </label>
 
-        <button
-          type="submit"
-          disabled={publishLoading}
-          className="rounded-sm bg-primary text-white font-medium px-8 py-3 hover:opacity-90 disabled:opacity-60">
-          {publishLoading ? "Publishing…" : "Publish"}
-        </button>
+        <div className="flex flex-wrap gap-3">
+          <button
+            type="button"
+            disabled={previewLoading || publishLoading}
+            onClick={() => void handlePreview()}
+            className="rounded-sm border border-border dark:border-dark_border px-8 py-3 text-midnight_text dark:text-white hover:bg-section dark:hover:bg-darklight disabled:opacity-60">
+            {previewLoading ? "Rendering…" : "Preview"}
+          </button>
+          <button
+            type="submit"
+            disabled={publishLoading}
+            className="rounded-sm bg-primary text-white font-medium px-8 py-3 hover:opacity-90 disabled:opacity-60">
+            {publishLoading ? "Publishing…" : "Publish"}
+          </button>
+        </div>
       </form>
     </div>
   );

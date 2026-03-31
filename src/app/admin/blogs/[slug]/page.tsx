@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { ADMIN_BLOG_PREVIEW_STORAGE_KEY } from "@/lib/admin-blog-preview";
 
 type Post = {
   slug: string;
@@ -22,6 +23,7 @@ export default function AdminBlogEditPage() {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [previewLoading, setPreviewLoading] = useState(false);
   const [title, setTitle] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [date, setDate] = useState("");
@@ -95,6 +97,47 @@ export default function AdminBlogEditPage() {
       router.push("/admin/blogs");
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handlePreview() {
+    if (!title.trim() || !content.trim()) {
+      toast.error("Title and content are required");
+      return;
+    }
+    setPreviewLoading(true);
+    try {
+      const res = await fetch("/api/admin/blog/preview", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          title: title.trim(),
+          excerpt: excerpt.trim(),
+          content: content.trim(),
+          date: date.trim() || undefined,
+          coverImage: coverImage.trim() || undefined,
+          author: author.trim() || undefined,
+          authorImage: authorImage.trim() || undefined,
+        }),
+      });
+      const data = (await res.json().catch(() => ({}))) as Record<
+        string,
+        unknown
+      >;
+      if (!res.ok) {
+        toast.error(
+          typeof data.error === "string" ? data.error : "Preview failed"
+        );
+        return;
+      }
+      sessionStorage.setItem(
+        ADMIN_BLOG_PREVIEW_STORAGE_KEY,
+        JSON.stringify(data)
+      );
+      router.push("/admin/blog/preview");
+    } finally {
+      setPreviewLoading(false);
     }
   }
 
@@ -204,6 +247,13 @@ export default function AdminBlogEditPage() {
         </label>
 
         <div className="flex flex-wrap gap-3">
+          <button
+            type="button"
+            disabled={previewLoading || saving}
+            onClick={() => void handlePreview()}
+            className="rounded-sm border border-border dark:border-dark_border px-8 py-3 text-midnight_text dark:text-white hover:bg-section dark:hover:bg-darklight disabled:opacity-60">
+            {previewLoading ? "Rendering…" : "Preview"}
+          </button>
           <button
             type="submit"
             disabled={saving}

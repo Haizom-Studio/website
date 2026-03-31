@@ -13,6 +13,11 @@ export default function AdminDashboardPage() {
       desc: "List MDX posts in the repo, update content, or remove files.",
     },
     {
+      href: "/admin/portfolio",
+      title: "Portfolio projects",
+      desc: "Edit project data in JSON on GitHub; add or remove case studies.",
+    },
+    {
       href: "/admin/inventory",
       title: "Parts inventory",
       desc: "Sensors, passives, and lab stock in D1 (Cloudflare).",

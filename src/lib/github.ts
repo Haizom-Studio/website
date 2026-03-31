@@ -2,6 +2,9 @@ const GITHUB_API = "https://api.github.com";
 
 export const GITHUB_BLOG_DIR = "markdown/Blog";
 
+/** Portfolio projects JSON (admin CRUD commits this file). */
+export const GITHUB_PORTFOLIO_PATH = "src/data/portfolio.json";
+
 export function githubHeaders(token: string): Record<string, string> {
   return {
     Authorization: `Bearer ${token}`,
@@ -70,6 +73,36 @@ export async function githubGetTextFile(params: {
   const encodedPath = path.split("/").map(encodeURIComponent).join("/");
   const url = `${GITHUB_API}/repos/${owner}/${repo}/contents/${encodedPath}?ref=${encodeURIComponent(branch)}`;
   const res = await fetch(url, { headers: githubHeaders(token) });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`GitHub GET ${path}: ${res.status} ${err}`);
+  }
+  const data = (await res.json()) as {
+    sha: string;
+    content: string;
+    encoding: string;
+  };
+  if (data.encoding !== "base64" || !data.content) {
+    throw new Error("Unexpected GitHub content response");
+  }
+  return { sha: data.sha, text: decodeGithubBase64ToUtf8(data.content) };
+}
+
+/** Like {@link githubGetTextFile} but returns `null` if the path does not exist (404). */
+export async function githubGetTextFileOptional(params: {
+  owner: string;
+  repo: string;
+  path: string;
+  token: string;
+  branch: string;
+}): Promise<{ sha: string; text: string } | null> {
+  const { owner, repo, path, token, branch } = params;
+  const encodedPath = path.split("/").map(encodeURIComponent).join("/");
+  const url = `${GITHUB_API}/repos/${owner}/${repo}/contents/${encodedPath}?ref=${encodeURIComponent(branch)}`;
+  const res = await fetch(url, { headers: githubHeaders(token) });
+  if (res.status === 404) {
+    return null;
+  }
   if (!res.ok) {
     const err = await res.text();
     throw new Error(`GitHub GET ${path}: ${res.status} ${err}`);
