@@ -4,6 +4,7 @@ import { getOptionalRequestContext } from "@cloudflare/next-on-pages";
 export type D1Statement = {
   bind: (...values: unknown[]) => D1Statement;
   all: <T = Record<string, unknown>>() => Promise<{ results: T[] }>;
+  first: <T = Record<string, unknown>>(colName?: string) => Promise<T | null>;
   run: () => Promise<unknown>;
 };
 

@@ -1,4 +1,5 @@
 -- Run in D1 console or: wrangler d1 execute <DB_NAME> --file=./d1/migrations/0001_inventory.sql
+-- Then run 0002_inventory_unique_name_category.sql for a UNIQUE (name, category) index.
 CREATE TABLE IF NOT EXISTS inventory (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT,

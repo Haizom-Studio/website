@@ -106,12 +106,22 @@ export default function AdminInventoryPage() {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
       });
-      const data = (await res.json().catch(() => ({}))) as { error?: string };
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        incremented?: boolean;
+        created?: boolean;
+      };
       if (!res.ok) {
         toast.error(data.error || "Save failed");
         return;
       }
-      toast.success(editingId != null ? "Updated" : "Added");
+      if (editingId != null) {
+        toast.success("Updated");
+      } else if (data.incremented) {
+        toast.success("Quantity increased (same name + category)");
+      } else {
+        toast.success("Added");
+      }
       cancelEdit();
       void load();
     } finally {

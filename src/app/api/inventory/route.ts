@@ -10,6 +10,12 @@ function parseQuantity(n: unknown): number {
   return v;
 }
 
+/** Amount to add for a restock / new line (minimum 1). */
+function deltaQuantity(n: unknown): number {
+  const q = parseQuantity(n);
+  return q > 0 ? q : 1;
+}
+
 export async function GET() {
   const denied = await requireAdminSession();
   if (denied) return denied;
@@ -59,19 +65,41 @@ export async function POST(req: Request) {
   }
 
   const category = (body.category ?? "").trim() || "general";
-  const quantity = parseQuantity(body.quantity);
   const location = (body.location ?? "").trim() || "";
   const notes = (body.notes ?? "").trim() || "";
+  const addQty = deltaQuantity(body.quantity);
+
+  const existing = await db
+    .prepare(
+      "SELECT id FROM inventory WHERE name = ? AND category = ? LIMIT 1"
+    )
+    .bind(name, category)
+    .first<{ id: number }>();
+
+  if (existing?.id != null) {
+    await db
+      .prepare(
+        `UPDATE inventory SET quantity = quantity + ? WHERE id = ?`
+      )
+      .bind(addQty, existing.id)
+      .run();
+
+    return NextResponse.json({
+      success: true,
+      incremented: true,
+      id: existing.id,
+    });
+  }
 
   await db
     .prepare(
       `INSERT INTO inventory (name, category, quantity, location, notes)
        VALUES (?, ?, ?, ?, ?)`
     )
-    .bind(name, category, quantity, location, notes)
+    .bind(name, category, addQty, location, notes)
     .run();
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true, created: true });
 }
 
 export async function PUT(req: Request) {
