@@ -1,39 +1,109 @@
 ---
-title: Free access to our global partner network and marketplace...
-excerpt: Free access to our global partner network and marketplace...
-date: 2024-11-08
+title: PCB bring-up guide — first power-on without damaging your board
+excerpt: Bench setup, current limits, short detection, and staged power-up for new prototypes.
+date: 2025-04-14
 coverImage: /images/blog/blog_7.jpg
 author: silicaman
 authorImage: /images/blogdetail-page/silicaman.png
 ---
 
-# Main Heading & Points
+**Bring-up** is the controlled process of applying power, validating power rails, clocks, and programming interfaces, and expanding test coverage until the board runs your firmware confidently. Skipping discipline here destroys prototypes, hides root causes, and burns calendar. This guide is a practical sequence you can adapt to your design.
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the
+## Before you apply power
 
-- Vivamus eu lacus scelerisque, placerat commodo lectus.
-- Etiam et ante at ex porta fringilla.
-- Nullam dignissim sem eu magna aliquet, sit amet volutpat tellus
+### Visual inspection
+
+- Compare **assembled PCB** to BOM and placement drawing: wrong value, wrong orientation, missing part.
+- Look for **solder bridges** near fine-pitch ICs, **tombstoned** passives, and **damaged** pads or vias.
+
+### Bench equipment
+
+- **Current-limited** bench supplies (or supplies with adjustable current limit).
+- **Multimeter** for continuity (be careful—some tests are destructive if done wrong; follow ESD practice).
+- **Oscilloscope** for rail ramp and ripple (once power is sane).
+
+Label supplies and leads; accidental **reverse polarity** on input connectors is a classic first-day failure.
+
+## Staged power-up strategy
+
+### Step 1 — Isolation and limits
+
+Where the design allows, **bring up subsystems separately**:
+
+- **Input protection** and **bulk** first, then **buck** regulators, then **LDO** rails.
+- Set **current limit** low enough to catch shorts without cooking traces.
+
+Ramp voltage slowly while watching **current draw**. A short often shows as **current pegged** at low voltage.
+
+### Step 2 — Verify rail order
+
+Many designs use **PMICs** with strict **sequencing**: core before IO, or enable pins that must rise in order. Violating sequence can **latch** devices or damage them.
+
+Have the **datasheet timing diagram** and **power tree** on the bench—not only in PDF on another machine.
+
+### Step 3 — Measure rails at test points
+
+Design **test points** for every rail and key grounds. Measure **no-load**, then **loaded** behavior. Compare to expected voltages with **tolerance**.
+
+Watch for:
+
+- **Oscillation** in switchers (layout or compensation issues),
+- **Excessive ripple** beyond spec,
+- **Dropout** on LDOs when input sags.
+
+## Clocks, reset, and boot straps
+
+Before chasing software bugs:
+
+- Confirm **crystal/oscillator** activity if applicable.
+- Verify **reset** lines release correctly and **boot mode** pins/straps match intended flash or UART programming.
+
+Mis-strapped **boot pins** waste days of “why doesn’t it talk to JTAG?”
+
+## Programming and debug access
+
+Bring up **JTAG/SWD** or **UART bootloader** paths **before** loading huge application images:
+
+- Can you **halt** the core and read IDCODE?
+- Can you **flash** a minimal blink or RAM test?
+
+Document **fuse** and **security** settings if you enable them—bricking is real.
+
+## Firmware strategy
+
+Use **incremental** firmware:
+
+1. **GPIO toggle** or LED blink proves execution.
+2. **Clock init** and **peripheral bring-up** in layers.
+3. **RTOS** and networking last—do not debug Wi‑Fi before local SPI works.
+
+Keep **version strings** and **build IDs** visible in logs.
 
 ![Blog Details](/images/blogdetail-1.jpg)
 
-Unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the
+## When something fails
 
----
+- **Divide the problem**: remove peripherals, disable rails, use **jumper** configurations if designed in.
+- **Compare** to reference design and **eval board** behavior.
+- **Log** measurements per revision—photos of scope traces beat memory.
 
-We are a dedicated team of passionate product managers, developers, UX/UI designers, QA engineers experts helping businesses from new startups
+## Safety and ESD
 
----
+Use a **grounded** mat and wrist strap in a professional setting. Even hobbyists benefit from **discharge** discipline—especially in dry seasons.
 
-There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable making this the first true generator on the Internet. It uses a dictionary
+## Summary
+
+Bring-up rewards **methodical** steps: visual check, current-limited power, sequenced rails, verified debug access, then firmware in layers. Rush the sequence and you pay for it in **dead boards** and **lost weeks**.
+
+**Related search topics**: PCB power on procedure, hardware bring-up checklist, bench supply current limit, PMIC power sequencing, SWD debug first steps.
 
 ---
 
 ## Tags
 
-- Trends
-- Design
-- Research
+- Hardware testing
+- PCB
+- Prototyping
 
 ---
 

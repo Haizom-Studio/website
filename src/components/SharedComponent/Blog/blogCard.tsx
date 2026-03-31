@@ -20,15 +20,18 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
     return (
         <>
             <div className="group mb-0 relative">
-                <div className="mb-8 overflow-hidden rounded-sm">
-                    <Link href={postHref} aria-label={title ? `Read: ${title}` : "Read blog post"} className="block">
+                <div className="mb-8 overflow-hidden rounded-sm relative aspect-[3/2] w-full">
+                    <Link
+                        href={postHref}
+                        aria-label={title ? `Read: ${title}` : "Read blog post"}
+                        className="absolute inset-0 block"
+                    >
                         <Image
                             src={coverImageSrc(coverImage)}
                             alt={title ? `${title} cover` : "Blog post cover"}
-                            className="w-full transition group-hover:scale-125"
-                            width={408}
-                            height={272}
-                            style={{ width: '100%', height: 'auto' }}
+                            fill
+                            className="object-cover transition duration-300 group-hover:scale-110"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 408px"
                             quality={100}
                         />
                     </Link>

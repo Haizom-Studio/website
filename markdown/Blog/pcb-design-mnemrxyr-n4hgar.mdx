@@ -1,10 +1,91 @@
 ---
-title: "pcb design"
-excerpt: "design"
-date: 2026-03-31
+title: "Controlled impedance on a PCB — what it is and when you need it"
+excerpt: "Characteristic impedance, stack-up, and why uncontrolled lines cause reflections on fast edges—written for designers ordering their first impedance-controlled boards."
+date: 2026-03-30
 coverImage: /blog-images/pcb-design-mnemrxyr-n4hgar.jpg
-author: "Haizom Studio"
+author: silicaman
 authorImage: "/images/blogdetail-page/silicaman.png"
 ---
 
-fafgcaewfbclabwedxliawesndaerdvcbaesfbeiysedvbwayeauwdb
+If you have ordered PCBs before, you have seen the **impedance** column on the fab quote: 50 Ω, 90 Ω differential, **+/-10%**. **Controlled impedance** means the fabricator commits to a **process** that yields predictable **characteristic impedance** for specified trace geometries—so your high-speed nets behave as designed. This article explains the physics at a practical level, what you must give the fab, and how to avoid common layout mistakes.
+
+## What “characteristic impedance” means on a trace
+
+A PCB trace is not an ideal wire—it has **distributed** capacitance to nearby conductors and **inductance** along its length. At high enough frequencies, those effects dominate; energy propagates as a **wave** at a speed set by the dielectric.
+
+**Characteristic impedance** Z0 describes the ratio of voltage to current **for a traveling wave** on that line—set by geometry (width, height to reference plane, dielectric constant) and material. When Z0 is **constant** along the route, waves propagate cleanly. When Z0 **changes** (neck-down, stub, via, connector), part of the wave **reflects**—superimposing on the signal at the receiver.
+
+That is why **matching** matters: drivers, receivers, and sometimes **series** or **parallel** terminations are chosen so the **received** waveform stays within timing and voltage margins.
+
+## Single-ended vs differential
+
+**Single-ended** lines (one trace over a reference plane) often target **50 Ω** for RF-style interfaces or memory nets where the spec demands it.
+
+**Differential pairs** (P/N) target a **differential impedance**—commonly **90 Ω** or **100 Ω** for USB, PCIe, and many serialized buses. The pair’s **spacing** and **width** together set both differential and common-mode behavior.
+
+Always follow the **standard** or **IC vendor** reference—do not invent impedance targets from generic blog posts.
+
+## Stack-up is not optional
+
+Impedance control starts with a **stack-up**: which layers are **signal**, **plane**, **prepreg**, **core**, and the **thickness** and **Dk** (dielectric constant) of each dielectric.
+
+Your **fabricator** provides approved stack-ups. You (or your SI engineer) map required Z0 to **trace width** and **gap** using:
+
+- **2D field solvers** built into PCB tools, or
+- **External** calculators—only if you confirm **reference planes** match the solver assumptions.
+
+**Tolerance** matters: typical **+/-10%** on Z0 is common; tighter costs money. Budget **coupon** traces on the panel for measurement if the design is marginal.
+
+## Where controlled impedance usually breaks
+
+- **Via stubs**: unused barrel acts as an impedance discontinuity; **back-drill** or route to reduce stub length on very fast nets.
+- **Layer transitions** without a nearby **return** path: stitch vias to keep reference continuity.
+- **Neck-downs** into BGA escapes: match impedance through the escape region or accept **simulation**.
+- **Connector** footprints: landing pattern and ground pins must match the reference layout.
+
+## Differential pair routing habits
+
+- **Length match** within **skew** budget from the spec—not “exactly equal” unless required.
+- **Keep spacing** consistent; avoid **long** separations that break coupling assumptions.
+- **Avoid** acute-angle bends where possible; use **arc** or **45°** mitered corners per tool best practice.
+
+## Verification before fab
+
+1. **Constraint manager** enforces width/gap/length per net class.
+2. **DRC** passes for clearance **and** impedance regions.
+3. **Fab** confirms stack-up and **impedance table** match their process.
+4. Optional: **TDR** or **coupon** measurement on first article.
+
+![Blog Details](/images/blogdetail-1.jpg)
+
+## When you can skip formal impedance control
+
+Slow **GPIO**, **I2C** at short lengths, and **static** control lines on small boards may not need controlled impedance—**but** if you are near **edge rate** or **line length** limits, ask someone to sanity-check. Guessing costs more than a review.
+
+## Summary
+
+Controlled impedance ties **geometry**, **materials**, and **fabrication** together. Treat the **stack-up** as a contract with your fab, route **pairs** and **references** with discipline, and verify discontinuities on anything that runs fast enough to **close the eye** at the receiver.
+
+**Related search topics**: PCB controlled impedance calculator, differential pair routing guidelines, via stub back drill PCB, stack-up documentation for fab, TDR impedance measurement coupon.
+
+---
+
+## Tags
+
+- PCB design
+- Impedance
+- High-speed PCB
+
+---
+
+## Share
+
+- [Facebook](#)
+- [Twitter](#)
+- [Linkedin](#)
+
+---
+
+## Join our newsletter
+
+Email address: [Subscribe](#)

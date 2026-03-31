@@ -1,39 +1,99 @@
 ---
-title: Define each stage of work to see whats important for you...
-excerpt: Define each stage of work to see whats important for you...
-date: 2024-11-08
+title: Technical SEO for web projects — URLs, metadata, and crawl clarity
+excerpt: How crawlers discover pages, why duplicate URLs hurt rankings, and what to put in title and description tags.
+date: 2025-06-01
 coverImage: /images/blog/blog_8.jpg
 author: silicaman
 authorImage: /images/blogdetail-page/silicaman.png
 ---
 
-# Main Heading & Points
+**Technical SEO** is the work that makes your content **discoverable** and **understandable** to search engines: crawlable links, consistent URLs, accurate metadata, and performance that does not block rendering. Great writing still needs a solid technical base—otherwise crawlers never see it, or users bounce before it paints. This article breaks down the major pillars and how they fit into a modern web stack.
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the
+## Crawling — how bots find your pages
 
-- Vivamus eu lacus scelerisque, placerat commodo lectus.
-- Etiam et ante at ex porta fringilla.
-- Nullam dignissim sem eu magna aliquet, sit amet volutpat tellus
+Search engines follow **links** (and sitemaps). Problems arise when:
+
+- Important pages are **orphaned** (no internal links).
+- **JavaScript** gates content in ways bots struggle to execute consistently.
+- **Infinite URL** spaces (filters, calendars) waste **crawl budget**.
+
+**Fixes**:
+
+- Maintain a logical **site hierarchy** with navigation and contextual internal links.
+- Ensure critical content exists in **HTML** or is reliably rendered; test with **URL Inspection** and **fetch** tools.
+- Use **robots.txt** to block genuinely useless paths—not to “SEO hide” good content.
+
+## Indexing — canonicalization and duplicates
+
+The same content reachable via multiple URLs dilutes signals and can create **duplicate** listings. Common causes:
+
+- **HTTP** and **HTTPS** both live.
+- **www** and **non-www** both resolve with 200.
+- **Tracking parameters** (`?utm_*`) create URL variants.
+- **Pagination** and **sort** parameters multiply URLs.
+
+**Canonical tags** (`rel=canonical`) tell search engines which URL is **preferred** when duplicates exist—but **redirects** and **consistent internal linking** are even better.
+
+## Titles and meta descriptions
+
+**Title tags** strongly influence click-through and are a primary relevance signal. Good titles:
+
+- Are **unique** per page.
+- Front-load the **topic** (users scan quickly).
+- Stay within reasonable length to avoid truncation in SERPs.
+
+**Meta descriptions** do not directly “rank” pages in a simple formula, but they affect **CTR**—which indirectly feeds engagement signals. Write honest summaries; avoid keyword stuffing.
+
+For large sites, **templates** help (e.g., “{Product name} — {Category} | {Brand}”), but watch for **thin** or **duplicate** patterns across thousands of URLs.
+
+## Structured data (JSON-LD)
+
+**Schema.org** markup (`Article`, `Product`, `FAQ`, etc.) can enable **rich results** when eligible. Rules:
+
+- Mark up **only** what is visible and true on the page.
+- Prefer **JSON-LD** in a script tag—easier to maintain than microdata scattered in HTML.
+- Validate with **Rich Results Test** before relying on enhancements.
+
+Spammy or misleading markup can trigger **manual actions**—do not treat schema as a hack.
+
+## Performance and mobile-first indexing
+
+Google predominantly uses the **mobile** version of content for indexing. Slow mobile pages hurt **user experience** and can limit how thoroughly a site is crawled.
+
+Align performance work with **Core Web Vitals**: stable layout, fast LCP, responsive interactions—especially on templates that carry most of your organic traffic.
 
 ![Blog Details](/images/blogdetail-1.jpg)
 
-Unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the
+## Internationalization and hreflang
 
----
+If you serve **multiple languages** or regions:
 
-We are a dedicated team of passionate product managers, developers, UX/UI designers, QA engineers experts helping businesses from new startups
+- Use **`hreflang`** annotations to relate alternate versions.
+- Avoid **automatic IP redirects** that hide the “right” URL from crawlers; prefer **user-chosen** locale or clear selectors.
 
----
+## Staging and non-production environments
 
-There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable making this the first true generator on the Internet. It uses a dictionary
+**Block** staging and preview hosts from indexing (`noindex`, authentication, or disallow)—**duplicate production content** on a staging URL creates canonical nightmares.
+
+## Measurement
+
+- **Search Console**: indexing status, queries, coverage issues.
+- **Server logs** (privacy-compliant): crawl behavior and bot errors.
+- **Analytics** landing pages: which URLs actually earn traffic.
+
+## Summary
+
+Technical SEO is **hygiene plus architecture**: clean URLs, honest metadata, crawlable rendering, and fast delivery. Do that consistently, and your content and backlinks can work as intended.
+
+**Related search topics**: canonical tag SEO, meta description best practices, crawl budget optimization, JSON-LD Article schema, mobile-first indexing checklist.
 
 ---
 
 ## Tags
 
-- Trends
-- Design
-- Research
+- SEO
+- Web development
+- Content
 
 ---
 
