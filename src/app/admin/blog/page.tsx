@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import MarkdownEditorToolbar from "@/components/Admin/MarkdownEditorToolbar";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { ADMIN_BLOG_PREVIEW_STORAGE_KEY } from "@/lib/admin-blog-preview";
@@ -13,6 +14,7 @@ export default function AdminBlogPublishPage() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [publishLoading, setPublishLoading] = useState(false);
   const [previewLoading, setPreviewLoading] = useState(false);
+  const contentRef = useRef<HTMLTextAreaElement>(null);
 
   function readFileAsDataUrl(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -151,19 +153,27 @@ export default function AdminBlogPublishPage() {
           />
         </label>
 
-        <label className="block">
+        <div className="block">
           <span className="block text-sm font-medium text-midnight_text dark:text-white mb-2">
             Content (Markdown)
           </span>
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            rows={16}
-            className="w-full rounded-sm border border-border dark:border-dark_border bg-white dark:bg-darklight px-4 py-3 text-midnight_text dark:text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            required
-            placeholder="Write in Markdown…"
-          />
-        </label>
+          <div className="rounded-sm border border-border dark:border-dark_border overflow-hidden focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-0">
+            <MarkdownEditorToolbar
+              textareaRef={contentRef}
+              value={content}
+              onChange={setContent}
+            />
+            <textarea
+              ref={contentRef}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              rows={16}
+              className="w-full border-0 rounded-none bg-white dark:bg-darklight px-4 py-3 text-midnight_text dark:text-white font-mono text-sm focus:outline-none focus:ring-0"
+              required
+              placeholder="Write in Markdown…"
+            />
+          </div>
+        </div>
 
         <label className="block">
           <span className="block text-sm font-medium text-midnight_text dark:text-white mb-2">

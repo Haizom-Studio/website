@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import MarkdownEditorToolbar from "@/components/Admin/MarkdownEditorToolbar";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { ADMIN_BLOG_PREVIEW_STORAGE_KEY } from "@/lib/admin-blog-preview";
@@ -31,6 +32,7 @@ export default function AdminBlogEditPage() {
   const [author, setAuthor] = useState("");
   const [authorImage, setAuthorImage] = useState("");
   const [content, setContent] = useState("");
+  const contentRef = useRef<HTMLTextAreaElement>(null);
 
   const load = useCallback(async () => {
     if (!slug) return;
@@ -233,18 +235,26 @@ export default function AdminBlogEditPage() {
           />
         </label>
 
-        <label className="block">
+        <div className="block">
           <span className="block text-sm font-medium text-midnight_text dark:text-white mb-2">
             Content (Markdown)
           </span>
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            rows={18}
-            className="w-full rounded-sm border border-border dark:border-dark_border bg-white dark:bg-darklight px-4 py-3 text-midnight_text dark:text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            required
-          />
-        </label>
+          <div className="rounded-sm border border-border dark:border-dark_border overflow-hidden focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-0">
+            <MarkdownEditorToolbar
+              textareaRef={contentRef}
+              value={content}
+              onChange={setContent}
+            />
+            <textarea
+              ref={contentRef}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              rows={18}
+              className="w-full border-0 rounded-none bg-white dark:bg-darklight px-4 py-3 text-midnight_text dark:text-white font-mono text-sm focus:outline-none focus:ring-0"
+              required
+            />
+          </div>
+        </div>
 
         <div className="flex flex-wrap gap-3">
           <button
