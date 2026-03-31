@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { Icon } from "@iconify/react";
 
 type Msg = { role: "user" | "assistant"; content: string };
@@ -15,7 +15,44 @@ const QUICK_LINKS: { label: string; href: string }[] = [
 ];
 
 const INTRO =
-  "Hi — I am Haizom’s assistant. Ask about services, portfolio, quotes, or how to reach the team.";
+  "Hi — I am Haizom Studio’s site assistant. Ask about services, portfolio, quotes, or how to reach our team.";
+
+/** Renders plain text with clickable https:// and mailto: links (no Markdown). */
+function ChatMessageBody({ text, isUser }: { text: string; isUser: boolean }) {
+  const re = /(https?:\/\/\S+|mailto:\S+)/gi;
+  const nodes: ReactNode[] = [];
+  let last = 0;
+  let m: RegExpExecArray | null;
+  const r = new RegExp(re.source, re.flags);
+  let key = 0;
+  while ((m = r.exec(text)) !== null) {
+    if (m.index > last) {
+      nodes.push(
+        <span key={`t-${key++}`}>{text.slice(last, m.index)}</span>
+      );
+    }
+    let href = m[0];
+    href = href.replace(/[.,;:!?)]+$/g, "");
+    nodes.push(
+      <a
+        key={`a-${key++}`}
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`break-words underline underline-offset-2 ${
+          isUser ? "text-white" : "text-primary"
+        }`}
+      >
+        {href}
+      </a>
+    );
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) {
+    nodes.push(<span key={`t-${key++}`}>{text.slice(last)}</span>);
+  }
+  return <>{nodes.length > 0 ? nodes : text}</>;
+}
 
 export default function Chatbot() {
   const pathname = usePathname();
@@ -128,7 +165,7 @@ export default function Chatbot() {
                     : "bg-darklight text-white/90 border border-dark_border"
                 }`}
               >
-                {msg.content}
+                <ChatMessageBody text={msg.content} isUser={msg.role === "user"} />
               </div>
             </div>
           ))}

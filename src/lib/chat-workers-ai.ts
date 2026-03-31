@@ -17,11 +17,41 @@ type EnvWithAi = { AI?: AiBinding };
 
 const MODEL = "@cf/meta/llama-3.2-1b-instruct";
 
-const SYSTEM_PROMPT = `You are the public chat assistant for Haizom Studio, a software and product engineering studio.
-Be concise (2–5 short sentences). Tone: professional, friendly, clear.
-Facts: They build websites, apps, and automation; contact is contact@haizomstudios.com and phone +92 334 5577900.
-If asked for a quote or pricing, say scope varies and direct them to the Contact page with a brief.
-Do not invent team size, clients, or guarantees. Do not use markdown or bullet lists unless the user asks.`;
+/** Public site origin for quote/contact links. Override in Cloudflare: CHAT_PUBLIC_BASE_URL */
+export function getChatPublicBaseUrl(): string {
+  const raw =
+    process.env.CHAT_PUBLIC_BASE_URL?.trim() ||
+    process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
+    "https://haizomstudios.com";
+  return raw.replace(/\/$/, "");
+}
+
+function buildSystemPrompt(): string {
+  const base = getChatPublicBaseUrl();
+  const contactPage = `${base}/contact`;
+
+  return `You are the Haizom Studio website assistant. You represent Haizom Studio only.
+
+Rules you must follow:
+- Speak in first person as the studio ("we", "our") or as this assistant helping visitors. Never say you are an AI model, ChatGPT, OpenAI, a "large language model", or a generic chatbot. Never discuss your training or limitations unless someone asks for technical details — then say briefly that you are Haizom's site assistant.
+- Output plain text only. Do NOT use Markdown: no [square brackets with parentheses], no **bold**, no bullet lists with dashes, no backticks.
+- When the user needs a link to request a quote or contact the team, give this exact plain URL on its own line or in a sentence: ${contactPage}
+- Email (plain text only): contact@haizomstudios.com — Phone: +92 334 5577900
+- Haizom builds websites, apps, and automation. Quotes depend on scope; direct people to ${contactPage} with their brief.
+- Be concise (2–5 short sentences). Do not invent team size, named clients, or guarantees.`;
+}
+
+/** Turn accidental Markdown into plain text so the chat UI does not show raw syntax. */
+export function stripMarkdownArtifactsForChat(s: string): string {
+  let t = s.trim();
+  t = t.replace(/\[([^\]]*)\]\(([^)]+)\)/g, (_, _label: string, url: string) =>
+    url.trim()
+  );
+  t = t.replace(/\*\*([^*]+)\*\*/g, "$1");
+  t = t.replace(/\*([^*]+)\*/g, "$1");
+  t = t.replace(/`([^`]+)`/g, "$1");
+  return t.replace(/\n+/g, " ").replace(/\s+/g, " ").trim();
+}
 
 /** In-memory per-isolate circuit breaker (reduces repeated AI calls after quota errors). */
 let aiPausedUntilMs = 0;
@@ -106,7 +136,7 @@ export async function tryWorkersAiReply(userMessage: string): Promise<string | n
   try {
     const result = await ai.run(MODEL, {
       messages: [
-        { role: "system", content: SYSTEM_PROMPT },
+        { role: "system", content: buildSystemPrompt() },
         { role: "user", content: trimmed },
       ],
       max_tokens: 256,
@@ -116,7 +146,7 @@ export async function tryWorkersAiReply(userMessage: string): Promise<string | n
     if (!text) {
       return null;
     }
-    return text;
+    return stripMarkdownArtifactsForChat(text);
   } catch (err) {
     const pauseMs = isQuotaOrLimitError(err) ? msUntilUtcMidnight() : 60_000;
     pauseAi(pauseMs);

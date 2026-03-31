@@ -1,14 +1,29 @@
 import { NextResponse } from "next/server";
-import { tryWorkersAiReply } from "@/lib/chat-workers-ai";
+import {
+  getChatPublicBaseUrl,
+  tryWorkersAiReply,
+} from "@/lib/chat-workers-ai";
 
 export const runtime = "edge";
 
 const MAX_LEN = 2000;
 
+function contactPageUrl(): string {
+  return `${getChatPublicBaseUrl()}/contact`;
+}
+
 function replyForMessage(raw: string): string {
   const m = raw.trim().toLowerCase();
   if (!m) {
     return "Ask me about our services, portfolio, or how to get a quote — or use the shortcuts below.";
+  }
+
+  if (
+    /\b(are you (an? )?(ai|chatgpt|chatai|gpt|a bot|openai)|you a (llm|model|chatbot)|what model|large language model)\b/.test(
+      m
+    )
+  ) {
+    return "I'm Haizom Studio's site assistant — here to help with our services, portfolio, and how to request a quote or contact the team.";
   }
 
   if (/\b(hello|hi|hey|good\s*(morning|afternoon|evening))\b/.test(m)) {
@@ -24,11 +39,11 @@ function replyForMessage(raw: string): string {
   }
 
   if (/\b(quote|pricing|price|budget|cost|how\s*much|estimate)\b/.test(m)) {
-    return "Quotes depend on scope, timeline, and integrations. Share a short brief (goal, timeline, budget range) via Contact and we will respond with next steps — no obligation.";
+    return `Quotes depend on scope, timeline, and integrations. Request a quote on our Contact page: ${contactPageUrl()} — add a short brief (goal, timeline, budget range) and we will follow up.`;
   }
 
   if (/\b(contact|email|reach|call|phone|book|meeting|call)\b/.test(m)) {
-    return "Reach us at contact@haizomstudios.com or +92 334 5577900. The Contact page is the best place to send a project brief so we can reply with a tailored follow-up.";
+    return `Reach us at contact@haizomstudios.com or +92 334 5577900. Send a project brief here: ${contactPageUrl()}`;
   }
 
   if (/\b(about|who\s*are\s*you|team|company)\b/.test(m)) {
