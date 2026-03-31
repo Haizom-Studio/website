@@ -69,37 +69,31 @@ export async function POST(req: Request) {
   const notes = (body.notes ?? "").trim() || "";
   const addQty = deltaQuantity(body.quantity);
 
-  const existing = await db
+  // Hint for UI only (upsert below is authoritative).
+  const hadRow = await db
     .prepare(
-      "SELECT id FROM inventory WHERE name = ? AND category = ? LIMIT 1"
+      "SELECT 1 AS ok FROM inventory WHERE name = ? AND category = ? LIMIT 1"
     )
     .bind(name, category)
-    .first<{ id: number }>();
+    .first<{ ok: number }>();
 
-  if (existing?.id != null) {
-    await db
-      .prepare(
-        `UPDATE inventory SET quantity = quantity + ? WHERE id = ?`
-      )
-      .bind(addQty, existing.id)
-      .run();
-
-    return NextResponse.json({
-      success: true,
-      incremented: true,
-      id: existing.id,
-    });
-  }
-
+  // Single atomic upsert: avoids races and fixes cases where .first() did not
+  // surface an existing row before INSERT (UNIQUE constraint errors).
   await db
     .prepare(
       `INSERT INTO inventory (name, category, quantity, location, notes)
-       VALUES (?, ?, ?, ?, ?)`
+       VALUES (?, ?, ?, ?, ?)
+       ON CONFLICT(name, category) DO UPDATE SET
+         quantity = quantity + excluded.quantity`
     )
     .bind(name, category, addQty, location, notes)
     .run();
 
-  return NextResponse.json({ success: true, created: true });
+  return NextResponse.json({
+    success: true,
+    incremented: hadRow != null,
+    created: hadRow == null,
+  });
 }
 
 export async function PUT(req: Request) {
