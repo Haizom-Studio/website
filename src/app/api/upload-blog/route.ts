@@ -1,4 +1,3 @@
-export const runtime = 'edge';
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import {
@@ -6,6 +5,8 @@ import {
   verifySessionToken,
 } from "@/lib/admin-session";
 import { githubPutFile, parseGithubRepo } from "@/lib/github";
+
+export const runtime = "edge";
 
 const MAX_CONTENT_CHARS = 200_000;
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
@@ -21,18 +22,27 @@ function slugify(title: string): string {
   return base || "post";
 }
 
-function parseDataUrl(dataUrl: string): { mime: string; buffer: Buffer } {
+function base64ToUint8Array(b64: string): Uint8Array {
+  const binary = atob(b64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes;
+}
+
+function parseDataUrl(dataUrl: string): { mime: string; bytes: Uint8Array } {
   const m = dataUrl.match(/^data:([^;]+);base64,([\s\S]+)$/);
   if (!m) {
     throw new Error("Image must be a base64 data URL (data:image/...;base64,...)");
   }
-  const mime = m[1].split(";")[0].trim();
-  const base64 = m[2].replace(/\s/g, "");
-  const buffer = Buffer.from(base64, "base64");
-  if (buffer.length > MAX_IMAGE_BYTES) {
+  const mime = m[1]!.split(";")[0]!.trim();
+  const base64 = m[2]!.replace(/\s/g, "");
+  const bytes = base64ToUint8Array(base64);
+  if (bytes.length > MAX_IMAGE_BYTES) {
     throw new Error(`Image must be under ${MAX_IMAGE_BYTES / (1024 * 1024)}MB`);
   }
-  return { mime, buffer };
+  return { mime, bytes };
 }
 
 function extFromMime(mime: string): string {
@@ -59,8 +69,8 @@ function defaultExcerptFromBody(markdown: string): string {
 
 export async function POST(req: Request) {
   const store = await cookies();
-  const token = store.get(ADMIN_SESSION_COOKIE)?.value;
-  if (!verifySessionToken(token)) {
+  const session = store.get(ADMIN_SESSION_COOKIE)?.value;
+  if (!(await verifySessionToken(session))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -126,10 +136,9 @@ export async function POST(req: Request) {
   }
 
   let coverPath: string;
-  const commits: string[] = [];
 
   if (body.imageBase64) {
-    let parsed: { mime: string; buffer: Buffer };
+    let parsed: { mime: string; bytes: Uint8Array };
     try {
       parsed = parseDataUrl(body.imageBase64);
     } catch (e) {
@@ -143,16 +152,15 @@ export async function POST(req: Request) {
     coverPath = `blog-images/${slug}.${ext}`;
 
     try {
-      const r = await githubPutFile({
+      await githubPutFile({
         owner,
         repo,
         path: imagePath,
-        contentBytes: parsed.buffer,
+        contentBytes: parsed.bytes,
         message: `chore(blog): add cover image for ${slug}`,
         branch,
         token: githubToken,
       });
-      if (r.commitSha) commits.push(r.commitSha);
     } catch (e) {
       return NextResponse.json(
         { error: e instanceof Error ? e.message : "GitHub image upload failed" },
@@ -186,18 +194,18 @@ ${mdxBody}
 `;
 
   const mdxPath = `markdown/Blog/${slug}.mdx`;
+  const mdxBytes = new TextEncoder().encode(mdx);
 
   try {
-    const r = await githubPutFile({
+    await githubPutFile({
       owner,
       repo,
       path: mdxPath,
-      contentBytes: Buffer.from(mdx, "utf8"),
+      contentBytes: mdxBytes,
       message: `content(blog): publish ${title}`,
       branch,
       token: githubToken,
     });
-    if (r.commitSha) commits.push(r.commitSha);
   } catch (e) {
     return NextResponse.json(
       { error: e instanceof Error ? e.message : "GitHub MDX upload failed" },

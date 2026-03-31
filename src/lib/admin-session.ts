@@ -1,5 +1,3 @@
-import { createHmac, timingSafeEqual } from "crypto";
-
 export const ADMIN_SESSION_COOKIE = "blog_admin_session";
 
 const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
@@ -12,15 +10,42 @@ function getSecret(): string {
   return s;
 }
 
-export function createSessionToken(): string {
+async function hmacSha256Hex(secret: string, message: string): Promise<string> {
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    enc.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(message));
+  const bytes = new Uint8Array(sig);
+  return Array.from(bytes)
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+function timingSafeEqualHex(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) {
+    diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return diff === 0;
+}
+
+export async function createSessionToken(): Promise<string> {
   const exp = Date.now() + MAX_AGE_MS;
   const secret = getSecret();
   const payload = String(exp);
-  const sig = createHmac("sha256", secret).update(payload).digest("hex");
+  const sig = await hmacSha256Hex(secret, payload);
   return `${payload}.${sig}`;
 }
 
-export function verifySessionToken(token: string | undefined): boolean {
+export async function verifySessionToken(
+  token: string | undefined
+): Promise<boolean> {
   if (!token) return false;
   const dot = token.lastIndexOf(".");
   if (dot <= 0) return false;
@@ -34,18 +59,15 @@ export function verifySessionToken(token: string | undefined): boolean {
   } catch {
     return false;
   }
-  const expected = createHmac("sha256", secret).update(expStr).digest("hex");
-  if (sig.length !== expected.length) return false;
-  try {
-    return timingSafeEqual(Buffer.from(sig, "utf8"), Buffer.from(expected, "utf8"));
-  } catch {
-    return false;
-  }
+  const expected = await hmacSha256Hex(secret, expStr);
+  return timingSafeEqualHex(sig, expected);
 }
 
 export function timingSafePasswordEqual(a: string, b: string): boolean {
-  const bufA = Buffer.from(a, "utf8");
-  const bufB = Buffer.from(b, "utf8");
-  if (bufA.length !== bufB.length) return false;
-  return timingSafeEqual(bufA, bufB);
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) {
+    diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return diff === 0;
 }

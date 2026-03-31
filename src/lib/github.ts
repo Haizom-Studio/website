@@ -7,11 +7,20 @@ type PutContentBody = {
   sha?: string;
 };
 
+/** Edge-safe base64 (no Node Buffer). */
+export function uint8ArrayToBase64(bytes: Uint8Array): string {
+  let binary = "";
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i]!);
+  }
+  return btoa(binary);
+}
+
 export async function githubPutFile(params: {
   owner: string;
   repo: string;
   path: string;
-  contentBytes: Buffer;
+  contentBytes: Uint8Array;
   message: string;
   branch: string;
   token: string;
@@ -39,7 +48,7 @@ export async function githubPutFile(params: {
 
   const body: PutContentBody = {
     message,
-    content: contentBytes.toString("base64"),
+    content: uint8ArrayToBase64(contentBytes),
     branch,
     ...(sha ? { sha } : {}),
   };

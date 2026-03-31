@@ -1,4 +1,3 @@
-export const runtime = 'edge';
 import { NextResponse } from "next/server";
 import {
   ADMIN_SESSION_COOKIE,
@@ -6,9 +5,10 @@ import {
   timingSafePasswordEqual,
 } from "@/lib/admin-session";
 
+export const runtime = "edge";
+
 export async function POST(req: Request) {
   const password = process.env.ADMIN_PASSWORD;
-  console.log(password);
   if (!password) {
     return NextResponse.json(
       { error: "Admin login is not configured" },
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
 
   let token: string;
   try {
-    token = createSessionToken();
+    token = await createSessionToken();
   } catch {
     return NextResponse.json(
       { error: "Session signing is not configured" },
