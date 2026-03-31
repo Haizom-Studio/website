@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import { NextResponse } from "next/server";
 import { ADMIN_SESSION_COOKIE } from "@/lib/admin-session";
 
