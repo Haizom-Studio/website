@@ -55,7 +55,7 @@ export default function AdminBlogPublishPage() {
       }
       toast.success(
         data.slug
-          ? `Queued for deploy. Slug: ${data.slug}`
+          ? `Queued for publish can take up to 10 minutes. Slug: ${data.slug}`
           : "Published to GitHub — deploy will follow."
       );
       setTitle("");
