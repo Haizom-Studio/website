@@ -4,6 +4,7 @@ import Header from "@/components/Layout/Header";
 import Footer from "@/components/Layout/Footer";
 import { ThemeProvider } from "next-themes";
 import ScrollToTop from '@/components/ScrollToTop';
+import Chatbot from '@/components/Chatbot';
 import Aoscompo from "@/utils/aos";
 import NextTopLoader from 'nextjs-toploader';
 import SessionProviderComp from "@/components/nextauth/SessionProvider";
@@ -40,6 +41,7 @@ export default function RootLayout({
             <Footer />
           </Aoscompo>
           <ScrollToTop />
+          <Chatbot />
         </ThemeProvider>
         </SessionProviderComp>
         </AuthDialogProvider>
