@@ -9,17 +9,16 @@ const Logo: React.FC = () => {
       <Image
         src={getImgPath("/images/logo/logo.png")}
         alt="logo"
-        width={100}
-        height={20}
-
+        width={200}
+        height={50}
         quality={100}
         className='dark:hidden'
       />
       <Image
         src={getImgPath("/images/logo/logo.png")}
         alt="logo"
-        width={100}
-        height={20}
+        width={200}
+        height={50}
         // style={{ width: 'auto', height: 'auto' }}
         quality={100}
         className='dark:block hidden'

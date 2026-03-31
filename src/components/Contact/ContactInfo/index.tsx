@@ -23,9 +23,9 @@ const ContactInfo = () => {
                 </div>
                 <div>
                   <Link
-                    href='#'
+                    href='mailto:haizom.studio@gmail.com'
                     className='text-primary text-base font-medium flex items-center gap-3 group hover:text-midnight_text dark:hover:text-white'>
-                    Leave a message
+                    Leave an email
                     <svg
                       width='23'
                       height='17'
