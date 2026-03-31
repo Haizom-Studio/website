@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getImgPath } from '@/utils/image'
+import NewsletterForm from './NewsletterForm'
 
 const Footer: FC = () => {
   return (
@@ -126,18 +127,7 @@ const Footer: FC = () => {
               <p className='text-MistyBlue text-base pb-7 text-white/50'>
                 To be updated with all the latest trends and product
               </p>
-              <form className='newsletter-form flex rounded-lg sm:w-full w-3/4 sm:mx-0 mx-auto'>
-                <input
-                  type='email'
-                  placeholder='Email*'
-                  className='p-4 text-base border-transparent rounded-s-lg rounded-e-none! outline-0 focus:border-primary dark:focus:border-primary w-[calc(100%_-_137px)] flex bg-white dark:bg-midnight_text dark:text-white dark:border-solid dark:border dark:border-border_color'
-                />
-                <button
-                  type='submit'
-                  className='p-[0.625rem] text-base font-medium bg-primary text-white border-none cursor-pointer rounded-e-lg outline-0 text-center w-[8.5625rem] hover:bg-blue-700 hover:shadow-none'>
-                  Subscribe
-                </button>
-              </form>
+              <NewsletterForm />
             </div>
           </div>
         </div>

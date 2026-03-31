@@ -48,9 +48,9 @@ const Services = () => {
                 {item.description}
               </p>
               <Link
-                href='#'
+                href={`/services/${item.slug}`}
                 className='hover:text-blue-700 text-lg font-medium text-primary group flex items-center'>
-                Get Started
+                Learn more
                 <span>
                   <Icon
                     icon='ei:chevron-right'

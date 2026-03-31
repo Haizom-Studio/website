@@ -35,9 +35,9 @@ const PortfolioDetail: FC<PortfolioDetailProps> = ({ project }) => {
               src={project.image}
               alt={project.alt}
               width={1200}
-              height={800}
+              height={600}
               priority
-              className='w-full h-auto'
+              className='w-full h-[600px] object-cover'
               sizes='(max-width: 1152px) 100vw, 1152px'
             />
           </div>
