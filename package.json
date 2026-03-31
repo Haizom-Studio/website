@@ -10,6 +10,7 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@cloudflare/next-on-pages": "^1.13.16",
         "@iconify/icons-ion": "^1.2.10",
         "@iconify/react": "^5.0.1",
         "aos": "^2.3.4",

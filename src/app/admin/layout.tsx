@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import AdminShell from "@/components/Admin/AdminShell";
 
 export const metadata: Metadata = {
-  title: "Publish blog",
+  title: "Admin",
   robots: { index: false, follow: false },
 };
 
@@ -10,5 +11,5 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return <AdminShell>{children}</AdminShell>;
 }

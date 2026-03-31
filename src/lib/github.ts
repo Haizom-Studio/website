@@ -1,5 +1,116 @@
 const GITHUB_API = "https://api.github.com";
 
+export const GITHUB_BLOG_DIR = "markdown/Blog";
+
+export function githubHeaders(token: string): Record<string, string> {
+  return {
+    Authorization: `Bearer ${token}`,
+    Accept: "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28",
+  };
+}
+
+/** Decode GitHub API base64 file content (UTF-8). */
+export function decodeGithubBase64ToUtf8(b64: string): string {
+  const clean = b64.replace(/\s/g, "");
+  const binary = atob(clean);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return new TextDecoder().decode(bytes);
+}
+
+type GhContentItem = {
+  name: string;
+  path: string;
+  sha: string;
+  type: string;
+};
+
+export async function githubListMdxSlugs(params: {
+  owner: string;
+  repo: string;
+  token: string;
+  branch: string;
+  directoryPath: string;
+}): Promise<{ slug: string; name: string; path: string; sha: string }[]> {
+  const { owner, repo, token, branch, directoryPath } = params;
+  const encodedPath = directoryPath.split("/").map(encodeURIComponent).join("/");
+  const url = `${GITHUB_API}/repos/${owner}/${repo}/contents/${encodedPath}?ref=${encodeURIComponent(branch)}`;
+  const res = await fetch(url, { headers: githubHeaders(token) });
+  if (res.status === 404) {
+    return [];
+  }
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`GitHub list ${directoryPath}: ${res.status} ${err}`);
+  }
+  const data = (await res.json()) as GhContentItem[] | GhContentItem;
+  const items = Array.isArray(data) ? data : [data];
+  return items
+    .filter((f) => f.type === "file" && f.name.endsWith(".mdx"))
+    .map((f) => ({
+      slug: f.name.replace(/\.mdx$/i, ""),
+      name: f.name,
+      path: f.path,
+      sha: f.sha,
+    }))
+    .sort((a, b) => a.slug.localeCompare(b.slug));
+}
+
+export async function githubGetTextFile(params: {
+  owner: string;
+  repo: string;
+  path: string;
+  token: string;
+  branch: string;
+}): Promise<{ sha: string; text: string }> {
+  const { owner, repo, path, token, branch } = params;
+  const encodedPath = path.split("/").map(encodeURIComponent).join("/");
+  const url = `${GITHUB_API}/repos/${owner}/${repo}/contents/${encodedPath}?ref=${encodeURIComponent(branch)}`;
+  const res = await fetch(url, { headers: githubHeaders(token) });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`GitHub GET ${path}: ${res.status} ${err}`);
+  }
+  const data = (await res.json()) as {
+    sha: string;
+    content: string;
+    encoding: string;
+  };
+  if (data.encoding !== "base64" || !data.content) {
+    throw new Error("Unexpected GitHub content response");
+  }
+  return { sha: data.sha, text: decodeGithubBase64ToUtf8(data.content) };
+}
+
+export async function githubDeleteFile(params: {
+  owner: string;
+  repo: string;
+  path: string;
+  sha: string;
+  message: string;
+  branch: string;
+  token: string;
+}): Promise<void> {
+  const { owner, repo, path, sha, message, branch, token } = params;
+  const encodedPath = path.split("/").map(encodeURIComponent).join("/");
+  const url = `${GITHUB_API}/repos/${owner}/${repo}/contents/${encodedPath}`;
+  const res = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      ...githubHeaders(token),
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ message, sha, branch }),
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`GitHub DELETE ${path}: ${res.status} ${err}`);
+  }
+}
+
 type PutContentBody = {
   message: string;
   content: string;
