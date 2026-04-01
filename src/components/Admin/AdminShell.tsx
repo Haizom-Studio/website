@@ -7,6 +7,8 @@ import toast, { Toaster } from "react-hot-toast";
 
 const nav = [
   { href: "/admin", label: "Dashboard" },
+  { href: "/admin/newsletter", label: "Newsletter" },
+  { href: "/admin/contacts", label: "Contact requests" },
   { href: "/admin/blog", label: "New post" },
   { href: "/admin/blogs", label: "Posts" },
   { href: "/admin/portfolio", label: "Portfolio" },

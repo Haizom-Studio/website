@@ -3,6 +3,16 @@ import Link from "next/link";
 export default function AdminDashboardPage() {
   const cards = [
     {
+      href: "/admin/newsletter",
+      title: "Newsletter subscribers",
+      desc: "View emails, inferred location from IP, and remove addresses.",
+    },
+    {
+      href: "/admin/contacts",
+      title: "Contact & bookings",
+      desc: "Appointment requests: location, mark complete, or delete.",
+    },
+    {
       href: "/admin/blog",
       title: "New blog post",
       desc: "Publish Markdown to GitHub; deploy runs on push.",
