@@ -32,6 +32,42 @@ function normalizeCategory(raw: string | undefined): string {
   return t || "general";
 }
 
+type SortKey = "name" | "category" | "quantity" | "location" | "notes";
+type SortDir = "asc" | "desc";
+
+function sortInventoryRows(
+  list: Item[],
+  key: SortKey,
+  dir: SortDir
+): Item[] {
+  const mult = dir === "asc" ? 1 : -1;
+  const collator = new Intl.Collator(undefined, { sensitivity: "base" });
+  return [...list].sort((a, b) => {
+    let cmp = 0;
+    if (key === "quantity") {
+      cmp = (a.quantity ?? 0) - (b.quantity ?? 0);
+    } else {
+      const str = (it: Item) => {
+        switch (key) {
+          case "name":
+            return it.name ?? "";
+          case "category":
+            return normalizeCategory(it.category);
+          case "location":
+            return it.location ?? "";
+          case "notes":
+            return it.notes ?? "";
+          default:
+            return "";
+        }
+      };
+      cmp = collator.compare(str(a), str(b));
+    }
+    if (cmp !== 0) return mult * cmp;
+    return mult * collator.compare(a.name ?? "", b.name ?? "");
+  });
+}
+
 /** Single typable field + filterable dropdown; value can be any new string. */
 function CategoryCombobox({
   value,
@@ -181,6 +217,8 @@ export default function AdminInventoryPage() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [categoryFilter, setCategoryFilter] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortKey, setSortKey] = useState<SortKey>("name");
+  const [sortDir, setSortDir] = useState<SortDir>("asc");
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -244,6 +282,20 @@ export default function AdminInventoryPage() {
     }
     return list;
   }, [items, categoryFilter, searchQuery]);
+
+  const sortedFilteredItems = useMemo(
+    () => sortInventoryRows(filteredItems, sortKey, sortDir),
+    [filteredItems, sortKey, sortDir]
+  );
+
+  function handleSortHeader(nextKey: SortKey) {
+    if (nextKey === sortKey) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortKey(nextKey);
+      setSortDir("asc");
+    }
+  }
 
   function startEdit(row: Item) {
     setEditingId(row.id);
@@ -465,6 +517,30 @@ export default function AdminInventoryPage() {
             </label>
             <p className="text-xs text-grey sm:ml-auto sm:pb-2">
               Showing {filteredItems.length} of {items.length}
+              {filteredItems.length > 0 && (
+                <span className="text-grey/80">
+                  {" "}
+                  · Sorted by{" "}
+                  {sortKey === "name"
+                    ? "name"
+                    : sortKey === "category"
+                      ? "category"
+                      : sortKey === "quantity"
+                        ? "quantity"
+                        : sortKey === "location"
+                          ? "location"
+                          : "notes"}{" "}
+                  (
+                  {sortKey === "quantity"
+                    ? sortDir === "asc"
+                      ? "low → high"
+                      : "high → low"
+                    : sortDir === "asc"
+                      ? "A → Z"
+                      : "Z → A"}
+                  )
+                </span>
+              )}
             </p>
           </div>
 
@@ -478,16 +554,43 @@ export default function AdminInventoryPage() {
               <table className="w-full text-sm text-left">
                 <thead className="bg-section dark:bg-darklight text-midnight_text dark:text-white">
                   <tr>
-                    <th className="px-3 py-2 font-medium">Name</th>
-                    <th className="px-3 py-2 font-medium">Category</th>
-                    <th className="px-3 py-2 font-medium">Qty</th>
-                    <th className="px-3 py-2 font-medium">Location</th>
-                    <th className="px-3 py-2 font-medium">Notes</th>
-                    <th className="px-3 py-2 font-medium w-40" />
+                    {(
+                      [
+                        ["name", "Name"],
+                        ["category", "Category"],
+                        ["quantity", "Qty"],
+                        ["location", "Location"],
+                        ["notes", "Notes"],
+                      ] as const
+                    ).map(([col, label]) => (
+                      <th key={col} className="px-3 py-2 font-medium align-bottom">
+                        <button
+                          type="button"
+                          onClick={() => handleSortHeader(col)}
+                          className={`inline-flex items-center gap-1 max-w-full text-left rounded-sm -mx-1 px-1 py-0.5 hover:bg-black/5 dark:hover:bg-white/10 ${
+                            sortKey === col ? "text-primary" : ""
+                          }`}
+                          aria-sort={
+                            sortKey === col
+                              ? sortDir === "asc"
+                                ? "ascending"
+                                : "descending"
+                              : "none"
+                          }>
+                          <span className="min-w-0">{label}</span>
+                          {sortKey === col ? (
+                            <span className="shrink-0 text-[10px] leading-none" aria-hidden>
+                              {sortDir === "asc" ? "▲" : "▼"}
+                            </span>
+                          ) : null}
+                        </button>
+                      </th>
+                    ))}
+                    <th className="px-3 py-2 font-medium w-40">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border dark:divide-dark_border bg-white dark:bg-darklight">
-                  {filteredItems.map((row) => (
+                  {sortedFilteredItems.map((row) => (
                     <tr key={row.id}>
                       <td className="px-3 py-2 text-midnight_text dark:text-white">
                         {row.name}
