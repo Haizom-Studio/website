@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
+import LocationMapEmbed from "@/components/Admin/LocationMapEmbed";
 
 type Row = {
   id: number;
@@ -192,6 +193,11 @@ export default function AdminContactsPage() {
                           {row.ip_address}
                         </span>
                       ) : null}
+                      <LocationMapEmbed
+                        location={row.location}
+                        ipAddress={row.ip_address}
+                        className="mt-3"
+                      />
                     </dd>
                   </div>
                 </dl>

@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import LocationMapEmbed from "@/components/Admin/LocationMapEmbed";
 
 type Row = {
   email: string;
@@ -94,8 +95,14 @@ export default function AdminNewsletterPage() {
                   <td className="px-3 py-2 text-midnight_text dark:text-white font-medium">
                     {row.email}
                   </td>
-                  <td className="px-3 py-2 text-grey max-w-[14rem]">
-                    {dash(row.location)}
+                  <td className="px-3 py-2 text-grey align-top min-w-[12rem] max-w-md">
+                    <div className="max-w-[14rem]">{dash(row.location)}</div>
+                    <LocationMapEmbed
+                      location={row.location}
+                      ipAddress={row.ip_address}
+                      collapsible
+                      className="mt-2"
+                    />
                   </td>
                   <td className="px-3 py-2 text-grey font-mono text-xs">
                     {dash(row.ip_address)}
