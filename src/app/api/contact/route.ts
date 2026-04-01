@@ -49,24 +49,47 @@ export async function POST(req: Request) {
     const ip = getClientIp(req);
     const location = getLocationLabel(req);
 
-    await db
-      .prepare(
-        `INSERT INTO contacts
-        (first_name, last_name, email, service, specialist, date, time, ip_address, location, status)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'open')`
-      )
-      .bind(
-        firstName,
-        lastName,
-        email,
-        service,
-        specialist,
-        date,
-        time,
-        ip || null,
-        location || null
-      )
-      .run();
+    try {
+      await db
+        .prepare(
+          `INSERT INTO contacts
+          (first_name, last_name, email, service, specialist, date, time, ip_address, location, status)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'open')`
+        )
+        .bind(
+          firstName,
+          lastName,
+          email,
+          service,
+          specialist,
+          date,
+          time,
+          ip || null,
+          location || null
+        )
+        .run();
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      const missingCol =
+        msg.includes("no column named") || msg.includes("has no column named");
+      if (!missingCol) throw e;
+      await db
+        .prepare(
+          `INSERT INTO contacts
+          (first_name, last_name, email, service, specialist, date, time)
+          VALUES (?, ?, ?, ?, ?, ?, ?)`
+        )
+        .bind(
+          firstName,
+          lastName,
+          email,
+          service,
+          specialist,
+          date,
+          time
+        )
+        .run();
+    }
 
     return Response.json({ success: true });
   } catch (err) {
