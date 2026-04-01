@@ -140,11 +140,12 @@ const ContactForm = () => {
                       required
                       className='w-full h-11 text-base px-4 py-2.5 rounded-lg border-border dark:text-white border-solid dark:bg-darkmode border transition-all duration-500 focus:border-primary dark:focus:border-primary dark:border-dark_border focus:border-solid focus:outline-0'>
                       <option value=''>Select Service</option>
-                      <option value='web'>Web Development</option>
-                      <option value='mobile'>Mobile App Development</option>
-                      <option value='embedded'>Embedded Systems</option>
-                      <option value='firmware'>Firmware Development</option>
-                      <option value='uiux'>UI/UX Design</option>
+                      <option value='schematic-pcb'>Schematic capture & PCB design</option>
+                      <option value='prototyping'>Prototyping & bring-up</option>
+                      <option value='web'>Web development</option>
+                      <option value='app'>App development</option>
+                      <option value='ui-ux-dashboards'>UI/UX & dashboards</option>
+                      <option value='firmware-sensors'>Firmware & sensor fusion</option>
                     </select>
                   </div>
                 </div>

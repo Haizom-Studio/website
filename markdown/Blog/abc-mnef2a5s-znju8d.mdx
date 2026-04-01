@@ -1,91 +1,48 @@
 ---
-title: "Pre-launch checklist for web applications — security, SEO, and monitoring"
-excerpt: "Before traffic hits production: HTTPS, headers, env secrets, analytics, and error tracking—items teams often forget under deadline pressure."
+title: "Pre-launch for web apps—closing the gap between “works locally” and survives traffic"
+excerpt: "Production exposes TLS gaps, leaked secrets, and blind spots in monitoring. Here is a launch checklist aligned with how web teams actually ship: security, SEO hygiene, and observability as one story."
 date: 2026-03-29
 coverImage: /blog-images/abc-mnef2a5s-znju8d.png
 author: silicaman
 authorImage: "/images/blogdetail-page/silicaman.png"
 ---
 
-Launching a **web application** is rarely “flip a switch.” Production traffic exposes **misconfiguration**, **missing headers**, **leaky secrets**, and **observability** gaps that local development never stressed. This checklist is organized for teams shipping **SSR**, **SPA**, or **hybrid** stacks—adapt sections to your hosting (Vercel, AWS, Cloudflare, self-hosted).
+Shipping a **web application** is rarely a single deploy moment. It is the point where real users, real networks, and real attackers meet the choices you made in **routing**, **secrets**, and **observability**. The failures that hurt most—data leaks, duplicate indexed staging sites, or silent 500s—are usually boring problems that slipped because the deadline rewarded “feature complete” over “verified in production.” This article frames **web development** readiness as a cross-functional problem: security, SEO, and operations share the same definition of done.
 
-## HTTPS and certificates
+## HTTPS and canonical hosts
 
-- **TLS** terminates correctly on all public hostnames; no mixed **HTTP** assets on **HTTPS** pages.
-- **Redirects** consolidate to one canonical host (pick **www** or **apex**—not both serving duplicate 200s).
-- **HSTS** (`Strict-Transport-Security`) once you are confident redirects are correct—avoid locking users to broken HTTPS during migration.
+TLS must terminate correctly on every public hostname; mixed HTTP assets break trust and browsers. Pick **www** or **apex** and **redirect** consistently—duplicate 200s split signals and confuse analytics. Add **HSTS** only after redirects are proven; locking users into broken HTTPS during migration creates support load no **dashboard** will explain away.
 
-Test from **outside** your office network; corporate proxies hide problems.
+Test from outside corporate networks; proxies hide issues your customers will still see.
 
 ## Secrets and configuration
 
-- **API keys**, **database URLs**, and **signing keys** live in **environment** or a **secrets manager**—never committed to git.
-- **Client-exposed** keys (e.g., public analytics IDs) are **expected** to be public; anything else does not belong in the browser bundle.
-- **Rotate** credentials if they ever leaked in a ticket, screenshot, or build log.
+API keys, database URLs, and signing keys belong in **environment** or a secrets manager—not git, tickets, or screenshots. Anything in the browser bundle is public by definition; treat “client” keys accordingly. Rotate anything that ever leaked.
 
-Document **required** env vars in an internal runbook so deploys are reproducible.
+Document required env vars so deploys are reproducible when the original author is unavailable.
 
-## Security headers (baseline)
+## Security headers and application controls
 
-Exact directives depend on your **CSP** strategy, but review:
+**CSP**, **frame** protections, and **Permissions-Policy** should match what the app actually does—staging can be stricter; production should be honest. Pair headers with **server-side** auth on every sensitive route, **CSRF** where cookies matter, **rate limits** on abuse-prone endpoints, and disciplined **upload** handling.
 
-- **`Content-Security-Policy`** — start strict in staging; loosen only with reason.
-- **`X-Frame-Options`** or **`frame-ancestors`** — clickjacking protection.
-- **`Referrer-Policy`** — balance privacy and debugging needs.
-- **`Permissions-Policy`** — disable unused browser features.
+## SEO and indexing—real-world duplicates
 
-Framework defaults help—**verify** they are not disabled in production.
+Unique titles and descriptions per route; **noindex** on staging and previews; **canonical** tags where tracking or A/B tests multiply URLs. Accidental staging indexation is a common source of “why is Google showing the wrong domain?”—a **technical SEO** problem, not a content problem.
 
-## Application-level controls
+## Observability that wakes someone up
 
-- **Authentication** and **authorization** enforced **server-side** on every sensitive route and API.
-- **CSRF** protection for cookie-based sessions where applicable.
-- **Rate limiting** on login, password reset, and expensive APIs.
-- **File uploads** validated for type, size, and scanned if user-facing.
+Structured logs with request IDs, error tracking on client and server with **PII** scrubbing, uptime checks from multiple regions, and alerts routed to people who can act. Define simple **SLOs** before launch so “red” means something.
 
-## SEO and indexing hygiene
+## Performance and recovery
 
-- **Unique** `<title>` and meta **description** per public route.
-- **`robots.txt`** and **`sitemap.xml`** for sites that want full indexing; **`noindex`** on **staging** and **preview** deployments.
-- **Canonical** URLs for duplicate paths (tracking params, A/B tests).
+Cache semantics for HTML vs immutable assets; connection pools sized for realistic load tests; backups that are **restored** on a schedule. Untested backups are wishful thinking.
+## Launch sequencing
 
-Accidental indexing of **staging** is a common source of duplicate-content headaches.
+Freeze churn; smoke critical paths in production before announcements; watch metrics actively in the first hours—**web development** does not end at merge.
 
-## Observability — logs, metrics, traces
+## How Haizom approaches launches
 
-- **Structured logging** from servers (JSON lines) with **request IDs**.
-- **Error tracking** (Sentry or similar) on **client** and **server** with **PII** scrubbing.
-- **Uptime** checks on **critical** endpoints from multiple regions.
-- **Alerts** that wake someone—**not** only email into a void.
-
-Define **SLOs** for availability and error rate before launch day heroics.
-
-## Performance and caching
-
-- **CDN** caching rules for static assets; **`Cache-Control`** semantics correct for **HTML** vs **immutable** assets.
-- **Database** connection pools sized for expected concurrency—**load test** a realistic scenario.
-
-![Blog Details](/images/blogdetail-1.jpg)
-
-## Backups and recovery
-
-- **Database backups** automated, **restored** on a schedule (untested backups are fiction).
-- **Runbook** for rollback: previous container image, **migration** strategy, feature flags.
-
-## Legal and privacy
-
-- **Privacy policy** and **cookie** notices match actual trackers.
-- **Data processing** agreements if you handle EU or regulated data.
-
-## Launch day — sensible sequencing
-
-1. **Freeze** non-critical changes; ship **fixes** only.
-2. **Smoke test** critical paths in production **before** announcing.
-3. **Monitor** dashboards for the first **hours** actively—not only automated pings.
-
-## Summary
-
-Production readiness is **discipline**: transport security, secret hygiene, headers, observability, and indexing rules—**verified**, not assumed. Run this checklist early enough to **fix** issues without a fire drill.
+Our **web development** work includes production-minded defaults: env-safe builds, crawl clarity, and monitoring hooks so your team inherits a system it can operate—not only a repo that passed CI.
 
 **Related search topics**: production web app checklist, security headers Next.js, CSP deployment, staging noindex, error monitoring setup, database backup testing.
 

@@ -54,129 +54,128 @@ export const count = [
 ];
 
 export const Progress = [
-    { title: 'Mobile and Web App Development', Progress: 95 },
-    { title: 'PCB Design & Prototyping', Progress: 90 },
-    { title: 'IoT & Embedded Systems', Progress: 80 },
-    {title:'Firmware Development', Progress: 82},
-    {title:'AI & Machine Learning', Progress: 75},
-    {title:'DevOps and Cloud Solutions', Progress: 85},
-    {title:'UI/UX Design', Progress: 92},
+    { title: 'Schematic capture & PCB design', Progress: 92 },
+    { title: 'Prototyping & bring-up', Progress: 90 },
+    { title: 'Web development', Progress: 94 },
+    { title: 'App development', Progress: 93 },
+    { title: 'UI/UX & dashboards', Progress: 91 },
+    { title: 'Firmware & sensor fusion', Progress: 88 },
 ];
 
 export const servicesinfo: ServiceItem[] = [
     {
-        slug: 'mobile-and-web-app-development',
-        icon: getImgPath('/images/services/ux-design-product_1.svg'),
-        title: 'Mobile and Web App Development',
+        slug: 'schematic-capture-pcb-design',
+        icon: getImgPath('/images/services/icons/icon-schematic-pcb.svg'),
+        title: 'Schematic capture & PCB design',
         description:
-            'End-to-end product engineering for iOS, Android, and modern web—from discovery through launch and iteration.',
-        info: 'Product & engineering',
+            'Electrical design entry through fabrication-ready PCB layout—stack-up, routing, and manufacturing rules your fab can build.',
+        info: 'Hardware · ECAD',
         fullDescription:
-            'We design and build mobile and web experiences that stay fast, accessible, and easy to evolve as your roadmap changes.\n\nOur process pairs clear UX decisions with a pragmatic technical stack, so designers and engineers stay aligned from prototype to production.\n\nWhether you need a greenfield app, a redesign, or ongoing feature work, we ship in tight loops with documentation your team can own.',
+            'We take your requirements into schematic capture with sensible library use and a BOM you can source. Layout work follows: controlled impedance where high-speed nets need it, solid power and ground strategy, thermal awareness, and design-for-manufacture so panels come back testable and repeatable.\n\nWe coordinate with mechanical, firmware, and assembly early—connector keep-outs, test points, and layer usage are cheaper to fix before the layout is frozen.\n\nDeliverables include Gerbers or ODB++, drill and fab notes, and documentation your contract manufacturer can quote without guesswork.',
         deliverables: [
-            'Discovery & technical planning',
-            'UI implementation & design systems',
-            'API integration & state architecture',
-            'App store & deployment pipelines',
-            'Performance & accessibility review',
-        ],
-        image: getImgPath('/images/portfolio/roket-squred.png'),
-        alt: 'Mobile and web application development',
-    },
-    {
-        slug: 'pcb-design-prototyping',
-        icon: getImgPath('/images/services/perfomance-optimization.svg'),
-        title: 'PCB Design & Prototyping',
-        description:
-            'Schematic through layout, fabrication, and bring-up—boards tuned for reliability, testability, and manufacturing.',
-        info: 'Hardware design',
-        fullDescription:
-            'We translate requirements into schematics and PCB layouts with attention to signal integrity, thermal behaviour, and DFM.\n\nPrototypes are validated with structured test plans so issues surface early, before you commit to larger builds.\n\nDocumentation and revision control keep your designs traceable as the product matures.',
-        deliverables: [
-            'Schematic capture & BOM',
-            'Layout, stack-up, and fabrication files',
-            'Prototype assembly support',
-            'Bring-up & debug',
-            'Design for test & manufacture',
+            'Schematic capture, libraries & BOM alignment',
+            'Stack-up, placement & routing to your constraints',
+            'Fab package (Gerber/ODB++, drills, drawings)',
+            'Assembly notes, test points & revision history',
+            'Layout review with SI/PI/thermal risk called out',
         ],
         image: getImgPath('/images/portfolio/mars.png'),
-        alt: 'PCB design and prototyping',
+        alt: 'Schematic capture and PCB design',
     },
     {
-        slug: 'iot-embedded-systems',
-        icon: getImgPath('/images/services/ux-design-product_2.svg'),
-        title: 'IoT & Embedded Systems',
+        slug: 'prototyping-bring-up',
+        icon: getImgPath('/images/services/icons/icon-prototyping.svg'),
+        title: 'Prototyping & bring-up',
         description:
-            'Connected devices, sensors, and edge logic—architected for security, power, and long-term maintainability.',
-        info: 'Embedded & connectivity',
+            'Hardware prototypes, bench bring-up, and debug—staged power-on and measurement so each build answers a clear question.',
+        info: 'Hardware · EVT/DVT',
         fullDescription:
-            'We help teams ship IoT products that behave predictably in the field, from bootloader to cloud telemetry.\n\nHardware choices, RTOS or bare-metal firmware, and wireless stacks are selected to match your constraints—not generic templates.\n\nSecurity updates, OTA strategy, and monitoring hooks are considered up front so operations stay manageable at scale.',
+            'We help you plan prototype batches with your fab and assembler: what each revision is meant to prove, and what “good enough” looks like before you order larger quantities.\n\nOn the bench we run controlled power-on: current limits, rail checks, shorts, clocks, and programming—so firmware teams are not chasing software bugs on broken hardware.\n\nIssues get triaged with photos, measurements, and revision notes so the next spin is intentional—not a grab bag of unrelated changes.',
         deliverables: [
-            'System architecture & BOM guidance',
-            'Embedded application firmware',
-            'Connectivity (Wi‑Fi, BLE, cellular)',
-            'Device provisioning & security basics',
-            'Field diagnostics & logging',
+            'Prototype & quick-turn planning with fab/CM',
+            'Staged power-on, rail verification & debug',
+            'Test-point strategy & bring-up scripts',
+            'Issue triage across electrical / mechanical / firmware',
+            'Revision history & handoff for the next spin',
         ],
         image: getImgPath('/images/portfolio/cozycasa.png'),
-        alt: 'IoT and embedded systems',
+        alt: 'Prototyping and hardware bring-up',
     },
     {
-        slug: 'firmware-development',
-        icon: getImgPath('/images/services/ux-design-product_1.svg'),
-        title: 'Firmware Development',
+        slug: 'web-development',
+        icon: getImgPath('/images/services/icons/icon-web.svg'),
+        title: 'Web development',
         description:
-            'Reliable firmware for microcontrollers and SoCs—clean drivers, solid state machines, and maintainable codebases.',
-        info: 'Firmware engineering',
+            'Websites and web applications—frontend and backend, hosting-aware performance, and integrations your team can operate.',
+        info: 'Web engineering',
         fullDescription:
-            'We write firmware that teams can extend: modular layers, consistent error handling, and tests where they matter most.\n\nBring-up, peripheral integration, and performance tuning are handled with clear milestones and measurable criteria.\n\nHandoff includes build systems, flashing instructions, and enough documentation for your engineers to take ownership.',
+            'We implement marketing sites, dashboards, and customer-facing web apps from agreed designs and APIs: routing, forms, auth, and data loading that behave well on real networks.\n\nPerformance and SEO-friendly delivery matter for public pages; private apps get the same discipline around load times, errors, and security headers.\n\nWe ship with sensible environments, CI where it helps, and documentation so another developer can deploy and extend the project.',
         deliverables: [
-            'Driver & HAL integration',
-            'RTOS or bare-metal architectures',
-            'Boot & upgrade paths',
-            'Unit/integration test hooks',
-            'Release notes & developer docs',
-        ],
-        image: getImgPath('/images/portfolio/humans.png'),
-        alt: 'Firmware development',
-    },
-    {
-        slug: 'ai-machine-learning',
-        icon: getImgPath('/images/services/perfomance-optimization.svg'),
-        title: 'AI & Machine Learning',
-        description:
-            'Practical ML—from data pipelines and model integration to monitoring—aligned with real product and latency constraints.',
-        info: 'ML & data',
-        fullDescription:
-            'We focus on ML that ships: baselines, evaluation, and deployment paths that match your stack and budget.\n\nWhether you need classical models, deep learning, or LLM-powered features, we scope experiments with clear success metrics.\n\nInference, batch jobs, and retraining workflows are designed so your team can operate them without constant firefighting.',
-        deliverables: [
-            'Data & labelling strategy',
-            'Model training & evaluation',
-            'API & edge deployment',
-            'Monitoring & drift awareness',
-            'Documentation for operators',
-        ],
-        image: getImgPath('/images/portfolio/panda-logo.png'),
-        alt: 'AI and machine learning',
-    },
-    {
-        slug: 'devops-and-cloud-solutions',
-        icon: getImgPath('/images/services/ux-design-product_2.svg'),
-        title: 'DevOps and Cloud Solutions',
-        description:
-            'CI/CD, infrastructure as code, and observability—so releases are boring in the best way.',
-        info: 'Platform & delivery',
-        fullDescription:
-            'We automate builds, tests, and deployments so your team spends time on features, not repetitive release rituals.\n\nCloud foundations are defined with security, cost, and recovery in mind—without over-engineering day one.\n\nRunbooks, dashboards, and alerts are part of the deliverable, not an afterthought.',
-        deliverables: [
-            'CI/CD pipelines',
-            'Infrastructure as code',
-            'Container & orchestration setup',
-            'Secrets & access patterns',
-            'Logging, metrics, and alerts',
+            'Stack and hosting fit for your product',
+            'UI implementation from design specs',
+            'API integration, auth & server routes as needed',
+            'Performance, SEO basics & production config',
+            'Deploy pipeline notes and handoff docs',
         ],
         image: getImgPath('/images/portfolio/roket-squred.png'),
-        alt: 'DevOps and cloud solutions',
+        alt: 'Web development',
+    },
+    {
+        slug: 'app-development',
+        icon: getImgPath('/images/services/icons/icon-app.svg'),
+        title: 'App development',
+        description:
+            'iOS and Android apps—implementation, device APIs, store submission, and releases you can repeat.',
+        info: 'Mobile engineering',
+        fullDescription:
+            'We build consumer and B2B mobile apps: navigation, networking, storage, push, and integrations such as Bluetooth or payments where your product needs them.\n\nWe align with Apple and Google review expectations, handle signing and build flavours, and keep dependencies current enough that store updates are boring—not emergencies.\n\nYou get builds you can install on hardware, release notes, and structure so your team can add features without rewriting the foundation.',
+        deliverables: [
+            'Platform strategy & milestone planning',
+            'App implementation & native integrations',
+            'Store readiness, signing & release pipelines',
+            'Offline, sync & error-handling patterns',
+            'Handoff docs & monitoring hooks',
+        ],
+        image: getImgPath('/images/portfolio/humans.png'),
+        alt: 'Mobile app development',
+    },
+    {
+        slug: 'ui-ux-dashboards',
+        icon: getImgPath('/images/services/icons/icon-ui-dashboard.svg'),
+        title: 'UI/UX & dashboards',
+        description:
+            'User experience and interface design for websites, web apps, and mobile apps—plus dashboard and admin UI when you need data-heavy screens.',
+        info: 'Product design',
+        fullDescription:
+            'We structure and visualise digital products: user flows, wireframes, and high-fidelity UI for responsive websites, web applications, and mobile apps—so navigation, forms, and key tasks are easy to complete.\n\nWe define look-and-feel (typography, colour, spacing), components, and states—loading, empty, error—so developers know what to build. Accessibility and touch targets are part of the brief, not an afterthought.\n\nFor analytics and operations dashboards we emphasise scanability, filters, and layouts that match how people monitor KPIs—without burying actions under decoration.',
+        deliverables: [
+            'UX flows, sitemap & wireframes',
+            'UI design for web and mobile screens',
+            'Components, spacing scale & design handoff',
+            'Dashboard and admin layouts when required',
+            'Design QA support with engineering',
+        ],
+        image: getImgPath('/images/portfolio/panda-logo.png'),
+        alt: 'UI, UX and dashboard design',
+    },
+    {
+        slug: 'firmware-sensor-fusion',
+        icon: getImgPath('/images/services/icons/icon-firmware.svg'),
+        title: 'Firmware & sensor fusion',
+        description:
+            'Embedded software on microcontrollers—drivers, RTOS or bare-metal logic, sensor processing, and reliable device behaviour in the field.',
+        info: 'Embedded firmware',
+        fullDescription:
+            'We write firmware that runs on your chosen MCU: peripheral bring-up, scheduling, power modes, and communication over UART, SPI, I²C, CAN, or wireless stacks as required.\n\nWhen your product uses IMUs, environmental, or other analogue/digital sensors, we implement sampling, calibration, filtering, and sensor fusion so readings are stable across temperature and motion—not only on a bench.\n\nBoot, provisioning, secure updates, and logging are designed for production: your team gets build instructions, versioned releases, and hooks for factory test and field diagnostics.',
+        deliverables: [
+            'MCU/RTOS or bare-metal architecture',
+            'Drivers, timing & power-aware scheduling',
+            'Sensor bring-up, calibration & fusion layers',
+            'Connectivity, provisioning & OTA strategy',
+            'Logging, diagnostics & field-debug hooks',
+        ],
+        image: getImgPath('/images/portfolio/cozycasa.png'),
+        alt: 'Firmware and sensor fusion',
     },
 ];
 

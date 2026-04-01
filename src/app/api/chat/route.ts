@@ -31,7 +31,7 @@ function replyForMessage(raw: string): string {
   }
 
   if (/\b(service|services|what\s*do\s*you\s*(do|offer)|offer|build|develop|stack)\b/.test(m)) {
-    return "We deliver end-to-end product work: web experiences, mobile-friendly builds, and automation that fits your workflow. Browse our Services page for detail, or tell us your goal and we can point you to the right engagement.";
+    return "We work across hardware and software: PCB design, prototyping and bring-up, web and mobile app development, UI/UX for sites and apps (including dashboard UI), and embedded firmware with sensor processing. Open Services for detail, or describe your project and we can suggest the right engagement.";
   }
 
   if (/\b(portfolio|work|projects|case\s*stud|examples?)\b/.test(m)) {
