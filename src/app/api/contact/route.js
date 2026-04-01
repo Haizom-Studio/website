@@ -21,7 +21,6 @@ export async function POST(req) {
       }, { status: 400 });
     }
 
-    // ✅ Correct way for your setup
     const db = process.env.DB;
 
     if (!db) {
@@ -31,7 +30,6 @@ export async function POST(req) {
       }, { status: 500 });
     }
 
-    // 🔍 Check duplicate
     const existing = await db.prepare(
       `SELECT * FROM contacts WHERE email = ? AND date = ? AND time = ?`
     )
@@ -45,7 +43,6 @@ export async function POST(req) {
       }, { status: 409 });
     }
 
-    // ✅ Insert
     await db.prepare(
       `INSERT INTO contacts 
       (first_name, last_name, email, service, specialist, date, time) 
