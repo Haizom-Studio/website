@@ -9,6 +9,8 @@ export type NewsletterSubscriberRow = {
   created_at: string;
   ip_address: string | null;
   location: string | null;
+  map_lat: number | null;
+  map_lng: number | null;
 };
 
 export async function GET() {
@@ -25,7 +27,7 @@ export async function GET() {
 
   const { results } = await db
     .prepare(
-      `SELECT email, created_at, ip_address, location
+      `SELECT email, created_at, ip_address, location, map_lat, map_lng
        FROM newsletter_subscribers
        ORDER BY datetime(created_at) DESC`
     )

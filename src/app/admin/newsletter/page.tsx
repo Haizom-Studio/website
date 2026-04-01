@@ -9,6 +9,8 @@ type Row = {
   created_at: string;
   ip_address: string | null;
   location: string | null;
+  map_lat: number | null;
+  map_lng: number | null;
 };
 
 function dash(s: string | null | undefined) {
@@ -68,7 +70,7 @@ export default function AdminNewsletterPage() {
       </h1>
       <p className="text-grey dark:text-SereneGray text-sm mb-8 max-w-2xl">
         Emails captured from the site footer. Location is inferred from the
-        visitor IP on Cloudflare (country / city when available).
+        visitor IP (country / city; map uses approximate coordinates when available).
       </p>
 
       {loading ? (
@@ -100,6 +102,8 @@ export default function AdminNewsletterPage() {
                     <LocationMapEmbed
                       location={row.location}
                       ipAddress={row.ip_address}
+                      mapLat={row.map_lat}
+                      mapLng={row.map_lng}
                       collapsible
                       className="mt-2"
                     />

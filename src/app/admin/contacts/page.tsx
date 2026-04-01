@@ -15,6 +15,8 @@ type Row = {
   time: string;
   ip_address: string | null;
   location: string | null;
+  map_lat: number | null;
+  map_lng: number | null;
   status: string;
 };
 
@@ -114,8 +116,9 @@ export default function AdminContactsPage() {
         Contact &amp; booking requests
       </h1>
       <p className="text-grey dark:text-SereneGray text-sm mb-6 max-w-2xl">
-        Appointments submitted through the contact form. Location comes from the
-        visitor IP on Cloudflare. Mark rows complete when handled, or delete
+        Appointments submitted through the contact form. Location and map position
+        use the visitor IP (Cloudflare geo and, when needed, a lookup for coordinates).
+        Mark rows complete when handled, or delete
         them if they are spam or duplicates.
       </p>
 
@@ -196,6 +199,8 @@ export default function AdminContactsPage() {
                       <LocationMapEmbed
                         location={row.location}
                         ipAddress={row.ip_address}
+                        mapLat={row.map_lat}
+                        mapLng={row.map_lng}
                         className="mt-3"
                       />
                     </dd>

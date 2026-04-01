@@ -15,6 +15,8 @@ export type ContactBookingRow = {
   time: string;
   ip_address: string | null;
   location: string | null;
+  map_lat: number | null;
+  map_lng: number | null;
   status: string;
 };
 
@@ -33,7 +35,7 @@ export async function GET() {
   const { results } = await db
     .prepare(
       `SELECT rowid AS id, first_name, last_name, email, service, specialist, date, time,
-              ip_address, location, COALESCE(status, 'open') AS status
+              ip_address, location, map_lat, map_lng, COALESCE(status, 'open') AS status
        FROM contacts
        ORDER BY rowid DESC`
     )

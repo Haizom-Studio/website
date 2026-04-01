@@ -1,5 +1,6 @@
-import { getClientIp, getLocationLabel } from "@/lib/client-geo";
+import { getClientIp } from "@/lib/client-geo";
 import { getD1Database } from "@/lib/d1";
+import { resolveVisitorGeo } from "@/lib/ip-geo";
 
 export const runtime = "edge";
 
@@ -47,14 +48,14 @@ export async function POST(req: Request) {
     }
 
     const ip = getClientIp(req);
-    const location = getLocationLabel(req);
+    const geo = await resolveVisitorGeo(req, ip);
 
     try {
       await db
         .prepare(
           `INSERT INTO contacts
-          (first_name, last_name, email, service, specialist, date, time, ip_address, location, status)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'open')`
+          (first_name, last_name, email, service, specialist, date, time, ip_address, location, map_lat, map_lng, status)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'open')`
         )
         .bind(
           firstName,
@@ -65,7 +66,9 @@ export async function POST(req: Request) {
           date,
           time,
           ip || null,
-          location || null
+          geo.locationLabel || null,
+          geo.mapLat,
+          geo.mapLng
         )
         .run();
     } catch (e) {
@@ -73,22 +76,47 @@ export async function POST(req: Request) {
       const missingCol =
         msg.includes("no column named") || msg.includes("has no column named");
       if (!missingCol) throw e;
-      await db
-        .prepare(
-          `INSERT INTO contacts
-          (first_name, last_name, email, service, specialist, date, time)
-          VALUES (?, ?, ?, ?, ?, ?, ?)`
-        )
-        .bind(
-          firstName,
-          lastName,
-          email,
-          service,
-          specialist,
-          date,
-          time
-        )
-        .run();
+      try {
+        await db
+          .prepare(
+            `INSERT INTO contacts
+            (first_name, last_name, email, service, specialist, date, time, ip_address, location, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'open')`
+          )
+          .bind(
+            firstName,
+            lastName,
+            email,
+            service,
+            specialist,
+            date,
+            time,
+            ip || null,
+            geo.locationLabel || null
+          )
+          .run();
+      } catch (e2) {
+        const msg2 = e2 instanceof Error ? e2.message : String(e2);
+        const missing2 =
+          msg2.includes("no column named") || msg2.includes("has no column named");
+        if (!missing2) throw e2;
+        await db
+          .prepare(
+            `INSERT INTO contacts
+            (first_name, last_name, email, service, specialist, date, time)
+            VALUES (?, ?, ?, ?, ?, ?, ?)`
+          )
+          .bind(
+            firstName,
+            lastName,
+            email,
+            service,
+            specialist,
+            date,
+            time
+          )
+          .run();
+      }
     }
 
     return Response.json({ success: true });

@@ -1,5 +1,6 @@
-import { getClientIp, getLocationLabel } from "@/lib/client-geo";
+import { getClientIp } from "@/lib/client-geo";
 import { getD1Database } from "@/lib/d1";
+import { resolveVisitorGeo } from "@/lib/ip-geo";
 
 export const runtime = "edge";
 
@@ -39,15 +40,35 @@ export async function POST(req: Request) {
     }
 
     const ip = getClientIp(req);
-    const location = getLocationLabel(req);
+    const geo = await resolveVisitorGeo(req, ip);
 
-    await db
-      .prepare(
-        `INSERT INTO newsletter_subscribers (email, created_at, ip_address, location)
-         VALUES (?, datetime('now'), ?, ?)`
-      )
-      .bind(email, ip || null, location || null)
-      .run();
+    try {
+      await db
+        .prepare(
+          `INSERT INTO newsletter_subscribers (email, created_at, ip_address, location, map_lat, map_lng)
+           VALUES (?, datetime('now'), ?, ?, ?, ?)`
+        )
+        .bind(
+          email,
+          ip || null,
+          geo.locationLabel || null,
+          geo.mapLat,
+          geo.mapLng
+        )
+        .run();
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      const missingCol =
+        msg.includes("no column named") || msg.includes("has no column named");
+      if (!missingCol) throw e;
+      await db
+        .prepare(
+          `INSERT INTO newsletter_subscribers (email, created_at, ip_address, location)
+           VALUES (?, datetime('now'), ?, ?)`
+        )
+        .bind(email, ip || null, geo.locationLabel || null)
+        .run();
+    }
 
     return Response.json({ success: true });
   } catch (err) {
