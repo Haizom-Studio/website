@@ -1,6 +1,14 @@
 export const ADMIN_SESSION_COOKIE = "blog_admin_session";
 
-const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
+/** Scoped sessions for routes that must not use the marketing team password. */
+export const ADMIN_CONTACTS_SESSION_COOKIE = "admin_contacts_session";
+export const ADMIN_INVENTORY_SESSION_COOKIE = "admin_inventory_session";
+
+export type AdminScopedArea = "contacts" | "inventory";
+
+/** Admin cookie + signed token lifetime (1 day). */
+export const ADMIN_SESSION_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+export const ADMIN_SESSION_MAX_AGE_SECONDS = 24 * 60 * 60;
 
 function getSecret(): string {
   const s = process.env.ADMIN_SESSION_SECRET;
@@ -36,9 +44,20 @@ function timingSafeEqualHex(a: string, b: string): boolean {
 }
 
 export async function createSessionToken(): Promise<string> {
-  const exp = Date.now() + MAX_AGE_MS;
+  const exp = Date.now() + ADMIN_SESSION_MAX_AGE_MS;
   const secret = getSecret();
   const payload = String(exp);
+  const sig = await hmacSha256Hex(secret, payload);
+  return `${payload}.${sig}`;
+}
+
+/** Signed token bound to a single sensitive area (contacts or inventory). */
+export async function createScopedSessionToken(
+  area: AdminScopedArea
+): Promise<string> {
+  const exp = Date.now() + ADMIN_SESSION_MAX_AGE_MS;
+  const secret = getSecret();
+  const payload = `${area}:${exp}`;
   const sig = await hmacSha256Hex(secret, payload);
   return `${payload}.${sig}`;
 }
@@ -51,6 +70,7 @@ export async function verifySessionToken(
   if (dot <= 0) return false;
   const expStr = token.slice(0, dot);
   const sig = token.slice(dot + 1);
+  if (expStr.includes(":")) return false;
   const exp = parseInt(expStr, 10);
   if (Number.isNaN(exp) || Date.now() > exp) return false;
   let secret: string;
@@ -60,6 +80,32 @@ export async function verifySessionToken(
     return false;
   }
   const expected = await hmacSha256Hex(secret, expStr);
+  return timingSafeEqualHex(sig, expected);
+}
+
+export async function verifyScopedSessionToken(
+  token: string | undefined,
+  area: AdminScopedArea
+): Promise<boolean> {
+  if (!token) return false;
+  const dot = token.lastIndexOf(".");
+  if (dot <= 0) return false;
+  const payload = token.slice(0, dot);
+  const sig = token.slice(dot + 1);
+  const colon = payload.indexOf(":");
+  if (colon <= 0) return false;
+  const tokenArea = payload.slice(0, colon) as AdminScopedArea;
+  const expStr = payload.slice(colon + 1);
+  if (tokenArea !== area) return false;
+  const exp = parseInt(expStr, 10);
+  if (Number.isNaN(exp) || Date.now() > exp) return false;
+  let secret: string;
+  try {
+    secret = getSecret();
+  } catch {
+    return false;
+  }
+  const expected = await hmacSha256Hex(secret, payload);
   return timingSafeEqualHex(sig, expected);
 }
 

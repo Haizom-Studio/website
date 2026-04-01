@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireAdminSession } from "@/lib/admin-guard";
+import { requireContactsSession } from "@/lib/admin-guard";
 import { getD1Database } from "@/lib/d1";
 
 export const runtime = "edge";
@@ -19,7 +19,7 @@ export type ContactBookingRow = {
 };
 
 export async function GET() {
-  const denied = await requireAdminSession();
+  const denied = await requireContactsSession();
   if (denied) return denied;
 
   const db = getD1Database();
@@ -43,7 +43,7 @@ export async function GET() {
 }
 
 export async function PATCH(req: Request) {
-  const denied = await requireAdminSession();
+  const denied = await requireContactsSession();
   if (denied) return denied;
 
   const db = getD1Database();
@@ -78,7 +78,7 @@ export async function PATCH(req: Request) {
 }
 
 export async function DELETE(req: Request) {
-  const denied = await requireAdminSession();
+  const denied = await requireContactsSession();
   if (denied) return denied;
 
   const db = getD1Database();

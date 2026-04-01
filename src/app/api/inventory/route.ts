@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireAdminSession } from "@/lib/admin-guard";
+import { requireInventorySession } from "@/lib/admin-guard";
 import { getD1Database } from "@/lib/d1";
 
 export const runtime = "edge";
@@ -17,7 +17,7 @@ function deltaQuantity(n: unknown): number {
 }
 
 export async function GET() {
-  const denied = await requireAdminSession();
+  const denied = await requireInventorySession();
   if (denied) return denied;
 
   const db = getD1Database();
@@ -35,7 +35,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const denied = await requireAdminSession();
+  const denied = await requireInventorySession();
   if (denied) return denied;
 
   const db = getD1Database();
@@ -97,7 +97,7 @@ export async function POST(req: Request) {
 }
 
 export async function PUT(req: Request) {
-  const denied = await requireAdminSession();
+  const denied = await requireInventorySession();
   if (denied) return denied;
 
   const db = getD1Database();
@@ -149,7 +149,7 @@ export async function PUT(req: Request) {
 }
 
 export async function DELETE(req: Request) {
-  const denied = await requireAdminSession();
+  const denied = await requireInventorySession();
   if (denied) return denied;
 
   const db = getD1Database();

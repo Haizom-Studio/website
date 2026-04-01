@@ -5,14 +5,22 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 
-const nav = [
+const nav: {
+  href: string;
+  label: string;
+  scoped?: boolean;
+}[] = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/newsletter", label: "Newsletter" },
-  { href: "/admin/contacts", label: "Contact requests" },
+  {
+    href: "/admin/contacts",
+    label: "Contact requests",
+    scoped: true,
+  },
   { href: "/admin/blog", label: "New post" },
   { href: "/admin/blogs", label: "Posts" },
   { href: "/admin/portfolio", label: "Portfolio" },
-  { href: "/admin/inventory", label: "Inventory" },
+  { href: "/admin/inventory", label: "Inventory", scoped: true },
 ];
 
 export default function AdminShell({ children }: { children: React.ReactNode }) {
@@ -128,12 +136,24 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
                     <Link
                       key={item.href}
                       href={item.href}
+                      title={
+                        item.scoped
+                          ? "Uses an extra password (not the main dashboard password)"
+                          : undefined
+                      }
                       className={`rounded-sm px-3 py-2 text-sm font-medium transition-colors ${
                         active
                           ? "bg-primary/15 text-primary"
                           : "text-midnight_text dark:text-white hover:bg-section dark:hover:bg-darklight"
                       }`}>
-                      {item.label}
+                      <span className="flex flex-col gap-0.5">
+                        <span>{item.label}</span>
+                        {item.scoped ? (
+                          <span className="text-[10px] font-normal text-grey dark:text-SereneGray leading-tight">
+                            Extra password
+                          </span>
+                        ) : null}
+                      </span>
                     </Link>
                   );
                 })}

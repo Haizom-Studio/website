@@ -10,7 +10,7 @@ export default function AdminDashboardPage() {
     {
       href: "/admin/contacts",
       title: "Contact & bookings",
-      desc: "Appointment requests: location, mark complete, or delete.",
+      desc: "Appointment requests (separate ops password): location, complete, delete.",
     },
     {
       href: "/admin/blog",
@@ -30,7 +30,7 @@ export default function AdminDashboardPage() {
     {
       href: "/admin/inventory",
       title: "Parts inventory",
-      desc: "Sensors, passives, and lab stock in D1 (Cloudflare).",
+      desc: "Lab stock in D1 (separate inventory password).",
     },
   ];
 
@@ -40,8 +40,9 @@ export default function AdminDashboardPage() {
         Dashboard
       </h1>
       <p className="text-grey dark:text-SereneGray text-sm mb-10 max-w-xl">
-        Internal tools for Haizom Studio. Sign-in is required for all sections
-        below.
+        Internal tools for Haizom Studio. The main password covers marketing
+        and content; contact requests and inventory each ask for an additional
+        password on first visit.
       </p>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {cards.map((c) => (
