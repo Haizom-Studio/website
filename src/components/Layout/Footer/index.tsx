@@ -160,6 +160,11 @@ const Footer: FC = () => {
                 Contact
               </Link>
             </li>
+            <li className='text-base text-white/50'>
+              <Link href='/terms-and-conditions' className='hover:text-primary'>
+                Terms &amp; Conditions
+              </Link>
+            </li>
           </ul>
         </div>
         <div>
