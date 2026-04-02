@@ -131,24 +131,5 @@
       "Motion specs",
       "Content styling"
     ]
-  },
-  {
-    "image": "/images/portfolio/mars.png",
-    "images": [
-      "/images/portfolio/mars.png"
-    ],
-    "alt": "Nebula Holdings project preview",
-    "title": "Nebula Holdings",
-    "slug": "nebula-holdings",
-    "info": "Holdings & investor hub",
-    "Class": "md:mt-0",
-    "description": "Nebula Holdings asked for a restrained, trustworthy interface that could host updates and long-term reference material.\n\nWe prioritised legibility, document-style rhythm, and a calm palette suited to financial and strategic content.\n\nThe layout adapts to news, reports, and leadership messaging with minimal structural churn.",
-    "deliverables": [
-      "Information design",
-      "UI components",
-      "News & insights",
-      "Document styling",
-      "Accessibility pass"
-    ]
   }
 ]
