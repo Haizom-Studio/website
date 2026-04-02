@@ -112,24 +112,5 @@
       "Iconography",
       "Rollout support"
     ]
-  },
-  {
-    "image": "/images/portfolio/cozycasa.png",
-    "images": [
-      "/images/portfolio/cozycasa.png"
-    ],
-    "alt": "InnovateX Ventures project preview",
-    "title": "InnovateX Ventures",
-    "slug": "innovate-x-ventures",
-    "info": "Venture storytelling",
-    "Class": "md:mt-24",
-    "description": "InnovateX needed a concise story for founders, LPs, and portfolio teams landing on the same homepage.\n\nWe separated audiences with clear entry points while keeping a single cohesive visual thread across sections.\n\nMotion and scroll cues add depth without distracting from metrics, thesis, and team credibility.",
-    "deliverables": [
-      "Narrative structure",
-      "Visual identity touch-up",
-      "Web design",
-      "Motion specs",
-      "Content styling"
-    ]
   }
 ]
