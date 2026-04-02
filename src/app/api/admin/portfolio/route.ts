@@ -83,7 +83,10 @@ export async function POST(req: Request) {
   const newItem = validateBodyItem(body);
   if (!newItem) {
     return NextResponse.json(
-      { error: "Invalid project fields (title, slug, image, description required)" },
+      {
+        error:
+          "Invalid project fields (title, slug, at least one image, description required)",
+      },
       { status: 400 }
     );
   }

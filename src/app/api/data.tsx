@@ -2,7 +2,10 @@ import portfolioRaw from "@/data/portfolio.json";
 import { getImgPath } from "@/utils/image";
 
 export interface PortfolioItem {
+    /** First image — card thumbnail and fallback when only one slide exists. */
     image: string;
+    /** All gallery images (detail page carousel); defaults to `[image]` for legacy JSON. */
+    images: string[];
     alt: string;
     title: string;
     slug: string;
@@ -194,11 +197,21 @@ function normalizePortfolioImagePath(path: string): string {
 }
 
 export const portfolioinfo: PortfolioItem[] = (
-    portfolioRaw as PortfolioItem[]
-).map((p) => ({
-    ...p,
-    image: getImgPath(normalizePortfolioImagePath(p.image)),
-}));
+    portfolioRaw as (PortfolioItem & { images?: string[] })[]
+).map((p) => {
+    const paths =
+        p.images && p.images.length > 0
+            ? p.images
+            : [normalizePortfolioImagePath(p.image)];
+    const images = paths.map((path) =>
+        getImgPath(normalizePortfolioImagePath(path))
+    );
+    return {
+        ...p,
+        image: images[0]!,
+        images,
+    };
+});
 
 export function getPortfolioBySlug(slug: string): PortfolioItem | undefined {
     const normalized = decodeURIComponent(slug).toLowerCase();

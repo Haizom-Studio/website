@@ -5,6 +5,9 @@ export const GITHUB_BLOG_DIR = "markdown/Blog";
 /** Portfolio projects JSON (admin CRUD commits this file). */
 export const GITHUB_PORTFOLIO_PATH = "src/data/portfolio.json";
 
+/** Uploaded portfolio images (admin commits binaries here). */
+export const GITHUB_PORTFOLIO_UPLOADS_PREFIX = "public/images/portfolio/uploads";
+
 export function githubHeaders(token: string): Record<string, string> {
   return {
     Authorization: `Bearer ${token}`,

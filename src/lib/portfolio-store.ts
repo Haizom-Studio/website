@@ -27,10 +27,32 @@ export function parsePortfolioJson(text: string): PortfolioItem[] {
   return out;
 }
 
+function normalizeImagePaths(paths: string[]): string[] {
+  const out: string[] = [];
+  for (const raw of paths) {
+    const t = raw.trim();
+    if (!t) continue;
+    out.push(t.startsWith("/") ? t : `/${t}`);
+  }
+  return out;
+}
+
 function validatePortfolioItem(row: unknown): PortfolioItem | null {
   if (!row || typeof row !== "object") return null;
   const o = row as Record<string, unknown>;
-  const image = typeof o.image === "string" ? o.image.trim() : "";
+  const imageSingle = typeof o.image === "string" ? o.image.trim() : "";
+  const imgsRaw = o.images;
+  let images: string[] = [];
+  if (Array.isArray(imgsRaw)) {
+    images = normalizeImagePaths(
+      imgsRaw.filter((x): x is string => typeof x === "string")
+    );
+  }
+  if (images.length === 0 && imageSingle) {
+    images = normalizeImagePaths([imageSingle]);
+  }
+  if (images.length === 0) return null;
+
   const alt = typeof o.alt === "string" ? o.alt.trim() : "";
   const title = typeof o.title === "string" ? o.title.trim() : "";
   const slug = typeof o.slug === "string" ? o.slug.trim() : "";
@@ -42,9 +64,11 @@ function validatePortfolioItem(row: unknown): PortfolioItem | null {
   const deliverables = Array.isArray(delRaw)
     ? delRaw.filter((x): x is string => typeof x === "string" && x.trim().length > 0)
     : [];
-  if (!image || !title || !slug || !description) return null;
+  const image = images[0]!;
+  if (!title || !slug || !description) return null;
   return {
     image,
+    images,
     alt: alt || title,
     title,
     slug,

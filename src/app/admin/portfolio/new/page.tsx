@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import PortfolioProjectImagesField from "@/components/Admin/PortfolioProjectImagesField";
 
 function slugify(title: string): string {
   const base = title
@@ -23,7 +24,7 @@ export default function AdminPortfolioNewPage() {
   const [slug, setSlug] = useState("");
   const [slugTouched, setSlugTouched] = useState(false);
   const [alt, setAlt] = useState("");
-  const [image, setImage] = useState("/images/portfolio/cozycasa.png");
+  const [images, setImages] = useState<string[]>([]);
   const [info, setInfo] = useState("");
   const [className, setClassName] = useState("md:mt-0");
   const [description, setDescription] = useState("");
@@ -46,8 +47,14 @@ export default function AdminPortfolioNewPage() {
       toast.error("Title, slug, and description are required");
       return;
     }
+    if (images.length === 0) {
+      toast.error("Add at least one project image (upload or path)");
+      return;
+    }
     if (!/^[a-zA-Z0-9._-]+$/.test(slug.trim())) {
-      toast.error("Slug may only contain letters, numbers, dots, hyphens, underscores");
+      toast.error(
+        "Slug may only contain letters, numbers, dots, hyphens, underscores"
+      );
       return;
     }
     setSaving(true);
@@ -60,7 +67,7 @@ export default function AdminPortfolioNewPage() {
           title: title.trim(),
           slug: slug.trim(),
           alt: alt.trim() || title.trim(),
-          image: image.trim() || "/images/portfolio/cozycasa.png",
+          images,
           info: info.trim() || title.trim(),
           Class: className.trim() || "md:mt-0",
           description: description.trim(),
@@ -87,12 +94,13 @@ export default function AdminPortfolioNewPage() {
       <h1 className="text-3xl font-bold text-midnight_text dark:text-white mb-2">
         New portfolio project
       </h1>
-      <p className="text-grey dark:text-SereneGray text-sm mb-8">
-        Use a public image path under <code className="text-xs">public/</code>{" "}
-        (e.g. <code className="text-xs">/images/portfolio/my.png</code>).
+      <p className="text-grey dark:text-SereneGray text-sm mb-8 max-w-2xl leading-relaxed">
+        Set the title and URL slug first, then upload one or more images. Images
+        are stored in your repo and appear on the project page as a swipeable
+        gallery (like a product page). You can reorder images with Up / Down.
       </p>
 
-      <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl">
+      <form onSubmit={handleSubmit} className="space-y-8 max-w-3xl">
         <label className="block">
           <span className="block text-sm font-medium text-midnight_text dark:text-white mb-2">
             Title
@@ -122,22 +130,21 @@ export default function AdminPortfolioNewPage() {
           />
         </label>
 
-        <label className="block">
-          <span className="block text-sm font-medium text-midnight_text dark:text-white mb-2">
-            Image path
+        <div className="rounded-sm border border-border dark:border-dark_border bg-section/30 dark:bg-darklight/40 p-5">
+          <span className="block text-sm font-medium text-midnight_text dark:text-white mb-4">
+            Project images
           </span>
-          <input
-            type="text"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-            className="w-full rounded-sm border border-border dark:border-dark_border bg-white dark:bg-darklight px-4 py-3 text-midnight_text dark:text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            required
+          <PortfolioProjectImagesField
+            projectSlug={slug}
+            images={images}
+            onChange={setImages}
+            disabled={saving}
           />
-        </label>
+        </div>
 
         <label className="block">
           <span className="block text-sm font-medium text-midnight_text dark:text-white mb-2">
-            Image alt text
+            Image alt text (accessibility; used for all slides)
           </span>
           <input
             type="text"
@@ -197,7 +204,7 @@ export default function AdminPortfolioNewPage() {
           />
         </label>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-3 pt-2">
           <button
             type="submit"
             disabled={saving}

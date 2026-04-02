@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import type { PortfolioItem } from "@/app/api/data";
+import PortfolioProjectImagesField from "@/components/Admin/PortfolioProjectImagesField";
 
 export default function AdminPortfolioEditPage() {
   const params = useParams();
@@ -15,7 +16,7 @@ export default function AdminPortfolioEditPage() {
   const [saving, setSaving] = useState(false);
   const [title, setTitle] = useState("");
   const [alt, setAlt] = useState("");
-  const [image, setImage] = useState("");
+  const [images, setImages] = useState<string[]>([]);
   const [info, setInfo] = useState("");
   const [className, setClassName] = useState("md:mt-0");
   const [description, setDescription] = useState("");
@@ -38,7 +39,9 @@ export default function AdminPortfolioEditPage() {
       }
       setTitle(data.title);
       setAlt(data.alt);
-      setImage(data.image);
+      setImages(
+        data.images && data.images.length > 0 ? data.images : [data.image]
+      );
       setInfo(data.info);
       setClassName(data.Class || "md:mt-0");
       setDescription(data.description);
@@ -62,6 +65,10 @@ export default function AdminPortfolioEditPage() {
       toast.error("Title and description are required");
       return;
     }
+    if (images.length === 0) {
+      toast.error("Add at least one project image");
+      return;
+    }
     setSaving(true);
     try {
       const res = await fetch(
@@ -74,7 +81,7 @@ export default function AdminPortfolioEditPage() {
             title: title.trim(),
             slug,
             alt: alt.trim() || title.trim(),
-            image: image.trim() || "/images/portfolio/cozycasa.png",
+            images,
             info: info.trim() || title.trim(),
             Class: className.trim() || "md:mt-0",
             description: description.trim(),
@@ -107,11 +114,15 @@ export default function AdminPortfolioEditPage() {
       <h1 className="text-3xl font-bold text-midnight_text dark:text-white mb-2">
         Edit project
       </h1>
-      <p className="text-grey dark:text-SereneGray text-sm mb-8 font-mono">
+      <p className="text-grey dark:text-SereneGray text-sm mb-2 font-mono">
         {slug}
       </p>
+      <p className="text-grey dark:text-SereneGray text-sm mb-8 max-w-2xl leading-relaxed">
+        Upload multiple images and reorder them. The first image is used on portfolio
+        cards; all images appear in a swipeable gallery on the project page.
+      </p>
 
-      <form onSubmit={handleSave} className="space-y-6 max-w-3xl">
+      <form onSubmit={handleSave} className="space-y-8 max-w-3xl">
         <label className="block">
           <span className="block text-sm font-medium text-midnight_text dark:text-white mb-2">
             Title
@@ -125,22 +136,21 @@ export default function AdminPortfolioEditPage() {
           />
         </label>
 
-        <label className="block">
-          <span className="block text-sm font-medium text-midnight_text dark:text-white mb-2">
-            Image path
+        <div className="rounded-sm border border-border dark:border-dark_border bg-section/30 dark:bg-darklight/40 p-5">
+          <span className="block text-sm font-medium text-midnight_text dark:text-white mb-4">
+            Project images
           </span>
-          <input
-            type="text"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-            className="w-full rounded-sm border border-border dark:border-dark_border bg-white dark:bg-darklight px-4 py-3 text-midnight_text dark:text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            required
+          <PortfolioProjectImagesField
+            projectSlug={slug}
+            images={images}
+            onChange={setImages}
+            disabled={saving}
           />
-        </label>
+        </div>
 
         <label className="block">
           <span className="block text-sm font-medium text-midnight_text dark:text-white mb-2">
-            Image alt text
+            Image alt text (accessibility)
           </span>
           <input
             type="text"

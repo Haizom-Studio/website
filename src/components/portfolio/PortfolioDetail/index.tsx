@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import HeroSub from '@/components/SharedComponent/HeroSub'
+import PortfolioImageCarousel from '@/components/portfolio/PortfolioImageCarousel'
 import type { PortfolioItem } from '@/app/api/data'
 
 interface PortfolioDetailProps {
@@ -30,15 +30,10 @@ const PortfolioDetail: FC<PortfolioDetailProps> = ({ project }) => {
       />
       <section className='md:pb-24 pb-16 dark:bg-darkmode'>
         <div className='container mx-auto max-w-6xl px-4'>
-          <div className='relative overflow-hidden rounded-lg shadow-[0px_20px_80px_0px_#68758D26] mb-12 md:mb-16'>
-            <Image
-              src={project.image}
+          <div className='shadow-[0px_20px_80px_0px_#68758D26] mb-12 md:mb-16'>
+            <PortfolioImageCarousel
+              images={project.images}
               alt={project.alt}
-              width={1200}
-              height={600}
-              priority
-              className='w-full h-[600px] object-cover'
-              sizes='(max-width: 1152px) 100vw, 1152px'
             />
           </div>
           <div className='flex md:flex-row flex-col items-start w-full justify-between flex-wrap sm:flex-nowrap lg:gap-0 gap-8'>
