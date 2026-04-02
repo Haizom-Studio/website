@@ -57,3 +57,17 @@ next-env.d.ts
 .next/types/routes.d.ts
 .next/types/validator.ts
 BOM/BOM_Connordavidson1_1_v1_2026-02-27.csv
+BOM/jlc_bom.csv
+.next/cache/.tsbuildinfo
+.next/cache/webpack/client-production/0.pack
+.next/cache/webpack/client-production/1.pack
+.next/cache/webpack/client-production/2.pack
+.next/cache/webpack/client-production/index.pack
+.next/cache/webpack/client-production/index.pack.old
+.next/cache/webpack/edge-server-production/0.pack
+.next/cache/webpack/edge-server-production/index.pack
+.next/cache/webpack/server-production/0.pack
+.next/cache/webpack/server-production/index.pack
+.next/cache/webpack/server-production/index.pack.old
+.next/types/routes.d.ts
+.next/types/validator.ts

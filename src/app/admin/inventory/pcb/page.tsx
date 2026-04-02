@@ -497,7 +497,10 @@ export default function PcbSalvageInventoryPage() {
                             {row.footprint || "—"}
                           </td>
                           <td className="px-3 py-2 text-grey align-top max-w-xs">
-                            {row.description || row.manufacturer || "—"}
+                            {row.description ||
+                              row.manufacturer ||
+                              row.comment ||
+                              "—"}
                           </td>
                           <td className="px-3 py-2 text-midnight_text dark:text-white align-top font-medium whitespace-nowrap">
                             {fmtQty(row.total_qty)}

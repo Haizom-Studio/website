@@ -102,17 +102,33 @@ type ColKey =
   | "description"
   | "qty";
 
-function headerToKey(h: string): ColKey | null {
-  const x = h
+/**
+ * KiCad uses headers like `Comment(Value)`; stripping `(…)` yields `comment`.
+ */
+function normalizeHeaderLabel(h: string): string {
+  return h
     .toLowerCase()
     .replace(/#/g, "")
+    .replace(/\([^)]*\)/g, "")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function normalizeLcscCell(raw: string): string {
+  const t = norm(raw);
+  if (!t) return "";
+  if (/^n\/?a$/i.test(t) || t === "-" || t === "—") return "";
+  return t;
+}
+
+function headerToKey(h: string): ColKey | null {
+  const x = normalizeHeaderLabel(h);
 
   const map: [string, ColKey][] = [
     ["supplier part", "lcsc"],
     ["lcsc part #", "lcsc"],
     ["lcsc part", "lcsc"],
+    ["jlcpcb", "lcsc"],
     ["jlcpcb part", "lcsc"],
     ["lcsc #", "lcsc"],
     ["lcsc", "lcsc"],
@@ -214,7 +230,7 @@ export function parseBomText(raw: string): BomRow[] {
     const designator = get("designator");
     const comment = get("comment");
     const footprint = get("footprint");
-    const lcsc = get("lcsc");
+    const lcsc = normalizeLcscCell(get("lcsc"));
     const mpn = get("mpn");
     const manufacturer = get("manufacturer");
     const description = get("description");
