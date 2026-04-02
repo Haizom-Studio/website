@@ -27,6 +27,15 @@ type CatInput = {
   designator?: string | null;
 };
 
+/** Typical IC/SoC MPN shape (excludes 10uF, 1kΩ, simple passives). */
+function looksLikeIcOrModuleMpn(s: string): boolean {
+  const t = s.trim();
+  if (t.length < 5) return false;
+  if (/[Ωωµμnpfu]f?\b/i.test(t)) return false;
+  if (/^\d/.test(t) && /(pf|nf|uf|µf|ohm|ω|nh|uh|µh)/i.test(t)) return false;
+  return /[a-z]/i.test(t) && /\d/.test(t);
+}
+
 export function inferComponentCategory(input: CatInput): string {
   const fp = (input.footprint ?? "").toLowerCase();
   const c = (input.comment ?? "").toLowerCase();
@@ -41,7 +50,12 @@ export function inferComponentCategory(input: CatInput): string {
       blob
     ) ||
     fp.includes("conn") ||
-    fp.includes("usb-")
+    fp.includes("usb-") ||
+    fp.includes("idc") ||
+    fp.includes("pinheader") ||
+    fp.includes("tag-connect") ||
+    fp.includes("ffc") ||
+    fp.includes("fpc")
   ) {
     return "Connectors";
   }
@@ -49,7 +63,10 @@ export function inferComponentCategory(input: CatInput): string {
   if (
     /\b(sw-|switch|tact|button|slide|rotary)\b/i.test(blob) ||
     fp.includes("sw-smd") ||
-    fp.includes("sw-th")
+    fp.includes("sw-th") ||
+    fp.includes("key-") ||
+    fp.includes("key_th") ||
+    /\bb3f-/i.test(c + mpn)
   ) {
     return "Switches";
   }
@@ -62,7 +79,12 @@ export function inferComponentCategory(input: CatInput): string {
     return "Crystals & oscillators";
   }
 
-  if (/\b(fuse|polyfuse|ptc|mov|tvs|esd)\b/i.test(blob) || fp.includes("fuse")) {
+  if (
+    /\b(fuse|polyfuse|ptc|mov|tvs|esd)\b/i.test(blob) ||
+    fp.includes("fuse") ||
+    /^f\d{4}/i.test(fp) ||
+    /\d+l\d+\/\d+/i.test(c + mpn)
+  ) {
     return "Fuses & protection";
   }
 
@@ -93,18 +115,33 @@ export function inferComponentCategory(input: CatInput): string {
   }
 
   if (
-    /\b(mosfet|bjt|transistor|jfet|igbt)\b/i.test(blob) ||
-    /^Q\d/.test(desU)
+    /^Q\d/.test(desU) ||
+    /\b(2n7002|2n2222|bss|ao34|irfz|irlb|nce\d|ipd)/i.test(blob) ||
+    (fp.includes("sot-23") &&
+      /\b(2n|bss|ao|irf|nce|si\d|pjm|j3y)/i.test(c + mpn + desc))
   ) {
     return "Transistors";
   }
 
+  const icFootprint =
+    /\b(wqfn|vqfn|qfn|bga|tqfp|lqfp|dfn|sot-583|msop|tssop|soic[-_]|ssop|csp|aqfn|wqfn)\b/i.test(
+      fp
+    );
+
   if (
-    /\b(attiny|atmega|stm32|esp32|esp8266|rp2040|pic\d|msp430|nrf\d|cc25|mcu|soc)\b/i.test(
-      blob
+    /\b(attiny|atmega|stm32|esp32|esp8266|rp2040|pic\d|msp430|cc25|mcu|soc)\b/i.test(blob) ||
+    /nrf\d/i.test(blob) ||
+    /\b(lm\d|tlv\d|tps\d|lm5|ip\d|ncp\d|sy\d|mp\d|rt\d|bd\d|xc\d|aos\d)/i.test(
+      c + mpn
     ) ||
     (/^U\d/.test(desU) &&
-      /\b(soic|tssop|qfn|bga|lqfp|dfn|sop-|msop|esop|qfp)\b/i.test(fp))
+      /\b(soic|tssop|qfn|bga|lqfp|dfn|sop-|msop|esop|qfp|wqfn|vqfn)\b/i.test(fp)) ||
+    (icFootprint &&
+      (looksLikeIcOrModuleMpn(input.comment ?? "") ||
+        looksLikeIcOrModuleMpn(input.mpn ?? "") ||
+        /^REF\d/i.test(desU) ||
+        /^U\d/i.test(desU) ||
+        /^IC\d/i.test(desU)))
   ) {
     return "ICs & MCUs";
   }
