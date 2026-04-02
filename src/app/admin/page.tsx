@@ -30,7 +30,7 @@ export default function AdminDashboardPage() {
     {
       href: "/admin/inventory",
       title: "Parts inventory",
-      desc: "Lab stock in D1 (separate inventory password).",
+      desc: "Lab stock in D1 (separate inventory password). Salvage PCBs + BOMs have their own page.",
     },
   ];
 

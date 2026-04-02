@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React, {
   useCallback,
   useEffect,
@@ -397,9 +398,16 @@ export default function AdminInventoryPage() {
       <h1 className="text-3xl font-bold text-midnight_text dark:text-white mb-2">
         Inventory
       </h1>
-      <p className="text-grey dark:text-SereneGray text-sm mb-8 max-w-xl">
+      <p className="text-grey dark:text-SereneGray text-sm mb-4 max-w-xl">
         Stored in Cloudflare D1. Create a database, run the SQL migration, and
         bind it as <code className="text-xs">DB</code> on your Pages project.
+      </p>
+      <p className="mb-8">
+        <Link
+          href="/admin/inventory/pcb"
+          className="text-sm font-medium text-primary hover:underline">
+          Salvage PCB inventory (BOM upload) →
+        </Link>
       </p>
 
       <form

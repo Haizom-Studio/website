@@ -10,6 +10,7 @@ export type D1Statement = {
 
 export type D1Binding = {
   prepare: (query: string) => D1Statement;
+  batch: (statements: D1Statement[]) => Promise<unknown>;
 };
 
 type EnvWithDb = { DB?: D1Binding };
