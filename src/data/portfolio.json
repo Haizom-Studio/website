@@ -15,18 +15,19 @@
     ]
   },
   {
-    "image": "/images/portfolio/mars.png",
+    "image": "/images/portfolio/uploads/healthcare-evv-platform/mnhdgl54-j40lrh4.png",
     "images": [
-      "/images/portfolio/mars.png"
+      "/images/portfolio/uploads/healthcare-evv-platform/mnhdgl54-j40lrh4.png"
     ],
-    "alt": "Mars project preview",
+    "alt": "Healthcare website development",
     "title": "Healthcare EVV Platform",
     "slug": "healthcare-evv-platform",
     "info": "Healthcare EVV Platform",
     "Class": "md:mt-24",
-    "description": "Healthcare EVV Platform for your business",
+    "description": "A quick view of industry specific problems solved with design by the awesome team at Haizom Studios.\n\nFrom the designers and engineers who are creating the next generation of web and mobile experiences, to anyone putting a website together for the first time. We provide elegant solutions that set new standards for online publishing.\n\nDigital technology has made our world more transparent and interconnected, posing new challenges and opportunities for every business. A holistic, user-centric perspective is what truly sets one apart.",
     "deliverables": [
-      "Creative direction",
+      "Logo",
+      "Website",
       "UI design",
       "Responsive layouts",
       "Campaign templates",
