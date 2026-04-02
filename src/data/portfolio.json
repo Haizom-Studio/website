@@ -1,6 +1,10 @@
 [
   {
     "image": "/images/portfolio/cozycasa.png",
+    "images": [
+      "/images/portfolio/cozycasa.png",
+      "/images/portfolio/uploads/chatbot-ai-solutions/mnhcqzsd-xy32gcx.jpg"
+    ],
     "alt": "Cozycasa project preview",
     "title": "Chatbot Ai Solutions",
     "slug": "chatbot-ai-solutions",
@@ -13,6 +17,9 @@
   },
   {
     "image": "/images/portfolio/mars.png",
+    "images": [
+      "/images/portfolio/mars.png"
+    ],
     "alt": "Mars project preview",
     "title": "Healthcare EVV Platform",
     "slug": "healthcare-evv-platform",
@@ -29,6 +36,9 @@
   },
   {
     "image": "/images/portfolio/humans.png",
+    "images": [
+      "/images/portfolio/humans.png"
+    ],
     "alt": "Everyday Humans project preview",
     "title": "Everyday Humans",
     "slug": "everyday-humans",
@@ -45,6 +55,9 @@
   },
   {
     "image": "/images/portfolio/roket-squred.png",
+    "images": [
+      "/images/portfolio/roket-squred.png"
+    ],
     "alt": "Rocket Squared project preview",
     "title": "Rocket Squared",
     "slug": "rocket-squared",
@@ -61,6 +74,9 @@
   },
   {
     "image": "/images/portfolio/panda-logo.png",
+    "images": [
+      "/images/portfolio/panda-logo.png"
+    ],
     "alt": "Panda Logo project preview",
     "title": "Panda Logo",
     "slug": "panda-logo",
@@ -77,6 +93,9 @@
   },
   {
     "image": "/images/portfolio/humans.png",
+    "images": [
+      "/images/portfolio/humans.png"
+    ],
     "alt": "Fusion Dynamics project preview",
     "title": "Fusion Dynamics",
     "slug": "fusion-dynamics",
@@ -93,6 +112,9 @@
   },
   {
     "image": "/images/portfolio/cozycasa.png",
+    "images": [
+      "/images/portfolio/cozycasa.png"
+    ],
     "alt": "InnovateX Ventures project preview",
     "title": "InnovateX Ventures",
     "slug": "innovate-x-ventures",
@@ -109,6 +131,9 @@
   },
   {
     "image": "/images/portfolio/mars.png",
+    "images": [
+      "/images/portfolio/mars.png"
+    ],
     "alt": "Nebula Holdings project preview",
     "title": "Nebula Holdings",
     "slug": "nebula-holdings",
@@ -125,6 +150,9 @@
   },
   {
     "image": "/images/portfolio/panda-logo.png",
+    "images": [
+      "/images/portfolio/panda-logo.png"
+    ],
     "alt": "Summit Partners project preview",
     "title": "Summit Partners",
     "slug": "summit-partners",
@@ -141,6 +169,9 @@
   },
   {
     "image": "/images/portfolio/roket-squred.png",
+    "images": [
+      "/images/portfolio/roket-squred.png"
+    ],
     "alt": "Apex Strategies project preview",
     "title": "Apex Strategies",
     "slug": "apex-strategies",
