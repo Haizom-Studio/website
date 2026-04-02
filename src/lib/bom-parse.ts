@@ -17,9 +17,27 @@ function norm(s: string): string {
   return s.trim().replace(/\s+/g, " ");
 }
 
-function stripBom(s: string): string {
+function stripUnicodeBom(s: string): string {
   if (s.charCodeAt(0) === 0xfeff) return s.slice(1);
   return s;
+}
+
+/**
+ * Decode BOM file bytes. EasyEDA / JLC exports are often UTF-16 LE tab-separated;
+ * `File.text()` / UTF-8 decoding breaks tabs and headers.
+ */
+export function decodeBomFileBytes(buffer: ArrayBuffer): string {
+  const u8 = new Uint8Array(buffer);
+  if (u8.length >= 2 && u8[0] === 0xff && u8[1] === 0xfe) {
+    return stripUnicodeBom(new TextDecoder("utf-16le").decode(u8.subarray(2)));
+  }
+  if (u8.length >= 2 && u8[0] === 0xfe && u8[1] === 0xff) {
+    return stripUnicodeBom(new TextDecoder("utf-16be").decode(u8.subarray(2)));
+  }
+  if (u8.length >= 3 && u8[0] === 0xef && u8[1] === 0xbb && u8[2] === 0xbf) {
+    return new TextDecoder("utf-8").decode(u8.subarray(3));
+  }
+  return stripUnicodeBom(new TextDecoder("utf-8").decode(u8));
 }
 
 /** Simple CSV line splitter respecting double-quoted fields. */
@@ -69,6 +87,8 @@ function detectDelimiter(firstLine: string): string {
   const semis = (firstLine.match(/;/g) ?? []).length;
   if (tabs >= commas && tabs >= semis && tabs > 0) return "\t";
   if (semis > commas) return ";";
+  if (commas > 0) return ",";
+  if (tabs > 0) return "\t";
   return ",";
 }
 
@@ -90,6 +110,7 @@ function headerToKey(h: string): ColKey | null {
     .trim();
 
   const map: [string, ColKey][] = [
+    ["supplier part", "lcsc"],
     ["lcsc part #", "lcsc"],
     ["lcsc part", "lcsc"],
     ["jlcpcb part", "lcsc"],
@@ -103,6 +124,7 @@ function headerToKey(h: string): ColKey | null {
     ["mpn", "mpn"],
     ["comment", "comment"],
     ["value", "comment"],
+    ["name", "comment"],
     ["designator", "designator"],
     ["references", "designator"],
     ["ref des", "designator"],
@@ -121,7 +143,11 @@ function headerToKey(h: string): ColKey | null {
 
   for (const [prefix, key] of map) {
     if (x === prefix) return key;
-    if (prefix.length > 3 && x.endsWith(prefix)) return key;
+  }
+  // Avoid single-word suffix matches (e.g. "Part name" → "name").
+  for (const [prefix, key] of map) {
+    if (!prefix.includes(" ")) continue;
+    if (x === prefix || x.endsWith(prefix)) return key;
   }
   return null;
 }
@@ -155,7 +181,7 @@ export function computeMatchKey(row: Omit<BomRow, "qty_per_board">): string {
 }
 
 export function parseBomText(raw: string): BomRow[] {
-  const text = stripBom(raw).replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  const text = stripUnicodeBom(raw).replace(/\r\n/g, "\n").replace(/\r/g, "\n");
   const lines = text.split("\n").filter((l) => l.trim().length > 0);
   if (lines.length < 2) return [];
 

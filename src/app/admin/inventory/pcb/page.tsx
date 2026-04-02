@@ -205,8 +205,9 @@ export default function PcbSalvageInventoryPage() {
               className="mt-1 w-full text-sm text-midnight_text dark:text-white file:mr-3 file:rounded-sm file:border-0 file:bg-primary file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-white"
             />
             <p className="mt-1 text-xs text-grey">
-              KiCad BOM or JLCPCB-style CSV. Headers should include LCSC, Comment
-              / Value, Designator, Footprint, Quantity (names can vary).
+              KiCad, JLCPCB, or EasyEDA tab-separated exports (UTF-8 or UTF-16)
+              are supported. Use columns such as Designator, Footprint, Quantity,
+              Manufacturer Part, Supplier Part (LCSC), and Name / Comment / Value.
             </p>
           </label>
         </div>

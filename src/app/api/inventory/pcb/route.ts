@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { computeMatchKey, parseBomText } from "@/lib/bom-parse";
+import { computeMatchKey, decodeBomFileBytes, parseBomText } from "@/lib/bom-parse";
 import { requireInventorySession } from "@/lib/admin-guard";
 import { getD1Database } from "@/lib/d1";
 
@@ -181,7 +181,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "BOM file is required" }, { status: 400 });
   }
 
-  const text = await file.text();
+  const text = decodeBomFileBytes(await file.arrayBuffer());
   const parsed = parseBomText(text);
   const lines = parsed.filter((row) => computeMatchKey(row) !== "fb:unknown");
 
@@ -189,7 +189,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         error:
-          "Could not read any BOM lines. Use CSV or TSV with headers such as LCSC, Comment, Designator, Footprint, Quantity (KiCad / JLC style).",
+          "Could not read any BOM lines. Export as CSV or tab-separated text with columns such as Designator, Footprint, Quantity, Manufacturer Part, Supplier Part (LCSC), Name/Comment. EasyEDA UTF-16 BOMs are supported.",
       },
       { status: 400 }
     );
