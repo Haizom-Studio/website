@@ -150,24 +150,5 @@
       "Document styling",
       "Accessibility pass"
     ]
-  },
-  {
-    "image": "/images/portfolio/panda-logo.png",
-    "images": [
-      "/images/portfolio/panda-logo.png"
-    ],
-    "alt": "Summit Partners project preview",
-    "title": "Summit Partners",
-    "slug": "summit-partners",
-    "info": "Partnership brand",
-    "Class": "md:mt-24",
-    "description": "Summit Partners wanted to signal stability and collaboration through typography, photography, and partner spotlights.\n\nWe built repeatable patterns for quotes, timelines, and team grids to speed up future edits.\n\nSubtle gradients and depth cues echo the summit metaphor without overpowering content.",
-    "deliverables": [
-      "Brand refresh",
-      "Page templates",
-      "Partner grid system",
-      "Photography direction",
-      "Style guide"
-    ]
   }
 ]
