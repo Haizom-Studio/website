@@ -216,6 +216,7 @@ export default function AdminInventoryPage() {
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [decrementingId, setDecrementingId] = useState<number | null>(null);
   const [categoryFilter, setCategoryFilter] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("name");
@@ -372,6 +373,41 @@ export default function AdminInventoryPage() {
       void load();
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function decrementOne(row: Item) {
+    const qty = row.quantity ?? 0;
+    if (qty <= 0) return;
+    setDecrementingId(row.id);
+    try {
+      const res = await fetch("/api/inventory", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ id: row.id, decrementBy: 1 }),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        quantity?: number;
+      };
+      if (!res.ok) {
+        toast.error(data.error || "Update failed");
+        return;
+      }
+      const newQty = data.quantity;
+      if (typeof newQty === "number") {
+        setItems((prev) =>
+          prev.map((it) =>
+            it.id === row.id ? { ...it, quantity: newQty } : it
+          )
+        );
+        if (editingId === row.id) {
+          setForm((f) => ({ ...f, quantity: newQty }));
+        }
+      }
+    } finally {
+      setDecrementingId(null);
     }
   }
 
@@ -594,7 +630,7 @@ export default function AdminInventoryPage() {
                         </button>
                       </th>
                     ))}
-                    <th className="px-3 py-2 font-medium w-40">Actions</th>
+                    <th className="px-3 py-2 font-medium min-w-[11rem]">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border dark:divide-dark_border bg-white dark:bg-darklight">
@@ -614,18 +650,31 @@ export default function AdminInventoryPage() {
                         {row.notes}
                       </td>
                       <td className="px-3 py-2">
-                        <button
-                          type="button"
-                          onClick={() => startEdit(row)}
-                          className="text-primary text-xs font-medium mr-3 hover:underline">
-                          Edit
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => void remove(row.id)}
-                          className="text-grey text-xs hover:text-red-600">
-                          Delete
-                        </button>
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                          <button
+                            type="button"
+                            disabled={
+                              (row.quantity ?? 0) <= 0 ||
+                              decrementingId === row.id
+                            }
+                            onClick={() => void decrementOne(row)}
+                            title="Use one unit from stock (−1)"
+                            className="rounded-sm border border-border dark:border-dark_border px-2 py-1 text-xs text-midnight_text dark:text-white disabled:opacity-40 hover:bg-section dark:hover:bg-darklight">
+                            −1
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => startEdit(row)}
+                            className="text-primary text-xs font-medium hover:underline">
+                            Edit
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => void remove(row.id)}
+                            className="text-grey text-xs hover:text-red-600">
+                            Delete
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}

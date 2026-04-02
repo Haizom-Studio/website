@@ -148,6 +148,52 @@ export async function PUT(req: Request) {
   return NextResponse.json({ success: true });
 }
 
+/** Decrease quantity by one (or by `decrementBy`) without a full edit. Clamps at 0. */
+export async function PATCH(req: Request) {
+  const denied = await requireInventorySession();
+  if (denied) return denied;
+
+  const db = getD1Database();
+  if (!db) {
+    return NextResponse.json(
+      { error: "D1 is not bound." },
+      { status: 503 }
+    );
+  }
+
+  let body: { id?: number; decrementBy?: number };
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
+
+  const id = typeof body.id === "number" ? body.id : parseInt(String(body.id), 10);
+  if (Number.isNaN(id) || id < 1) {
+    return NextResponse.json({ error: "Valid id is required" }, { status: 400 });
+  }
+
+  const rawDec = body.decrementBy;
+  const dec =
+    typeof rawDec === "number" && Number.isFinite(rawDec) && rawDec > 0
+      ? Math.min(Math.floor(rawDec), 1_000_000)
+      : 1;
+
+  const updated = await db
+    .prepare(
+      `UPDATE inventory SET quantity = MAX(0, quantity - ?) WHERE id = ?
+       RETURNING quantity`
+    )
+    .bind(dec, id)
+    .first<{ quantity: number }>();
+
+  if (!updated) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
+  return NextResponse.json({ success: true, quantity: updated.quantity });
+}
+
 export async function DELETE(req: Request) {
   const denied = await requireInventorySession();
   if (denied) return denied;
