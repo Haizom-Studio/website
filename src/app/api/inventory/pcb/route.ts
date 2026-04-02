@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { COMPONENT_CATEGORIES, inferComponentCategory } from "@/lib/component-category";
 import { computeMatchKey, decodeBomFileBytes, parseBomText } from "@/lib/bom-parse";
 import { requireInventorySession } from "@/lib/admin-guard";
 import { getD1Database } from "@/lib/d1";
@@ -6,13 +7,31 @@ import { getD1Database } from "@/lib/d1";
 export const runtime = "edge";
 
 const INSERT_LINE = `INSERT INTO pcb_salvage_bom_lines
-  (board_id, match_key, designator, comment, footprint, lcsc, mpn, manufacturer, description, qty_per_board)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  (board_id, match_key, designator, comment, footprint, lcsc, mpn, manufacturer, description, qty_per_board, category, initial_qty, remaining_qty)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
 function parseBoardQty(raw: unknown): number {
   const n = typeof raw === "number" ? raw : parseInt(String(raw ?? ""), 10);
   if (Number.isNaN(n) || n < 1) return 1;
   return n;
+}
+
+function isSchemaError(err: unknown): boolean {
+  const msg = err instanceof Error ? err.message : String(err);
+  return (
+    (msg.includes("no such table") && msg.includes("pcb_salvage")) ||
+    msg.includes("no such column")
+  );
+}
+
+function jsonSchemaError() {
+  return NextResponse.json(
+    {
+      error:
+        "Salvage PCB schema is missing or outdated. Run d1/migrations/0003_pcb_salvage.sql and 0004_pcb_salvage_category_remaining.sql on your D1 database.",
+    },
+    { status: 503 }
+  );
 }
 
 type LineRow = {
@@ -27,12 +46,16 @@ type LineRow = {
   manufacturer: string | null;
   description: string | null;
   qty_per_board: number;
+  category: string | null;
+  initial_qty: number | null;
+  remaining_qty: number | null;
   board_name: string;
   board_qty: number;
 };
 
 type PcbAgg = {
   match_key: string;
+  category: string;
   lcsc: string;
   mpn: string;
   comment: string;
@@ -48,6 +71,26 @@ type PcbAgg = {
   }>;
 };
 
+function lineRemaining(r: LineRow): number {
+  const fb = r.qty_per_board * r.board_qty;
+  if (r.remaining_qty != null && !Number.isNaN(Number(r.remaining_qty))) {
+    return Math.max(0, Number(r.remaining_qty));
+  }
+  return Math.max(0, fb);
+}
+
+function effectiveCategory(r: LineRow): string {
+  const stored = (r.category ?? "").trim();
+  if (stored && stored !== "Other") return stored;
+  return inferComponentCategory({
+    footprint: r.footprint,
+    comment: r.comment,
+    mpn: r.mpn,
+    description: r.description,
+    designator: r.designator,
+  });
+}
+
 export async function GET() {
   const denied = await requireInventorySession();
   if (denied) return denied;
@@ -60,30 +103,41 @@ export async function GET() {
     );
   }
 
-  const boardsRes = await db
-    .prepare(
-      `SELECT b.id, b.name, b.board_qty, b.bom_filename, b.created_at,
-        (SELECT COUNT(*) FROM pcb_salvage_bom_lines l WHERE l.board_id = b.id) AS line_count
-       FROM pcb_salvage_boards b
-       ORDER BY b.created_at DESC`
-    )
-    .all<{
+  let boardsRes: {
+    results?: Array<{
       id: number;
       name: string;
       board_qty: number;
       bom_filename: string | null;
       created_at: string;
       line_count: number;
-    }>();
+    }>;
+  };
+  let linesRes: { results?: LineRow[] };
 
-  const linesRes = await db
-    .prepare(
-      `SELECT l.id, l.board_id, l.match_key, l.designator, l.comment, l.footprint, l.lcsc, l.mpn,
-        l.manufacturer, l.description, l.qty_per_board, b.name AS board_name, b.board_qty
+  try {
+    boardsRes = await db
+      .prepare(
+        `SELECT b.id, b.name, b.board_qty, b.bom_filename, b.created_at,
+        (SELECT COUNT(*) FROM pcb_salvage_bom_lines l WHERE l.board_id = b.id) AS line_count
+       FROM pcb_salvage_boards b
+       ORDER BY b.created_at DESC`
+      )
+      .all();
+
+    linesRes = await db
+      .prepare(
+        `SELECT l.id, l.board_id, l.match_key, l.designator, l.comment, l.footprint, l.lcsc, l.mpn,
+        l.manufacturer, l.description, l.qty_per_board, l.category, l.initial_qty, l.remaining_qty,
+        b.name AS board_name, b.board_qty
        FROM pcb_salvage_bom_lines l
        JOIN pcb_salvage_boards b ON b.id = l.board_id`
-    )
-    .all<LineRow>();
+      )
+      .all<LineRow>();
+  } catch (e) {
+    if (isSchemaError(e)) return jsonSchemaError();
+    throw e;
+  }
 
   const rows = linesRes.results ?? [];
   const aggMap = new Map<string, PcbAgg>();
@@ -93,11 +147,16 @@ export async function GET() {
   >();
 
   for (const r of rows) {
+    const lineContrib = lineRemaining(r);
+    if (lineContrib <= 0) continue;
+
     const mk = r.match_key;
-    const lineContrib = r.qty_per_board * r.board_qty;
+    const cat = effectiveCategory(r);
+
     if (!aggMap.has(mk)) {
       aggMap.set(mk, {
         match_key: mk,
+        category: cat,
         lcsc: (r.lcsc ?? "").trim(),
         mpn: (r.mpn ?? "").trim(),
         comment: (r.comment ?? "").trim(),
@@ -110,6 +169,8 @@ export async function GET() {
       pcbMap.set(mk, new Map());
     }
     const agg = aggMap.get(mk)!;
+    if (agg.category === "Other" && cat !== "Other") agg.category = cat;
+
     agg.total_qty += lineContrib;
     if (!agg.lcsc && (r.lcsc ?? "").trim()) agg.lcsc = (r.lcsc ?? "").trim();
     if (!agg.mpn && (r.mpn ?? "").trim()) agg.mpn = (r.mpn ?? "").trim();
@@ -134,22 +195,30 @@ export async function GET() {
     }
   }
 
-  for (const [mk, agg] of aggMap) {
+  for (const [, agg] of aggMap) {
+    const mk = agg.match_key;
     const bm = pcbMap.get(mk);
     agg.pcbs = bm
-      ? Array.from(bm.values()).sort((a, b) => a.name.localeCompare(b.name))
+      ? Array.from(bm.values())
+          .filter((p) => p.qty_from_this_pcb > 0)
+          .sort((a, b) => a.name.localeCompare(b.name))
       : [];
   }
 
-  const aggregate = Array.from(aggMap.values()).sort((a, b) => {
-    const al = (a.lcsc || a.mpn || a.comment || a.match_key).toLowerCase();
-    const bl = (b.lcsc || b.mpn || b.comment || b.match_key).toLowerCase();
-    return al.localeCompare(bl);
-  });
+  const aggregate = Array.from(aggMap.values())
+    .filter((a) => a.total_qty > 0)
+    .sort((a, b) => {
+      const c = a.category.localeCompare(b.category);
+      if (c !== 0) return c;
+      const al = (a.lcsc || a.mpn || a.comment || a.match_key).toLowerCase();
+      const bl = (b.lcsc || b.mpn || b.comment || b.match_key).toLowerCase();
+      return al.localeCompare(bl);
+    });
 
   return NextResponse.json({
     boards: boardsRes.results ?? [],
     aggregate,
+    categories: [...COMPONENT_CATEGORIES],
   });
 }
 
@@ -195,41 +264,58 @@ export async function POST(req: Request) {
     );
   }
 
-  const insertBoard = await db
-    .prepare(
-      "INSERT INTO pcb_salvage_boards (name, board_qty, bom_filename) VALUES (?, ?, ?)"
-    )
-    .bind(name, boardQty, file.name || null)
-    .run();
+  let boardId: number;
+  try {
+    const insertBoard = await db
+      .prepare(
+        "INSERT INTO pcb_salvage_boards (name, board_qty, bom_filename) VALUES (?, ?, ?)"
+      )
+      .bind(name, boardQty, file.name || null)
+      .run();
 
-  const meta = insertBoard as {
-    meta?: { last_row_id?: number; lastRowId?: number };
-  };
-  const boardId =
-    meta.meta?.last_row_id ?? meta.meta?.lastRowId ?? null;
-  if (!boardId || boardId < 1) {
-    return NextResponse.json({ error: "Failed to create board row" }, { status: 500 });
-  }
+    const meta = insertBoard as {
+      meta?: { last_row_id?: number; lastRowId?: number };
+    };
+    const id = meta.meta?.last_row_id ?? meta.meta?.lastRowId ?? null;
+    if (!id || id < 1) {
+      return NextResponse.json({ error: "Failed to create board row" }, { status: 500 });
+    }
+    boardId = id;
 
-  const chunkSize = 60;
-  for (let i = 0; i < lines.length; i += chunkSize) {
-    const chunk = lines.slice(i, i + chunkSize);
-    const stmts = chunk.map((row) => {
-      const mk = computeMatchKey(row);
-      return db.prepare(INSERT_LINE).bind(
-        boardId,
-        mk,
-        row.designator || null,
-        row.comment || null,
-        row.footprint || null,
-        row.lcsc || null,
-        row.mpn || null,
-        row.manufacturer || null,
-        row.description || null,
-        row.qty_per_board
-      );
-    });
-    await db.batch(stmts);
+    const chunkSize = 60;
+    for (let i = 0; i < lines.length; i += chunkSize) {
+      const chunk = lines.slice(i, i + chunkSize);
+      const stmts = chunk.map((row) => {
+        const mk = computeMatchKey(row);
+        const category = inferComponentCategory({
+          footprint: row.footprint,
+          comment: row.comment,
+          mpn: row.mpn,
+          description: row.description,
+          designator: row.designator,
+        });
+        const initial = row.qty_per_board * boardQty;
+        return db.prepare(INSERT_LINE).bind(
+          boardId,
+          mk,
+          row.designator || null,
+          row.comment || null,
+          row.footprint || null,
+          row.lcsc || null,
+          row.mpn || null,
+          row.manufacturer || null,
+          row.description || null,
+          row.qty_per_board,
+          category,
+          initial,
+          initial
+        );
+      });
+      await db.batch(stmts);
+    }
+  } catch (e) {
+    if (isSchemaError(e)) return jsonSchemaError();
+    throw e;
   }
 
   return NextResponse.json({
@@ -260,11 +346,16 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ error: "Valid id is required" }, { status: 400 });
   }
 
-  await db
-    .prepare("DELETE FROM pcb_salvage_bom_lines WHERE board_id = ?")
-    .bind(id)
-    .run();
-  await db.prepare("DELETE FROM pcb_salvage_boards WHERE id = ?").bind(id).run();
+  try {
+    await db
+      .prepare("DELETE FROM pcb_salvage_bom_lines WHERE board_id = ?")
+      .bind(id)
+      .run();
+    await db.prepare("DELETE FROM pcb_salvage_boards WHERE id = ?").bind(id).run();
+  } catch (e) {
+    if (isSchemaError(e)) return jsonSchemaError();
+    throw e;
+  }
 
   return NextResponse.json({ success: true });
 }
