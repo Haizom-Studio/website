@@ -35,22 +35,25 @@
     ]
   },
   {
-    "image": "/images/portfolio/humans.png",
+    "image": "/images/portfolio/uploads/everyday-humans/mnhdj872-5n9q7os.jpg",
     "images": [
-      "/images/portfolio/humans.png"
+      "/images/portfolio/uploads/everyday-humans/mnhdj872-5n9q7os.jpg",
+      "/images/portfolio/uploads/everyday-humans/mnhdvndj-tn4xrkr.png",
+      "/images/portfolio/uploads/everyday-humans/mnhdlzab-qvls928.png"
     ],
-    "alt": "Everyday Humans project preview",
-    "title": "Everyday Humans",
+    "alt": "High Efficiency Motor Controller",
+    "title": "Motor Control and Power stage Design",
     "slug": "everyday-humans",
-    "info": "Editorial & community",
+    "info": "PCB Design and Prototyping",
     "Class": "md:mt-0",
-    "description": "Everyday Humans celebrates real stories; our job was to let those stories breathe through typography and generous whitespace.\n\nWe structured long-form content, contributor profiles, and highlights so readers can move fluidly between articles and calls to action.\n\nAccessibility and readability guided every decision, from type scale to contrast in dark mode.",
+    "description": "A compact and efficient motor controller designed by Haizom Studios for smooth and reliable operation. Built to handle dynamic loads with precision, it delivers consistent performance while maintaining high efficiency.\n\nEngineered with intelligent control techniques, the system ensures accurate speed regulation and stable response under varying conditions. Every detail is optimized for performance, safety, and long-term reliability.\n\nFrom power handling to control logic, the design focuses on simplicity and effectiveness. The result is a controller that performs seamlessly across a wide range of applications.",
     "deliverables": [
-      "Content architecture",
-      "Editorial templates",
-      "Typography system",
-      "Dark mode patterns",
-      "QA & refinement"
+      "Schematics Capture",
+      "PCB Design",
+      "Fabrication Files",
+      "Assembly Files",
+      "BOM Management",
+      "STEP Files"
     ]
   },
   {
