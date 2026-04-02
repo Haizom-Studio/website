@@ -169,24 +169,5 @@
       "Photography direction",
       "Style guide"
     ]
-  },
-  {
-    "image": "/images/portfolio/roket-squred.png",
-    "images": [
-      "/images/portfolio/roket-squred.png"
-    ],
-    "alt": "Apex Strategies project preview",
-    "title": "Apex Strategies",
-    "slug": "apex-strategies",
-    "info": "Strategy consultancy",
-    "Class": "md:mt-0",
-    "description": "Apex Strategies needed clarity above all: services, outcomes, and proof points had to scan in seconds.\n\nWe used strong sectioning, iconography, and concise copy blocks to guide busy executives through the story.\n\nContact and consultation flows were simplified to reduce friction on every device.",
-    "deliverables": [
-      "Service modelling",
-      "Wireframes",
-      "High-fidelity UI",
-      "Icon set",
-      "Conversion tuning"
-    ]
   }
 ]
