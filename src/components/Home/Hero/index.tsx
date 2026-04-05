@@ -72,8 +72,8 @@ const Hero = () => {
           <Image
             src={getImgPath('/images/hero/hero-image.png')}
             alt='hero-image'
-            width={350}
-            height={150}
+            width={1638}
+            height={1713}
             quality={100}
             style={{ width: '100%', height: 'auto' }}
           />

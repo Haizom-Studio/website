@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (@media (prefers-color-scheme: dark));
 
 @theme {
   --spacing-6xl: 75rem;
@@ -80,6 +80,7 @@
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
+  color-scheme: light dark;
 }
 
 body {
