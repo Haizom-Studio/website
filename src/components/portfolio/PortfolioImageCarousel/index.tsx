@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import Slider from 'react-slick'
 import Image from 'next/image'
 import 'slick-carousel/slick/slick.css'
@@ -13,7 +13,6 @@ type Props = {
 
 export default function PortfolioImageCarousel({ images, alt }: Props) {
   const slides = images.length > 0 ? images : ['/images/portfolio/cozycasa.png']
-  const [index, setIndex] = useState(0)
   const multi = slides.length > 1
 
   const settings = {
@@ -21,12 +20,15 @@ export default function PortfolioImageCarousel({ images, alt }: Props) {
     arrows: multi,
     infinite: multi,
     speed: 450,
+    autoplay: multi,
+    autoplaySpeed: 3200,
+    pauseOnHover: true,
+    pauseOnFocus: true,
     slidesToShow: 1,
     slidesToScroll: 1,
     swipe: true,
     touchMove: true,
     adaptiveHeight: false,
-    beforeChange: (_: number, next: number) => setIndex(next),
     nextArrow: multi ? <CarouselArrow direction="next" /> : undefined,
     prevArrow: multi ? <CarouselArrow direction="prev" /> : undefined,
   }
@@ -50,11 +52,6 @@ export default function PortfolioImageCarousel({ images, alt }: Props) {
           </div>
         ))}
       </Slider>
-      {multi ? (
-        <p className="mt-3 text-center text-sm text-secondary dark:text-white/60">
-          {index + 1} / {slides.length}
-        </p>
-      ) : null}
     </div>
   )
 }
@@ -77,10 +74,24 @@ function CarouselArrow({
       aria-label={label}
       onClick={onClick}
       style={style}
-      className={`${className ?? ''} !flex z-10 h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-black/45 text-white shadow-md backdrop-blur-sm transition hover:bg-black/60 md:h-12 md:w-12 before:!content-none`}>
-      <span className="text-xl leading-none" aria-hidden>
-        {direction === 'prev' ? '‹' : '›'}
-      </span>
+      className={`${className ?? ''} !flex z-10 h-11 w-11 items-center justify-center rounded-md bg-black/35 text-white shadow-md backdrop-blur-sm transition hover:bg-black/55 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-white/70 md:h-12 md:w-12 before:!content-none`}
+    >
+      <svg
+        aria-hidden
+        viewBox="0 0 24 24"
+        className="h-6 w-6 md:h-7 md:w-7"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        {direction === 'prev' ? (
+          <path d="M15 18l-6-6 6-6" />
+        ) : (
+          <path d="M9 6l6 6-6 6" />
+        )}
+      </svg>
     </button>
   )
 }
