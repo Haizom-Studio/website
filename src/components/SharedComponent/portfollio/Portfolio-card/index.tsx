@@ -58,14 +58,13 @@ const PortfolioCard = () => {
             <Link key={index} href={`/portfolio/${item.slug}`} passHref>
               <div
                 className={`px-3 group ${index % 2 !== 0 ? 'lg:mt-24 ' : ''}`}>
-                <div className='relative overflow-hidden rounded-lg'>
+                <div className='relative overflow-hidden rounded-lg bg-white dark:bg-white/5 aspect-[3/2] w-full'>
                   <Image
                     src={item.image}
                     alt={item.alt}
-                    width={1200}
-                    height={800}
-                    style={{ width: '100%', height: 'auto' }}
-                    className='group-hover:scale-110 group-hover:cursor-pointer transition-all duration-500'
+                    fill
+                    sizes='(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 20vw'
+                    className='object-contain group-hover:scale-110 group-hover:cursor-pointer transition-all duration-500'
                   />
                 </div>
                 <h4 className='pb-1 pt-9 group-hover:text-primary group-hover:cursor-pointer text-2xl text-midnight_text font-bold dark:text-white'>

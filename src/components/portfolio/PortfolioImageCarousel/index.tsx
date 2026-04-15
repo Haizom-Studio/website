@@ -42,7 +42,7 @@ export default function PortfolioImageCarousel({ images, alt }: Props) {
                 alt={multi ? `${alt} — ${i + 1} of ${slides.length}` : alt}
                 fill
                 priority={i === 0}
-                className="object-cover"
+                className="object-contain"
                 sizes="(max-width: 1152px) 100vw, 1152px"
                 unoptimized
               />

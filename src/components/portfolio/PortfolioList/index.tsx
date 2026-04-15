@@ -10,13 +10,13 @@ const PortfolioList = () => {
         {portfolioinfo.map((item, index) => (
           <Link key={index} href={`/portfolio/${item.slug}`} passHref>
             <div className={`w-[18rem] group ${item.Class}`}>
-              <div className='relative overflow-hidden rounded-lg group-hover:scale-[1.1] group-hover:cursor-pointer transition-all duration-500'>
+              <div className='relative overflow-hidden rounded-lg bg-white dark:bg-white/5 aspect-[3/2] w-full group-hover:scale-[1.1] group-hover:cursor-pointer transition-all duration-500'>
                 <Image
                   src={item.image}
                   alt={item.alt}
-                  width={1200}
-                  height={800}
-                  style={{ width: '100%', height: 'auto' }}
+                  fill
+                  sizes='(max-width: 768px) 100vw, 288px'
+                  className='object-contain'
                 />
               </div>
               <h4 className='pb-[0.3125rem] pt-[2.1875rem] group-hover:text-primary group-hover:cursor-pointer text-2xl text-midnight_text font-bold dark:text-white'>

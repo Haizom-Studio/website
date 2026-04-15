@@ -35,15 +35,16 @@ const SlickSlider = () => {
     <Slider {...settings}>
       {portfolioinfo.map((item, index) => (
         <div className={`px-2`} key={index}>
-          <Image
-            src={item.image}
-            alt={item.alt}
-            width={400}
-            height={150}
-            quality={100}
-            className='rounded-lg'
-            style={{ width: '100%', height: 'auto' }}
-          />
+          <div className="relative w-full aspect-[3/2] overflow-hidden rounded-lg bg-white dark:bg-white/5">
+            <Image
+              src={item.image}
+              alt={item.alt}
+              fill
+              quality={100}
+              sizes="(max-width: 479px) 100vw, 50vw"
+              className="object-contain"
+            />
+          </div>
         </div>
       ))}
     </Slider>
