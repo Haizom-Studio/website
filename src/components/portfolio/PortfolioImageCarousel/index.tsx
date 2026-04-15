@@ -74,12 +74,12 @@ function CarouselArrow({
       aria-label={label}
       onClick={onClick}
       style={style}
-      className={`${className ?? ''} !flex z-10 h-11 w-11 items-center justify-center rounded-md bg-black/35 text-white shadow-md backdrop-blur-sm transition hover:bg-black/55 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-white/70 md:h-12 md:w-12 before:!content-none`}
+      className={`${className ?? ''} !flex z-10 !h-11 !w-11 !items-center !justify-center rounded-md bg-black/35 !text-white shadow-md backdrop-blur-sm transition hover:bg-black/55 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-white/70 md:!h-12 md:!w-12 before:!content-none`}
     >
       <svg
         aria-hidden
         viewBox="0 0 24 24"
-        className="h-6 w-6 md:h-7 md:w-7"
+        className="block h-6 w-6 text-current md:h-7 md:w-7"
         fill="none"
         stroke="currentColor"
         strokeWidth="2.5"
