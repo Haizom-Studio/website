@@ -36,6 +36,14 @@ function normalizeCategory(raw: string | undefined): string {
 type SortKey = "name" | "category" | "quantity" | "location" | "notes";
 type SortDir = "asc" | "desc";
 
+function tokenizeQuery(q: string): string[] {
+  return q
+    .trim()
+    .toLowerCase()
+    .split(/[\s,]+/g)
+    .filter(Boolean);
+}
+
 function sortInventoryRows(
   list: Item[],
   key: SortKey,
@@ -267,8 +275,8 @@ export default function AdminInventoryPage() {
         (it) => normalizeCategory(it.category) === categoryFilter
       );
     }
-    const q = searchQuery.trim().toLowerCase();
-    if (q) {
+    const tokens = tokenizeQuery(searchQuery);
+    if (tokens.length > 0) {
       list = list.filter((it) => {
         const blob = [
           it.name,
@@ -279,7 +287,7 @@ export default function AdminInventoryPage() {
         ]
           .join(" ")
           .toLowerCase();
-        return blob.includes(q);
+        return tokens.every((t) => blob.includes(t));
       });
     }
     return list;

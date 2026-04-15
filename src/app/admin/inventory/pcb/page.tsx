@@ -70,6 +70,14 @@ function initLine(l: BoardLineRow, boardQty: number): number {
   return Math.max(0, l.qty_per_board * boardQty);
 }
 
+function tokenizeQuery(q: string): string[] {
+  return q
+    .trim()
+    .toLowerCase()
+    .split(/[\s,]+/g)
+    .filter(Boolean);
+}
+
 type MainTab = "parts" | "board" | "add";
 
 export default function PcbSalvageInventoryPage() {
@@ -166,8 +174,8 @@ export default function PcbSalvageInventoryPage() {
     if (categoryFilter) {
       list = list.filter((row) => row.category === categoryFilter);
     }
-    const q = search.trim().toLowerCase();
-    if (!q) return list;
+    const tokens = tokenizeQuery(search);
+    if (tokens.length === 0) return list;
     return list.filter((row) => {
       const blob = [
         row.category,
@@ -181,7 +189,7 @@ export default function PcbSalvageInventoryPage() {
       ]
         .join(" ")
         .toLowerCase();
-      return blob.includes(q);
+      return tokens.every((t) => blob.includes(t));
     });
   }, [aggregate, categoryFilter, search]);
 
