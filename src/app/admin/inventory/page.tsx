@@ -618,7 +618,13 @@ export default function AdminInventoryPage() {
                       <th
                         key={col}
                         className={`px-3 py-2 font-medium align-bottom ${
-                          col === "notes" ? "min-w-[26rem]" : ""
+                          col === "name"
+                            ? "min-w-[14rem]"
+                            : col === "location"
+                              ? "min-w-[10rem]"
+                              : col === "notes"
+                                ? "min-w-[18rem]"
+                                : ""
                         }`}>
                         <button
                           type="button"
@@ -660,7 +666,7 @@ export default function AdminInventoryPage() {
                       <td className="px-3 py-2 text-grey text-xs">
                         {row.location}
                       </td>
-                      <td className="px-3 py-2 min-w-[26rem] max-w-md">
+                      <td className="px-3 py-2 min-w-[18rem] max-w-sm">
                         <div
                           className="text-grey text-xs leading-snug break-words"
                           style={{
