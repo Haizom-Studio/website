@@ -204,7 +204,12 @@ export const portfolioinfo: PortfolioItem[] = (
             ? p.images
             : [normalizePortfolioImagePath(p.image)];
     const images = paths.map((path) =>
-        getImgPath(normalizePortfolioImagePath(path))
+        getImgPath(
+            normalizePortfolioImagePath(path).replace(
+                /\.(png|jpe?g)$/i,
+                ".webp"
+            )
+        )
     );
     return {
         ...p,
