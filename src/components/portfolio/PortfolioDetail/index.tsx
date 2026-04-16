@@ -12,7 +12,7 @@ const PortfolioDetail: FC<PortfolioDetailProps> = ({ project }) => {
   const breadcrumbLinks = [
     { href: '/', text: 'Home' },
     { href: '/portfolio', text: 'Portfolio' },
-    { href: '#', text: project.title },
+    { href: `/portfolio/${project.slug}`, text: project.title },
   ]
 
   const paragraphs = project.description.split('\n\n').filter(Boolean)

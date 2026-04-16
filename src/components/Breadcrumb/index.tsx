@@ -6,9 +6,35 @@ interface BreadcrumbProps {
 }
 
 const Breadcrumb: FC<BreadcrumbProps> = ({ links }) => {
+  const siteUrl = "https://haizomstudios.com";
+
+  // `Rich Results Test` looks for `application/ld+json` breadcrumbs.
+  // We emit BreadcrumbList JSON-LD based on the same links rendered visually.
+  const breadcrumbItems = links
+    .filter((l) => l.href && l.href !== "#")
+    .map((link, index) => {
+      const href = link.href.startsWith("http")
+        ? link.href
+        : `${siteUrl}${link.href.startsWith("/") ? "" : "/"}${link.href}`;
+
+      return {
+        "@type": "ListItem",
+        position: index + 1,
+        name: link.text,
+        item: href,
+      };
+    });
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: breadcrumbItems,
+  };
+
   const lastIndex = links.length - 1
   return (
-    <div className='flex items-baseline flex-wrap justify-center my-[0.9375rem] mx-0'>
+    <>
+      <div className='flex items-baseline flex-wrap justify-center my-[0.9375rem] mx-0'>
       {links.map((link, index) => (
         <React.Fragment key={index}>
           {index !== lastIndex ? (
@@ -24,7 +50,16 @@ const Breadcrumb: FC<BreadcrumbProps> = ({ links }) => {
           )}
         </React.Fragment>
       ))}
-    </div>
+      </div>
+
+      {breadcrumbItems.length > 0 ? (
+        <script
+          type='application/ld+json'
+          // JSON-LD must be inline so the crawler sees it.
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        />
+      ) : null}
+    </>
   )
 }
 

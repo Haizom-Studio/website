@@ -12,7 +12,7 @@ const ServiceDetail: FC<ServiceDetailProps> = ({ service }) => {
   const breadcrumbLinks = [
     { href: '/', text: 'Home' },
     { href: '/services', text: 'Services' },
-    { href: '#', text: service.title },
+    { href: `/services/${service.slug}`, text: service.title },
   ]
 
   const paragraphs = service.fullDescription.split('\n\n').filter(Boolean)

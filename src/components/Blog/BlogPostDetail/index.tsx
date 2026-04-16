@@ -40,7 +40,7 @@ const BlogPostDetail: FC<BlogPostDetailProps> = ({
   const breadcrumbLinks = [
     { href: '/', text: 'Home' },
     { href: '/blog', text: 'Blog' },
-    { href: '#', text: title },
+    { href: `/blog/${slug}`, text: title },
   ]
 
   const authorName = author?.trim() || 'Author'
