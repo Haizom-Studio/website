@@ -74,7 +74,8 @@ const Hero = () => {
             alt='hero-image'
             width={1638}
             height={1713}
-            quality={100}
+            quality={85}
+            sizes='(max-width: 768px) 100vw, 50vw'
             style={{ width: '100%', height: 'auto' }}
           />
         </div>
