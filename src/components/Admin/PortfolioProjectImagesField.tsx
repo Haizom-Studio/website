@@ -23,6 +23,70 @@ function readFileAsDataUrl(file: File): Promise<string> {
   });
 }
 
+async function convertImageToWebp(
+  file: File,
+  { quality = 0.85, maxDim = 2000 }: { quality?: number; maxDim?: number } = {}
+): Promise<File> {
+  const bitmap =
+    typeof createImageBitmap === "function"
+      ? await createImageBitmap(file)
+      : null;
+
+  if (bitmap) {
+    const { width, height } = bitmap;
+    const scale = Math.min(1, maxDim / Math.max(width, height));
+    const outW = Math.max(1, Math.round(width * scale));
+    const outH = Math.max(1, Math.round(height * scale));
+
+    const canvas = document.createElement("canvas");
+    canvas.width = outW;
+    canvas.height = outH;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("Canvas not supported");
+    ctx.drawImage(bitmap, 0, 0, outW, outH);
+
+    const blob = await new Promise<Blob | null>((resolve) =>
+      canvas.toBlob((b) => resolve(b), "image/webp", quality)
+    );
+    if (!blob) throw new Error("Failed to convert image to WebP");
+    return new File([blob], file.name.replace(/\.[^.]+$/, ".webp"), {
+      type: "image/webp",
+    });
+  }
+
+  // Fallback path using an <img> element.
+  const dataUrl = await readFileAsDataUrl(file);
+  const img = new globalThis.Image();
+  img.decoding = "async";
+  img.src = dataUrl;
+
+  await new Promise<void>((resolve, reject) => {
+    img.onload = () => resolve();
+    img.onerror = () => reject(new Error("Failed to decode image"));
+  });
+
+  const width = img.naturalWidth || img.width;
+  const height = img.naturalHeight || img.height;
+  const scale = Math.min(1, maxDim / Math.max(width, height));
+  const outW = Math.max(1, Math.round(width * scale));
+  const outH = Math.max(1, Math.round(height * scale));
+
+  const canvas = document.createElement("canvas");
+  canvas.width = outW;
+  canvas.height = outH;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Canvas not supported");
+  ctx.drawImage(img, 0, 0, outW, outH);
+
+  const blob = await new Promise<Blob | null>((resolve) =>
+    canvas.toBlob((b) => resolve(b), "image/webp", quality)
+  );
+  if (!blob) throw new Error("Failed to convert image to WebP");
+  return new File([blob], file.name.replace(/\.[^.]+$/, ".webp"), {
+    type: "image/webp",
+  });
+}
+
 export default function PortfolioProjectImagesField({
   projectSlug,
   images,
@@ -50,7 +114,21 @@ export default function PortfolioProjectImagesField({
       try {
         const next = [...images];
         for (const file of list) {
-          const dataUrl = await readFileAsDataUrl(file);
+          // Ensure uploads always end up as `.webp` so the rendering layer
+          // (`src/app/api/data.tsx`) can reliably swap PNG/JPG -> WebP.
+          let uploadFile = file;
+          if (file.type !== "image/webp") {
+            try {
+              uploadFile = await convertImageToWebp(file);
+            } catch (e) {
+              toast.error(
+                e instanceof Error ? e.message : "Failed to convert image to WebP"
+              );
+              continue;
+            }
+          }
+
+          const dataUrl = await readFileAsDataUrl(uploadFile);
           const res = await fetch("/api/admin/portfolio/upload", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
