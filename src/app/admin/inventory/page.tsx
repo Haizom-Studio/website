@@ -619,7 +619,7 @@ export default function AdminInventoryPage() {
                         key={col}
                         className={`px-3 py-2 font-medium align-bottom ${
                           col === "name"
-                            ? "min-w-[14rem]"
+                            ? "min-w-[13.5rem]"
                             : col === "location"
                               ? "min-w-[10rem]"
                               : col === "notes"
