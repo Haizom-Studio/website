@@ -654,8 +654,17 @@ export default function AdminInventoryPage() {
                         {row.quantity}
                       </td>
                       <td className="px-3 py-2 text-grey">{row.location}</td>
-                      <td className="px-3 py-2 text-grey max-w-xs truncate">
-                        {row.notes}
+                      <td className="px-3 py-2 max-w-xs">
+                        <div
+                          className="text-grey text-xs leading-snug break-words"
+                          style={{
+                            display: "-webkit-box",
+                            WebkitLineClamp: 3,
+                            WebkitBoxOrient: "vertical",
+                            overflow: "hidden",
+                          }}>
+                          {row.notes}
+                        </div>
                       </td>
                       <td className="px-3 py-2">
                         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
