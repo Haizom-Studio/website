@@ -6,18 +6,16 @@ import {
   parseGithubRepo,
 } from "@/lib/github";
 import { assertSafePortfolioSlug } from "@/lib/portfolio-store";
+import sharp from "sharp";
 
-export const runtime = "edge";
+// `sharp` needs Node.js runtime (not Edge).
+export const runtime = "nodejs";
 
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
 
 function base64ToUint8Array(b64: string): Uint8Array {
-  const binary = atob(b64);
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) {
-    bytes[i] = binary.charCodeAt(i);
-  }
-  return bytes;
+  // Node runtime: avoid `atob` and decode via Buffer.
+  return new Uint8Array(Buffer.from(b64, "base64"));
 }
 
 function parseDataUrl(dataUrl: string): { mime: string; bytes: Uint8Array } {
@@ -127,6 +125,58 @@ export async function POST(req: Request) {
       {
         error:
           e instanceof Error ? e.message : "GitHub image upload failed",
+      },
+      { status: 502 }
+    );
+  }
+
+  // For PNG/JPG uploads we also generate WebP (used by `src/app/api/data.tsx`)
+  // and AVIF for additional modern-format support.
+  //
+  // Note: we keep the original file in the repo, but the site will prefer `.webp`.
+  try {
+    const wantsWebp = ext === "png" || ext === "jpg";
+    const wantsAvif = wantsWebp || ext === "webp";
+
+    if (wantsWebp) {
+      const webpBytes = await sharp(parsed.bytes)
+        .webp({ quality: 85 })
+        .toBuffer();
+      await githubPutFile({
+        owner,
+        repo,
+        path: `${GITHUB_PORTFOLIO_UPLOADS_PREFIX}/${projectSlug}/${id}.webp`,
+        contentBytes: new Uint8Array(webpBytes),
+        message: `chore(portfolio): webp for ${projectSlug}`,
+        branch,
+        token: githubToken,
+      });
+    }
+
+    if (wantsAvif) {
+      const avifBytes = await sharp(parsed.bytes)
+        .avif({ quality: 55 })
+        .toBuffer();
+      await githubPutFile({
+        owner,
+        repo,
+        path: `${GITHUB_PORTFOLIO_UPLOADS_PREFIX}/${projectSlug}/${id}.avif`,
+        contentBytes: new Uint8Array(avifBytes),
+        message: `chore(portfolio): avif for ${projectSlug}`,
+        branch,
+        token: githubToken,
+      });
+    }
+  } catch (e) {
+    // If we uploaded the original but failed to generate derivatives, the UI will
+    // still reference the `.webp` variant (via `src/app/api/data.tsx`), which
+    // would lead to broken images. Fail fast so the admin can retry.
+    return NextResponse.json(
+      {
+        error:
+          e instanceof Error
+            ? e.message
+            : "Failed to generate portfolio image derivatives",
       },
       { status: 502 }
     );
