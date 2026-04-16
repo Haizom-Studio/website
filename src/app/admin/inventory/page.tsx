@@ -615,7 +615,11 @@ export default function AdminInventoryPage() {
                         ["notes", "Notes"],
                       ] as const
                     ).map(([col, label]) => (
-                      <th key={col} className="px-3 py-2 font-medium align-bottom">
+                      <th
+                        key={col}
+                        className={`px-3 py-2 font-medium align-bottom ${
+                          col === "notes" ? "min-w-[26rem]" : ""
+                        }`}>
                         <button
                           type="button"
                           onClick={() => handleSortHeader(col)}
@@ -653,13 +657,15 @@ export default function AdminInventoryPage() {
                       <td className="px-3 py-2 text-midnight_text dark:text-white">
                         {row.quantity}
                       </td>
-                      <td className="px-3 py-2 text-grey">{row.location}</td>
-                      <td className="px-3 py-2 max-w-xs">
+                      <td className="px-3 py-2 text-grey text-xs">
+                        {row.location}
+                      </td>
+                      <td className="px-3 py-2 min-w-[26rem] max-w-md">
                         <div
                           className="text-grey text-xs leading-snug break-words"
                           style={{
                             display: "-webkit-box",
-                            WebkitLineClamp: 3,
+                            WebkitLineClamp: 4,
                             WebkitBoxOrient: "vertical",
                             overflow: "hidden",
                           }}>
