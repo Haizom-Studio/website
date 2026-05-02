@@ -1,6 +1,7 @@
 import React from "react";
 import Portfolio from "@/components/portfolio/PortfolioList";
 import HeroSub from "@/components/SharedComponent/HeroSub";
+import { portfolioinfo } from "@/app/api/data";
 import { Metadata } from "next";
 export const metadata: Metadata = {
     title: "Portfolio",
@@ -18,7 +19,7 @@ const PortfolioList = () => {
                 description="Dive into a curated collection of my finest work, showcasing expertise across various industries."
                 breadcrumbLinks={breadcrumbLinks}
             />
-            <Portfolio />
+            <Portfolio items={portfolioinfo} />
         </>
     );
 };
