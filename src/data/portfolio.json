@@ -111,5 +111,25 @@
       "Firmware Development",
       "App Development"
     ]
+  },
+  {
+    "image": "/images/portfolio/uploads/motor-controller-design/mp0zip0d-5xqj477.webp",
+    "images": [
+      "/images/portfolio/uploads/motor-controller-design/mp0zip0d-5xqj477.webp"
+    ],
+    "alt": "motor control design and power stage",
+    "title": "Motor Control and Power stage Design",
+    "slug": "motor-controller-design",
+    "info": "Power Electronics",
+    "Class": "md:mt-24",
+    "description": "A compact and efficient motor controller designed by Haizom Studios for smooth and reliable operation. Built to handle dynamic loads with precision, it delivers consistent performance while maintaining high efficiency.\n\nEngineered with intelligent control techniques, the system ensures accurate speed regulation and stable response under varying conditions. Every detail is optimized for performance, safety, and long-term reliability.\n\nFrom power handling to control logic, the design focuses on simplicity and effectiveness. The result is a controller that performs seamlessly across a wide range of applications.",
+    "deliverables": [
+      "Schematics Capture",
+      "PCB Design",
+      "Fabrication Files",
+      "Assembly Files",
+      "BOM Management",
+      "STEP Files"
+    ]
   }
 ]
