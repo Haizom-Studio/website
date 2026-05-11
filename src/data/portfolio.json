@@ -43,7 +43,7 @@
     "title": "Rocket Squared",
     "slug": "rocket-squared",
     "info": "SaaS marketing site",
-    "Class": "md:mt-24",
+    "Class": "md:mt-0",
     "description": "Rocket Squared wanted a confident SaaS presence that could grow with a fast-moving roadmap and shifting feature sets.\n\nWe designed modular sections for product storytelling, social proof, and pricing so marketing could ship updates without rebuilding pages.\n\nEngineering handoff included annotated flows and reusable UI blocks aligned with the existing stack.",
     "deliverables": [
       "UX patterns",
