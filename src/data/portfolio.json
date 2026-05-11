@@ -35,28 +35,6 @@
     ]
   },
   {
-    "image": "/images/portfolio/uploads/everyday-humans/mnhdj872-5n9q7os.jpg",
-    "images": [
-      "/images/portfolio/uploads/everyday-humans/mnhdj872-5n9q7os.jpg",
-      "/images/portfolio/uploads/everyday-humans/mnhdvndj-tn4xrkr.png",
-      "/images/portfolio/uploads/everyday-humans/mnhdlzab-qvls928.png"
-    ],
-    "alt": "High Efficiency Motor Controller",
-    "title": "Motor Control and Power stage Design",
-    "slug": "everyday-humans",
-    "info": "PCB Design and Prototyping",
-    "Class": "md:mt-0",
-    "description": "A compact and efficient motor controller designed by Haizom Studios for smooth and reliable operation. Built to handle dynamic loads with precision, it delivers consistent performance while maintaining high efficiency.\n\nEngineered with intelligent control techniques, the system ensures accurate speed regulation and stable response under varying conditions. Every detail is optimized for performance, safety, and long-term reliability.\n\nFrom power handling to control logic, the design focuses on simplicity and effectiveness. The result is a controller that performs seamlessly across a wide range of applications.",
-    "deliverables": [
-      "Schematics Capture",
-      "PCB Design",
-      "Fabrication Files",
-      "Assembly Files",
-      "BOM Management",
-      "STEP Files"
-    ]
-  },
-  {
     "image": "/images/portfolio/uploads/rocket-squared/mozoms90-qihamcg.webp",
     "images": [
       "/images/portfolio/uploads/rocket-squared/mozoms90-qihamcg.webp"
