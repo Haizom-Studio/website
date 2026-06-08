@@ -58,18 +58,24 @@
     "images": [
       "/images/portfolio/uploads/panda-logo/mozod9zl-ovkn83x.webp"
     ],
-    "alt": "Panda Logo project preview",
-    "title": "Panda Logo",
+    "alt": "Custom Raspberry Pi Zero 2 W handheld gaming console PCB featuring a TFT display, stereo audio subsystem, microphones, battery management, joystick controls, haptic feedback, and USB-C power delivery.",
+    "title": "Handheld Gaming Console Based on Raspberry Pi Zero 2W",
     "slug": "panda-logo",
-    "info": "Identity & marks",
+    "info": "Portable Raspberry Pi gaming platform with audio, display, battery management, and haptic feedback.",
     "Class": "md:mt-24",
-    "description": "This engagement centred on a memorable mark that could work across digital, print, and small favicon sizes.\n\nWe explored geometry, negative space, and character before locking a system of primary, secondary, and wordmark lockups.\n\nGuidelines cover clear space, colour usage, and misuse cases so partners stay on brand.\n\nhello hi bye byehello hi bye byehello hi bye byehello hi bye byehello hi bye byehello hi bye byehello hi bye byehello hi bye byehello hi bye byehello hi by\n\nhello hellohello hellohello hellohello hellohello hellohello hellohello hellohello hellohello hellohello hellohello hellohello hello",
+    "description": "Designed a custom handheld gaming console based on the Raspberry Pi Zero 2 W, integrating audio, display, power management, user input, and haptic feedback into a compact battery-powered platform. The project involved complete hardware design from schematic capture through PCB layout, prototype validation, and production-ready manufacturing deliverables.\n\nThe system features a complete digital audio subsystem built around the WM8960 audio codec connected to the Raspberry Pi via the I2S interface. Dual MEMS microphones enable audio capture, while stereo Class-D amplifiers drive external speakers to provide high-quality audio playback. Careful consideration was given to audio signal integrity, grounding, and mixed-signal PCB layout to ensure reliable performance.\n\nUser interaction is provided through an analog joystick, multiple debounced push buttons, and a haptic feedback motor driven by an H-bridge circuit, creating an engaging handheld gaming experience. A WS2812B RGB LED provides visual system status indication and user feedback.\n\nThe graphical interface is displayed on a 3.5-inch TFT screen driven by the ILI9486 display controller over an SPI interface. The display subsystem was integrated alongside the audio, power, and user-input circuitry while maintaining a compact board footprint suitable for a portable device.\n\nA key aspect of the design was the power architecture. The device operates from a rechargeable lithium-ion battery and incorporates a dedicated charging circuit, battery fuel gauging, and intelligent power-path management. A MAX17048 fuel gauge communicates with the Raspberry Pi over I2C, providing accurate battery state-of-charge information for monitoring and user feedback. The power-path circuitry was designed to allow seamless operation from either the battery or a USB-C power source, enabling uninterrupted use while charging. A high-efficiency TPS61088 boost converter generates stable system power rails for the Raspberry Pi and peripheral devices across the full battery operating range.\n\nBeyond hardware design, complete manufacturing documentation was prepared, including fabrication files, assembly documentation, and bill of materials. Prototype boards were fabricated and assembled in-house for hardware bring-up, debugging, validation, and design verification before the final production package was delivered to the client.",
     "deliverables": [
-      "Logo exploration",
-      "Final mark & wordmark",
-      "Colour system",
-      "Brand guidelines",
-      "Asset export kit"
+      "Multi-layer PCB layout and routing",
+      "Complete schematic design",
+      "Audio codec and amplifier integration",
+      "MEMS microphone integration",
+      "TFT display interface design",
+      "Battery charging and fuel gauge implementation",
+      "USB-C power-path management design",
+      "Joystick and button interface circuitry",
+      "Manufacturing-ready Gerber files",
+      "Prototype fabrication and assembly",
+      "Hardware bring-up, debugging, and validation testing"
     ]
   },
   {
