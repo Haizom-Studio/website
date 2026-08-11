@@ -115,25 +115,5 @@
       "BOM Management",
       "STEP Files"
     ]
-  },
-  {
-    "image": "/images/portfolio/uploads/abc/mp71kcgk-o6cuhsv.webp",
-    "images": [
-      "/images/portfolio/uploads/abc/mp71kcgk-o6cuhsv.webp"
-    ],
-    "alt": "Clock",
-    "title": "Abc",
-    "slug": "abc",
-    "info": "Clock",
-    "Class": "md:mt-0",
-    "description": "Clock test\nClock test\nClock test",
-    "deliverables": [
-      "A",
-      "B",
-      "C",
-      "D",
-      "E",
-      "F"
-    ]
   }
 ]
