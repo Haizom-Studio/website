@@ -249,7 +249,7 @@
     "title": "ESP32-S3 Camera & Audio Board",
     "slug": "esp32-s3-camera-audio-board",
     "info": "Internet of Things (IoT)",
-    "Class": "md:mt-24",
+    "Class": "md:mt-0",
     "description": "A connected vision and voice board designed by Haizom Studios around the ESP32-S3. It captures images and audio, stores them locally and streams over Wi-Fi.\n\nAn ESP32-S3-WROOM-2 module provides dual-core processing and Wi-Fi/Bluetooth. A camera connector, microphone and speaker output turn it into a complete capture-and-playback platform, with a microSD slot for local storage.\n\nGPIO and I²C expanders free up pins for sensors and user controls, and an on-board USB-to-UART bridge makes programming simple. The 4-layer layout keeps the camera and audio paths away from the RF section and switching supplies for reliable wireless range.",
     "deliverables": [
       "Schematics Capture",
