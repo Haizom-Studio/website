@@ -23,6 +23,27 @@ function readFileAsDataUrl(file: File): Promise<string> {
   });
 }
 
+/** Files larger than this are re-encoded even if they are already WebP. */
+const MAX_PASSTHROUGH_WEBP_BYTES = 500 * 1024;
+
+/**
+ * True only when the file's bytes are a real WebP ("RIFF....WEBP").
+ * `file.type` comes from the file extension, so a PNG renamed to `.webp`
+ * reports "image/webp" and must not be trusted on its own.
+ */
+async function isGenuineSmallWebp(file: File): Promise<boolean> {
+  if (file.type !== "image/webp") return false;
+  if (file.size > MAX_PASSTHROUGH_WEBP_BYTES) return false;
+  try {
+    const head = new Uint8Array(await file.slice(0, 12).arrayBuffer());
+    const riff = String.fromCharCode(head[0]!, head[1]!, head[2]!, head[3]!);
+    const webp = String.fromCharCode(head[8]!, head[9]!, head[10]!, head[11]!);
+    return riff === "RIFF" && webp === "WEBP";
+  } catch {
+    return false;
+  }
+}
+
 async function convertImageToWebp(
   file: File,
   { quality = 0.85, maxDim = 2000 }: { quality?: number; maxDim?: number } = {}
@@ -117,7 +138,7 @@ export default function PortfolioProjectImagesField({
           // Ensure uploads always end up as `.webp` so the rendering layer
           // (`src/app/api/data.tsx`) can reliably swap PNG/JPG -> WebP.
           let uploadFile = file;
-          if (file.type !== "image/webp") {
+          if (!(await isGenuineSmallWebp(file))) {
             try {
               uploadFile = await convertImageToWebp(file);
             } catch (e) {
