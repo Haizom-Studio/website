@@ -135,5 +135,26 @@
       "BOM Management",
       "Fabrication Files"
     ]
+  },
+  {
+    "image": "/images/portfolio/uploads/industrial-control-system/mw0md2l8-4wny09x.webp",
+    "images": [
+      "/images/portfolio/uploads/industrial-control-system/mw0md2l8-4wny09x.webp"
+    ],
+    "alt": "industrial control PCB with AC-DC supply and Teensy 4.1",
+    "title": "Industrial Thermal Control System",
+    "slug": "industrial-control-system",
+    "info": "Industrial Electronics",
+    "Class": "md:mt-24",
+    "description": "An industrial control and monitoring board designed by Haizom Studios. It runs directly from mains power and brings temperature sensing, networking and field wiring onto one robust 4-layer board.\n\nAn encapsulated AC-DC module generates the 12 V rail, followed by dedicated 5 V and 3.3 V stages, with clear isolation spacing between the mains section and the low-voltage logic. Pluggable terminal blocks make field wiring fast and serviceable.\n\nA Teensy 4.1 handles control and logging, with thermocouple inputs for high-temperature measurement, ambient sensing, a CAN bus interface and Ethernet. The design went through three hardware revisions, refining connector placement, power distribution and networking along the way.",
+    "deliverables": [
+      "Schematics Capture",
+      "4-Layer PCB Design",
+      "Mains Power Design",
+      "Design Revisions",
+      "BOM Management",
+      "Fabrication Files",
+      "Assembly Files"
+    ]
   }
 ]
