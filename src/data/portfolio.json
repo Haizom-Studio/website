@@ -470,5 +470,26 @@
       "BOM Management",
       "Fabrication Files"
     ]
+  },
+  {
+    "image": "/images/portfolio/uploads/industrial-serial-gateway/mw0uh0l0-k1o768s.webp",
+    "images": [
+      "/images/portfolio/uploads/industrial-serial-gateway/mw0uh0l0-k1o768s.webp",
+      "/images/portfolio/uploads/industrial-serial-gateway/mw0uhbqz-6lmj00b.webp"
+    ],
+    "alt": "industrial serial gateway PCB with RS-485 and ESP32",
+    "title": "Industrial Serial Gateway",
+    "slug": "industrial-serial-gateway",
+    "info": "Industrial Electronics",
+    "Class": "md:mt-24",
+    "description": "A multi-port industrial serial gateway designed by Haizom Studios. It connects several serial devices and RS-485 field equipment to a network over Wi-Fi.\n\nA MAX14830 quad UART expands the ESP32 to four extra hardware serial ports, and a MAX13485 transceiver provides a robust RS-485 interface for long cable runs. Screw terminals make field wiring simple.\n\nA 5 A TPS5450 buck converter powers the board from an industrial supply, followed by a 3.3 V regulator for the logic. The compact 63 × 73 mm layout keeps the serial lines clean and the power stage separated.",
+    "deliverables": [
+      "Schematics Capture",
+      "PCB Design",
+      "Industrial Interfaces",
+      "Power Design",
+      "BOM Management",
+      "Fabrication Files"
+    ]
   }
 ]
