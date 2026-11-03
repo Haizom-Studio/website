@@ -385,5 +385,26 @@
       "BOM Management",
       "Fabrication Files"
     ]
+  },
+  {
+    "image": "/images/portfolio/uploads/wearable-ecg-monitor/mw0u0ix3-xsv09zt.webp",
+    "images": [
+      "/images/portfolio/uploads/wearable-ecg-monitor/mw0u0ix3-xsv09zt.webp",
+      "/images/portfolio/uploads/wearable-ecg-monitor/mw0u0ttj-p5kfeks.webp"
+    ],
+    "alt": "round wearable ECG monitor PCB with ESP32",
+    "title": "Wearable ECG Monitor",
+    "slug": "wearable-ecg-monitor",
+    "info": "Medical & Wearables",
+    "Class": "md:mt-24",
+    "description": "A round, battery-powered ECG monitor designed by Haizom Studios for wearable heart-rate and rhythm tracking. The 60 mm circular board fits a compact wearable enclosure.\n\nAn AD8232 front-end amplifies and filters the tiny ECG signal from the electrodes, and an ESP32 digitises it and streams the data over Wi-Fi or Bluetooth. A USB-to-UART bridge makes development and firmware updates simple.\n\nA lithium charger with protection and a low-dropout regulator power the board from a small battery. The layout keeps the sensitive analog input away from the wireless and switching circuits for a clean signal.",
+    "deliverables": [
+      "Schematics Capture",
+      "PCB Design",
+      "Analog Front-End Design",
+      "Battery Management",
+      "BOM Management",
+      "Fabrication Files"
+    ]
   }
 ]
