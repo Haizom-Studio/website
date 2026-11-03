@@ -512,5 +512,25 @@
       "BOM Management",
       "Fabrication Files"
     ]
+  },
+  {
+    "image": "/images/portfolio/uploads/high-density-led-bar-display/mw0uorxn-7h6bo0k.webp",
+    "images": [
+      "/images/portfolio/uploads/high-density-led-bar-display/mw0uorxn-7h6bo0k.webp",
+      "/images/portfolio/uploads/high-density-led-bar-display/mw0uo98x-9h47eai.webp"
+    ],
+    "alt": "long narrow PCB lined with a dense grid of LEDs",
+    "title": "High-Density LED Bar Display",
+    "slug": "high-density-led-bar-display",
+    "info": "Consumer Electronics",
+    "Class": "md:mt-0",
+    "description": "A long, slim LED bar designed by Haizom Studios for a custom display and lighting product. The 216 × 31 mm board carries a dense, evenly spaced grid of LEDs along its full length.\n\nMore than 330 components were placed on a tight, regular pitch so the bar lights up as one smooth, uniform strip with no dark spots.\n\nPower and data are routed along the narrow board with nearly 500 vias, keeping the supply even from one end of the bar to the other.",
+    "deliverables": [
+      "Schematics Capture",
+      "PCB Design",
+      "LED Layout",
+      "BOM Management",
+      "Fabrication Files"
+    ]
   }
 ]
