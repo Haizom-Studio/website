@@ -228,7 +228,7 @@
     "title": "Power Conversion & Monitoring Module",
     "slug": "power-conversion-monitoring-module",
     "info": "Power Electronics",
-    "Class": "md:mt-0",
+    "Class": "md:mt-24",
     "description": "A power conversion and monitoring module designed by Haizom Studios. It converts, monitors and reports power for the system it sits in, all on one compact board.\n\nAn LM61495 synchronous buck converter steps the input down efficiently, while a TPS61088 boost converter generates a higher rail from the same source. Both stages were laid out for high current with short, wide switching loops.\n\nAn INA260 precision power monitor measures current, voltage and power over I²C, and an AHT20 tracks board temperature and humidity. The 83 × 38 mm, 4-layer board uses a custom outline with integrated mounting tabs, designed to fit its enclosure exactly.",
     "deliverables": [
       "Schematics Capture",
