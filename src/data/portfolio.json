@@ -491,5 +491,26 @@
       "BOM Management",
       "Fabrication Files"
     ]
+  },
+  {
+    "image": "/images/portfolio/uploads/isolated-multi-channel-h-bridge-controller/mw0ulgjq-0b76kgd.webp",
+    "images": [
+      "/images/portfolio/uploads/isolated-multi-channel-h-bridge-controller/mw0ulgjq-0b76kgd.webp",
+      "/images/portfolio/uploads/isolated-multi-channel-h-bridge-controller/mw0ukyxr-uf0tshh.webp"
+    ],
+    "alt": "Teensy 4.1 controller PCB with three H-bridge power stages",
+    "title": "Isolated Multi-Channel H-Bridge Controller",
+    "slug": "isolated-multi-channel-h-bridge-controller",
+    "info": "Power Electronics",
+    "Class": "md:mt-0",
+    "description": "A multi-channel actuator controller designed by Haizom Studios. It drives three independent H-bridge outputs from a single Teensy 4.1 and measures feedback across an isolation barrier.\n\nIR2104 half-bridge gate drivers switch the power MOSFETs of each H-bridge. HCNR200 high-linearity analog optocouplers carry measurement signals safely back from the high-side to the controller.\n\nA TPS54260 buck converter and a 12 V linear regulator supply the gate drivers and logic. The 80 × 130 mm layout keeps the high-current bridge outputs separated from the control and isolated feedback circuits.",
+    "deliverables": [
+      "Schematics Capture",
+      "PCB Design",
+      "Motor Drive Design",
+      "Isolated Feedback Design",
+      "BOM Management",
+      "Fabrication Files"
+    ]
   }
 ]
