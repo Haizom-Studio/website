@@ -156,5 +156,27 @@
       "Fabrication Files",
       "Assembly Files"
     ]
+  },
+  {
+    "image": "/images/portfolio/uploads/offline-ac-front-end-with-power-factor-correction/mw0mf8s4-q95z12g.webp",
+    "images": [
+      "/images/portfolio/uploads/offline-ac-front-end-with-power-factor-correction/mw0mf8s4-q95z12g.webp"
+    ],
+    "alt": "industrial PFC power board with AIF06ZPFC module, EMI filter and bulk capacitors",
+    "title": "Industrial PFC Power Board (AIF06ZPFC Carrier)",
+    "slug": "industrial-pfc-power-board-aif06zpfc-carrier",
+    "info": "Industrial Power Electronics",
+    "Class": "md:mt-0",
+    "description": "An industrial power board designed by Haizom Studios to host the Advanced Energy AIF06ZPFC, a high-efficiency full-brick power factor correction module rated up to 2.4 kW. The board turns the module into a complete, ready-to-install AC front-end that delivers a regulated 400 VDC bus from a universal mains input.\n\nEverything the module needs around it is integrated on one 4-layer PCB: the input EMI filter, NTC inrush limiting, bulk capacitance, and a bleeder network that safely discharges the high-voltage bus at power-down. An offline buck converter and low-noise 3.3 V LDOs generate the auxiliary supply for the control electronics.\n\nThe module's PMBus interface is brought out through an isolated I²C link, so a host system can read status, voltages and faults safely across the isolation barrier. Wide copper pours and over 1,800 stitching vias handle the current and spread heat, with creepage and clearance planned for mains and 400 V spacing. A separate test board was built to validate each stage before integration.",
+    "deliverables": [
+      "Schematics Capture",
+      "4-Layer PCB Design",
+      "EMI Filter Design",
+      "Mains Safety & Isolation",
+      "Thermal Design",
+      "Test Board Design",
+      "BOM Management",
+      "Fabrication Files"
+    ]
   }
 ]
