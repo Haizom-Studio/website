@@ -406,5 +406,26 @@
       "BOM Management",
       "Fabrication Files"
     ]
+  },
+  {
+    "image": "/images/portfolio/uploads/pulse-oximeter-wearable/mw0u58as-qljnhnq.webp",
+    "images": [
+      "/images/portfolio/uploads/pulse-oximeter-wearable/mw0u58as-qljnhnq.webp",
+      "/images/portfolio/uploads/pulse-oximeter-wearable/mw0u4rif-ujq7kwq.webp"
+    ],
+    "alt": "tiny round 4-layer pulse oximeter PCB",
+    "title": "Pulse Oximeter Wearable",
+    "slug": "pulse-oximeter-wearable",
+    "info": "Medical & Wearables",
+    "Class": "md:mt-0",
+    "description": "A tiny wearable pulse oximeter designed by Haizom Studios. The round 32 mm, 4-layer board measures heart rate and blood-oxygen saturation and sends the readings wirelessly.\n\nA MAX30102 optical sensor measures heart rate and SpO₂, and a 2.4 GHz wireless module transmits the results to a phone or hub. Dual low-noise regulators provide separate clean 3.3 V and 1.8 V rails for the sensor.\n\nA protected lithium charger powers the device from a small battery. Fitting all of this into a 32 mm circle took a dense 4-layer layout with careful placement around the optical sensor.",
+    "deliverables": [
+      "Schematics Capture",
+      "4-Layer PCB Design",
+      "Sensor Integration",
+      "Battery Management",
+      "BOM Management",
+      "Fabrication Files"
+    ]
   }
 ]
