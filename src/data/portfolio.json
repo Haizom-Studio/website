@@ -427,5 +427,26 @@
       "BOM Management",
       "Fabrication Files"
     ]
+  },
+  {
+    "image": "/images/portfolio/uploads/wi-fi-audio-amplifier/mw0u8dra-az6ip95.webp",
+    "images": [
+      "/images/portfolio/uploads/wi-fi-audio-amplifier/mw0u8dra-az6ip95.webp",
+      "/images/portfolio/uploads/wi-fi-audio-amplifier/mw0u7oz8-v2gq0s0.webp"
+    ],
+    "alt": "ESP32 stereo class-D audio amplifier PCB with speaker terminals",
+    "title": "Wi-Fi Class-D Audio Amplifier",
+    "slug": "wi-fi-audio-amplifier",
+    "info": "Audio Electronics",
+    "Class": "md:mt-24",
+    "description": "A wireless stereo audio amplifier designed by Haizom Studios. It streams audio over Wi-Fi or Bluetooth and drives a pair of passive speakers directly.\n\nAn ESP32-WROVER module receives the audio stream and sends it digitally to a TAS5756M stereo class-D amplifier with built-in DSP for equalisation and volume control. LC output filters and screw terminals connect the speakers.\n\nA synchronous buck converter derives the logic supply from the amplifier's main power input. The layout uses wide copper and over 260 vias for clean power delivery and low-noise audio.",
+    "deliverables": [
+      "Schematics Capture",
+      "PCB Design",
+      "Audio Amplifier Design",
+      "Power Design",
+      "BOM Management",
+      "Fabrication Files"
+    ]
   }
 ]
