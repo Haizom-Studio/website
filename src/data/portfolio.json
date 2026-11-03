@@ -39,18 +39,20 @@
     "images": [
       "/images/portfolio/uploads/rocket-squared/mozoms90-qihamcg.webp"
     ],
-    "alt": "Rocket Squared project preview",
-    "title": "Rocket Squared",
+    "alt": "octagonal LED matrix PCB shown front and back, with microcontroller, USB-C charging and battery connector",
+    "title": "Battery-Powered Octagonal LED Matrix",
     "slug": "rocket-squared",
-    "info": "SaaS marketing site",
+    "info": "Consumer Electronics",
     "Class": "md:mt-0",
-    "description": "Rocket Squared wanted a confident SaaS presence that could grow with a fast-moving roadmap and shifting feature sets.\n\nWe designed modular sections for product storytelling, social proof, and pricing so marketing could ship updates without rebuilding pages.\n\nEngineering handoff included annotated flows and reusable UI blocks aligned with the existing stack.",
+    "description": "A portable, battery-powered LED display designed by Haizom Studios. The custom octagonal PCB carries a dense matrix of more than 200 LEDs on the front, with all the control, charging and power electronics hidden on the back.\n\nA microcontroller with its own crystal drives the matrix, and an ICSP header allows in-circuit programming and firmware updates in production. A USB-C port charges the on-board lithium battery through a dedicated charger IC with a charge indicator, and a slide switch handles power.\n\nAn inductor-based switching converter generates a stable supply for the LEDs from the battery as it discharges, keeping brightness consistent. The layout routes every LED around the octagonal outline at an even pitch, so the display reads as one clean, uniform surface when lit.",
     "deliverables": [
-      "UX patterns",
-      "Marketing pages",
-      "Pricing & compare",
-      "Illustration direction",
-      "Design QA"
+      "Schematics Capture",
+      "PCB Design",
+      "Custom Board Outline",
+      "LED Matrix Layout",
+      "Battery Charging & Power Design",
+      "BOM Management",
+      "Fabrication Files"
     ]
   },
   {
