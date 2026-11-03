@@ -448,5 +448,26 @@
       "BOM Management",
       "Fabrication Files"
     ]
+  },
+  {
+    "image": "/images/portfolio/uploads/qi-wireless-charging-board/mw0uba3y-tum7oz9.webp",
+    "images": [
+      "/images/portfolio/uploads/qi-wireless-charging-board/mw0uba3y-tum7oz9.webp",
+      "/images/portfolio/uploads/qi-wireless-charging-board/mw0uc8x0-frb8kfm.webp"
+    ],
+    "alt": "custom-shaped PCB with Qi wireless power receiver and ESP32-C3",
+    "title": "Qi Wireless-Charging ESP32-C3 Board",
+    "slug": "qi-wireless-charging-board",
+    "info": "Consumer Electronics",
+    "Class": "md:mt-24",
+    "description": "A wirelessly powered smart board designed by Haizom Studios. It charges from any standard Qi charging pad, so the finished product needs no exposed connector.\n\nAn STWLC68 Qi wireless power receiver converts energy from the charging coil into a regulated supply, and an ESP32-C3 module adds Wi-Fi and Bluetooth Low Energy. A low-dropout regulator powers the logic.\n\nThe custom angled outline was shaped to fit the product's enclosure, with the receiver circuitry placed for efficient power transfer from the coil.",
+    "deliverables": [
+      "Schematics Capture",
+      "PCB Design",
+      "Wireless Power Design",
+      "Custom Board Outline",
+      "BOM Management",
+      "Fabrication Files"
+    ]
   }
 ]
