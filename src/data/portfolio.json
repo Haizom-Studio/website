@@ -270,7 +270,7 @@
     "title": "4G LTE Cellular IoT Controller",
     "slug": "4g-lte-cellular-iot-controller",
     "info": "Internet of Things (IoT)",
-    "Class": "md:mt-0",
+    "Class": "md:mt-24",
     "description": "A mains-powered cellular IoT controller designed by Haizom Studios for remote monitoring and switching where Wi-Fi isn't available. It combines an ESP32 with a 4G LTE modem and on-board relays on a single 4-layer board.\n\nAn ESP32-WROVER module with 16 MB flash runs the application, and a SIM7600E LTE modem provides the cellular link. Level shifters bridge the logic between the two. An integrated AC-DC module powers the board directly from mains, with a lithium battery and protected charging circuit as backup.\n\nA buck-boost regulator keeps the supply stable across battery and mains operation, and the relay outputs switch external loads. The 111 × 89 mm layout separates the mains, relay and RF sections, with a USB-to-UART bridge for programming.",
     "deliverables": [
       "Schematics Capture",
