@@ -291,7 +291,7 @@
     "title": "High-Voltage Precharge Controller",
     "slug": "high-voltage-precharge-controller",
     "info": "Power Electronics",
-    "Class": "md:mt-24",
+    "Class": "md:mt-0",
     "description": "A precharge controller designed by Haizom Studios for 45–60 V DC power systems. It charges the bulk capacitance of the downstream system in a controlled way, preventing the large inrush current that would otherwise damage connectors and contactors.\n\nAn LTC7001 high-side MOSFET driver and a UCC27517 gate driver switch the power stage, while precision comparators and a 2.5 V voltage reference monitor the bus and decide when precharge is complete. A buck power module generates the on-board logic supply from the high-voltage input.\n\nThe compact 70 × 46 mm, 4-layer layout uses heavy copper and over 800 vias to carry current and spread heat, with clearances planned for the high-voltage nets.",
     "deliverables": [
       "Schematics Capture",
