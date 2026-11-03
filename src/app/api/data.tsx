@@ -207,10 +207,10 @@ export const portfolioinfo: PortfolioItem[] = (
             : [normalizePortfolioImagePath(p.image)];
     const images = paths.map((path) =>
         getImgPath(
-            normalizePortfolioImagePath(path).replace(
-                /\.(png|jpe?g)$/i,
-                ".webp"
-            )
+            // Legacy: older entries reference `.png` files that have a
+            // `.webp` copy next to them. JPEG uploads (Safari fallback)
+            // have no WebP copy, so `.jpg` paths are left unchanged.
+            normalizePortfolioImagePath(path).replace(/\.png$/i, ".webp")
         )
     );
     return {

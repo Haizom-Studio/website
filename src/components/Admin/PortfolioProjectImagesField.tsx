@@ -56,6 +56,54 @@ async function isGenuineSmallWebp(file: File): Promise<boolean> {
   }
 }
 
+/** True if any pixel is not fully opaque (sampled every 4th pixel). */
+function hasTransparency(
+  ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number
+): boolean {
+  const data = ctx.getImageData(0, 0, width, height).data;
+  for (let i = 3; i < data.length; i += 16) {
+    if (data[i]! < 255) return true;
+  }
+  return false;
+}
+
+/**
+ * Encodes the canvas for upload. Prefers WebP. Safari cannot encode WebP
+ * from a canvas and silently returns a PNG instead (2–3 MB per image), so
+ * when that happens opaque images are saved as JPEG (~10x smaller).
+ * Transparent images keep the previous behaviour (PNG bytes, `.webp` name)
+ * so their transparency is preserved.
+ */
+async function canvasToUploadFile(
+  canvas: HTMLCanvasElement,
+  ctx: CanvasRenderingContext2D,
+  originalName: string,
+  quality: number
+): Promise<File> {
+  const toBlob = (type: string, q?: number) =>
+    new Promise<Blob | null>((resolve) =>
+      canvas.toBlob((b) => resolve(b), type, q)
+    );
+  const base = originalName.replace(/\.[^.]+$/, "") || "image";
+
+  const webp = await toBlob("image/webp", quality);
+  if (webp && webp.type === "image/webp") {
+    return new File([webp], `${base}.webp`, { type: "image/webp" });
+  }
+
+  if (!hasTransparency(ctx, canvas.width, canvas.height)) {
+    const jpeg = await toBlob("image/jpeg", quality);
+    if (jpeg && jpeg.type === "image/jpeg") {
+      return new File([jpeg], `${base}.jpg`, { type: "image/jpeg" });
+    }
+  }
+
+  if (!webp) throw new Error("Failed to convert image");
+  return new File([webp], `${base}.webp`, { type: "image/webp" });
+}
+
 async function convertImageToWebp(
   file: File,
   { quality = 0.85, maxDim = 2000 }: { quality?: number; maxDim?: number } = {}
@@ -78,13 +126,7 @@ async function convertImageToWebp(
     if (!ctx) throw new Error("Canvas not supported");
     ctx.drawImage(bitmap, 0, 0, outW, outH);
 
-    const blob = await new Promise<Blob | null>((resolve) =>
-      canvas.toBlob((b) => resolve(b), "image/webp", quality)
-    );
-    if (!blob) throw new Error("Failed to convert image to WebP");
-    return new File([blob], file.name.replace(/\.[^.]+$/, ".webp"), {
-      type: "image/webp",
-    });
+    return canvasToUploadFile(canvas, ctx, file.name, quality);
   }
 
   // Fallback path using an <img> element.
@@ -111,13 +153,7 @@ async function convertImageToWebp(
   if (!ctx) throw new Error("Canvas not supported");
   ctx.drawImage(img, 0, 0, outW, outH);
 
-  const blob = await new Promise<Blob | null>((resolve) =>
-    canvas.toBlob((b) => resolve(b), "image/webp", quality)
-  );
-  if (!blob) throw new Error("Failed to convert image to WebP");
-  return new File([blob], file.name.replace(/\.[^.]+$/, ".webp"), {
-    type: "image/webp",
-  });
+  return canvasToUploadFile(canvas, ctx, file.name, quality);
 }
 
 export default function PortfolioProjectImagesField({
@@ -147,8 +183,8 @@ export default function PortfolioProjectImagesField({
       try {
         const next = [...images];
         for (const file of list) {
-          // Ensure uploads always end up as `.webp` so the rendering layer
-          // (`src/app/api/data.tsx`) can reliably swap PNG/JPG -> WebP.
+          // Re-encode to WebP (or JPEG in browsers that cannot encode WebP,
+          // e.g. Safari) so uploads stay small.
           let uploadFile = file;
           if (!(await isGenuineSmallWebp(file))) {
             try {
