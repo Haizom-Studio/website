@@ -188,7 +188,7 @@
     "title": "Robotics Motor Control Board",
     "slug": "robotics-motor-control-board",
     "info": "Robotics",
-    "Class": "md:mt-0",
+    "Class": "md:mt-24",
     "description": "A compact motion-control board designed by Haizom Studios for a robotic platform. It drives the actuators, reads position sensors and talks to the main computer over USB-C.\n\nA Teensy 4.1 runs the real-time control loop. The board provides a half-duplex Dynamixel bus for smart servos, a dedicated motor driver stage for DC motors, and Hall-effect sensor inputs with status LEDs for position and homing.\n\nA 12 V boost converter supplies the actuators from a lower battery voltage, while a temperature sensor monitors the board under load. The 81 × 47 mm, 4-layer layout separates high-current motor paths from sensitive sensor lines, keeping the control loop clean.",
     "deliverables": [
       "Schematics Capture",
