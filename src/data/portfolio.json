@@ -322,5 +322,26 @@
       "BOM Management",
       "Fabrication Files"
     ]
+  },
+  {
+    "image": "/images/portfolio/uploads/esp32-s3-handheld-display-device/mw0td18w-038jj3m.webp",
+    "images": [
+      "/images/portfolio/uploads/esp32-s3-handheld-display-device/mw0td18w-038jj3m.webp",
+      "/images/portfolio/uploads/esp32-s3-handheld-display-device/mw0t75et-b5g3pj4.webp"
+    ],
+    "alt": "narrow 4-layer ESP32-S3 handheld device PCB with display connector",
+    "title": "ESP32-S3 Handheld Display Device",
+    "slug": "esp32-s3-handheld-display-device",
+    "info": "Consumer Electronics",
+    "Class": "md:mt-0",
+    "description": "A battery-powered handheld device designed by Haizom Studios around the ESP32-S3. The narrow 52 × 126 mm board fits inside a slim handheld enclosure and drives a colour TFT display.\n\nAn ESP32-S3 module with 16 MB flash and an external antenna connector provides processing and wireless connectivity. A display header connects an ILI9341 TFT screen, and an I/O expander adds extra buttons and controls.\n\nAn IP5306 power-management chip charges the lithium battery and boosts it to a stable 5 V rail, with a USB-to-UART bridge for programming. The 4-layer layout keeps the long, narrow board rigid and the RF section clean.",
+    "deliverables": [
+      "Schematics Capture",
+      "4-Layer PCB Design",
+      "Battery Charging & Power Design",
+      "Display Interface",
+      "BOM Management",
+      "Fabrication Files"
+    ]
   }
 ]
