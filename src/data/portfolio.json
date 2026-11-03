@@ -115,5 +115,25 @@
       "BOM Management",
       "STEP Files"
     ]
+  },
+  {
+    "image": "/images/portfolio/uploads/stm32h7-flight-controller-with-elrs-receiver/mw0maxw0-ctfnv3r.webp",
+    "images": [
+      "/images/portfolio/uploads/stm32h7-flight-controller-with-elrs-receiver/mw0maxw0-ctfnv3r.webp"
+    ],
+    "alt": "STM32H7 drone flight controller PCB with ELRS receiver",
+    "title": "STM32H7 Flight Controller with ELRS Receiver",
+    "slug": "stm32-flight-controller",
+    "info": "Embedded Systems",
+    "Class": "md:mt-0",
+    "description": "A compact 50 × 50 mm flight controller designed by Haizom Studios around the STM32H743. It packs sensing, radio link and telemetry onto a single 4-layer board, so the airframe needs no add-on modules.\n\nThe core is a 480 MHz STM32H7 paired with an ICM-42688 6-axis IMU and a BMP581 barometer, giving the flight stack fast, low-noise attitude and altitude data. A buck-boost regulator keeps the logic rail stable across the full battery discharge curve.\n\nAn on-board SX1280 ExpressLRS receiver handles the 2.4 GHz control link, while an ESP32-C3 adds Wi-Fi and Bluetooth for configuration and telemetry. The layout keeps the IMU away from switching noise and the RF paths short, fitting 114 components onto the board. A matching ESP32-S3 handheld transmitter was designed alongside it.",
+    "deliverables": [
+      "Schematics Capture",
+      "4-Layer PCB Design",
+      "RF Layout",
+      "Power Design",
+      "BOM Management",
+      "Fabrication Files"
+    ]
   }
 ]
