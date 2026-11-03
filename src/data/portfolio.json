@@ -198,5 +198,25 @@
       "BOM Management",
       "Fabrication Files"
     ]
+  },
+  {
+    "image": "/images/portfolio/uploads/high-temperature-led-driver-board/mw0mpjq4-rgejy6d.webp",
+    "images": [
+      "/images/portfolio/uploads/high-temperature-led-driver-board/mw0mpjq4-rgejy6d.webp"
+    ],
+    "alt": "multi-channel LED driver PCB",
+    "title": "High-Temperature LED Driver Board",
+    "slug": "high-temperature-led-driver-board",
+    "info": "Power Electronics",
+    "Class": "md:mt-0",
+    "description": "A multi-channel LED power board designed by Haizom Studios for lighting in a high-temperature environment. Each channel is individually dimmable over I²C.\n\nAL8860 constant-current buck drivers power each LED string efficiently, keeping brightness stable as temperature and forward voltage change. A PCA9685 PWM controller gives the host independent 12-bit dimming of every channel.\n\nAn on-board buck converter and 3.3 V LDO generate the logic supply, so the board needs only one power input and an I²C connection. The 63 × 50 mm, 4-layer layout uses solid ground and power planes to spread heat away from the drivers and keep switching loops tight.",
+    "deliverables": [
+      "Schematics Capture",
+      "4-Layer PCB Design",
+      "LED Driver Design",
+      "Thermal Design",
+      "BOM Management",
+      "Fabrication Files"
+    ]
   }
 ]
