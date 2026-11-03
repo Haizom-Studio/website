@@ -23,6 +23,18 @@ function readFileAsDataUrl(file: File): Promise<string> {
   });
 }
 
+/**
+ * Thumbnail URL for the admin list. Uploaded images are read through the
+ * admin proxy (straight from the repo), because the public URL only works
+ * after the next site build and its 404 gets cached for hours.
+ */
+function adminPreviewSrc(url: string): string {
+  if (url.startsWith("/images/portfolio/uploads/")) {
+    return `/api/admin/portfolio/image?path=${encodeURIComponent(url)}`;
+  }
+  return url;
+}
+
 /** Files larger than this are re-encoded even if they are already WebP. */
 const MAX_PASSTHROUGH_WEBP_BYTES = 500 * 1024;
 
@@ -275,7 +287,7 @@ export default function PortfolioProjectImagesField({
               className="flex flex-wrap items-center gap-4 rounded-sm border border-border dark:border-dark_border bg-section/40 dark:bg-darklight/50 p-3">
               <div className="relative h-20 w-28 shrink-0 overflow-hidden rounded bg-black/5 dark:bg-white/5">
                 <Image
-                  src={url}
+                  src={adminPreviewSrc(url)}
                   alt=""
                   fill
                   className="object-cover"
