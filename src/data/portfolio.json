@@ -364,5 +364,26 @@
       "BOM Management",
       "Fabrication Files"
     ]
+  },
+  {
+    "image": "/images/portfolio/uploads/lorawan-environmental-sensor/mw0tjurc-nt455uf.webp",
+    "images": [
+      "/images/portfolio/uploads/lorawan-environmental-sensor/mw0tjurc-nt455uf.webp",
+      "/images/portfolio/uploads/lorawan-environmental-sensor/mw0tjcdn-xy2pwvo.webp"
+    ],
+    "alt": "4-layer LoRaWAN environmental sensor PCB",
+    "title": "LoRaWAN Environmental Sensor",
+    "slug": "lorawan-environmental-sensor",
+    "info": "Internet of Things (IoT)",
+    "Class": "md:mt-24",
+    "description": "A low-power, long-range environmental sensor designed by Haizom Studios. It measures local conditions and reports them over LoRaWAN, reaching gateways kilometres away on very little power.\n\nA RAK3172 LoRaWAN module handles both the application and the radio link. A BME280 sensor measures temperature, humidity and pressure, and a zero-drift OPA333 op-amp conditions an external analog sensor input.\n\nA low-quiescent-current LDO and an efficient power path stretch battery life, and a Tag-Connect header allows programming without a bulky connector. The 95 × 45 mm, 4-layer board is laid out for low noise and long battery life.",
+    "deliverables": [
+      "Schematics Capture",
+      "4-Layer PCB Design",
+      "Low-Power Design",
+      "RF Layout",
+      "BOM Management",
+      "Fabrication Files"
+    ]
   }
 ]
