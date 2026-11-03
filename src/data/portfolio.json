@@ -301,5 +301,26 @@
       "BOM Management",
       "Fabrication Files"
     ]
+  },
+  {
+    "image": "/images/portfolio/uploads/compact-battery-audio-haptics-board/mw0t1b9p-enn0vq0.webp",
+    "images": [
+      "/images/portfolio/uploads/compact-battery-audio-haptics-board/mw0t1b9p-enn0vq0.webp",
+      "/images/portfolio/uploads/compact-battery-audio-haptics-board/mw0sznen-p5h9aiy.webp"
+    ],
+    "alt": "compact 4-layer battery-powered audio and haptics PCB",
+    "title": "Compact Battery Audio & Haptics Board",
+    "slug": "compact-battery-audio-haptics-board",
+    "info": "Consumer Electronics",
+    "Class": "md:mt-24",
+    "description": "A compact, battery-powered audio and haptics board designed by Haizom Studios for a portable consumer device. It packs audio playback, motor feedback and full battery management into just 65 × 31 mm.\n\nA WM8960 audio codec drives a MAX98306 stereo class-D amplifier, and a DRV8837 motor driver powers a vibration motor for haptic feedback. A MAX17048 fuel gauge reports accurate battery charge to the host.\n\nA lithium charger, TPS61088 boost converter and load switch manage power from the battery. The 4-layer layout fits 114 components into the small outline while keeping the audio path clear of switching noise.",
+    "deliverables": [
+      "Schematics Capture",
+      "4-Layer PCB Design",
+      "Audio Circuit Design",
+      "Battery Management",
+      "BOM Management",
+      "Fabrication Files"
+    ]
   }
 ]
