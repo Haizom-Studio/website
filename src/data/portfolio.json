@@ -343,5 +343,26 @@
       "BOM Management",
       "Fabrication Files"
     ]
+  },
+  {
+    "image": "/images/portfolio/uploads/compact-lte-cellular-board/mw0tg9te-qxh151t.webp",
+    "images": [
+      "/images/portfolio/uploads/compact-lte-cellular-board/mw0tg9te-qxh151t.webp",
+      "/images/portfolio/uploads/compact-lte-cellular-board/mw0tgl3k-9gjgynk.webp"
+    ],
+    "alt": "compact 4-layer LTE cellular module PCB",
+    "title": "Compact LTE Cellular Board",
+    "slug": "compact-lte-cellular-board",
+    "info": "Internet of Things (IoT)",
+    "Class": "md:mt-24",
+    "description": "A compact LTE cellular board designed by Haizom Studios to add mobile connectivity to an embedded product. The 47 × 45 mm, 4-layer board is built around a SIMCom SIM7500A LTE module.\n\nA nano-SIM holder, load switches and several dedicated low-noise regulators give the modem the clean, high-current supply it needs during transmit bursts. MOSFET switching allows the host to power-cycle the modem for reliable long-term operation.\n\nThe dense 4-layer layout keeps the RF path short and the power distribution solid, fitting 75 components into a small footprint that drops straight into the host product.",
+    "deliverables": [
+      "Schematics Capture",
+      "4-Layer PCB Design",
+      "RF Layout",
+      "Power Design",
+      "BOM Management",
+      "Fabrication Files"
+    ]
   }
 ]
