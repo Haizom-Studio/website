@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import type { PortfolioItem } from "@/app/api/data";
 import PortfolioProjectImagesField from "@/components/Admin/PortfolioProjectImagesField";
+import { PORTFOLIO_CATEGORY_SUGGESTIONS } from "@/lib/portfolio-categories";
 
 export default function AdminPortfolioEditPage() {
   const params = useParams();
@@ -18,6 +19,7 @@ export default function AdminPortfolioEditPage() {
   const [alt, setAlt] = useState("");
   const [images, setImages] = useState<string[]>([]);
   const [info, setInfo] = useState("");
+  const [category, setCategory] = useState("");
   const [className, setClassName] = useState("md:mt-0");
   const [description, setDescription] = useState("");
   const [deliverablesText, setDeliverablesText] = useState("");
@@ -43,6 +45,7 @@ export default function AdminPortfolioEditPage() {
         data.images && data.images.length > 0 ? data.images : [data.image]
       );
       setInfo(data.info);
+      setCategory(data.category ?? "");
       setClassName(data.Class || "md:mt-0");
       setDescription(data.description);
       setDeliverablesText(data.deliverables.join("\n"));
@@ -83,6 +86,7 @@ export default function AdminPortfolioEditPage() {
             alt: alt.trim() || title.trim(),
             images,
             info: info.trim() || title.trim(),
+            category: category.trim(),
             Class: className.trim() || "md:mt-0",
             description: description.trim(),
             deliverables,
@@ -170,6 +174,28 @@ export default function AdminPortfolioEditPage() {
             onChange={(e) => setInfo(e.target.value)}
             className="w-full rounded-sm border border-border dark:border-dark_border bg-white dark:bg-darklight px-4 py-3 text-midnight_text dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
           />
+        </label>
+
+        <label className="block">
+          <span className="block text-sm font-medium text-midnight_text dark:text-white mb-2">
+            Category (portfolio filter)
+          </span>
+          <input
+            type="text"
+            list="portfolio-category-options"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            placeholder="e.g. Power Electronics — leave empty to use the card subtitle"
+            className="w-full rounded-sm border border-border dark:border-dark_border bg-white dark:bg-darklight px-4 py-3 text-midnight_text dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+          <datalist id="portfolio-category-options">
+            {PORTFOLIO_CATEGORY_SUGGESTIONS.map((c) => (
+              <option key={c} value={c} />
+            ))}
+          </datalist>
+          <span className="mt-1 block text-xs text-grey dark:text-SereneGray">
+            Visitors can filter the portfolio by this. Pick a suggestion or type a new one.
+          </span>
         </label>
 
         <label className="block">

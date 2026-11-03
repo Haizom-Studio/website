@@ -13,6 +13,8 @@ export interface PortfolioItem {
     Class: string;
     description: string;
     deliverables: string[];
+    /** Portfolio filter category (e.g. "Power Electronics"). Falls back to `info` when empty. */
+    category?: string;
 }
 
 export interface ServiceItem {

@@ -12,7 +12,8 @@
     "description": "A quick view of industry specific problems solved with design by the awesome team at Haizom Studio.\n\nFrom the designers and engineers who are creating the next generation of web and mobile experiences, to anyone putting a website together for the first time. We provide elegant solutions that set new standards for online publishing.\n\nDigital technology has made our world more transparent and interconnected, posing new challenges and opportunities for every business. A holistic, user-centric perspective is what truly sets one apart.",
     "deliverables": [
       "Chatbot Ai Solutions for your business"
-    ]
+    ],
+    "category": "Software & AI"
   },
   {
     "image": "/images/portfolio/uploads/healthcare-evv-platform/mnhdgl54-j40lrh4.png",
@@ -32,7 +33,8 @@
       "Responsive layouts",
       "Campaign templates",
       "Handoff documentation"
-    ]
+    ],
+    "category": "Web Development"
   },
   {
     "image": "/images/portfolio/uploads/rocket-squared/mozoms90-qihamcg.webp",
@@ -78,7 +80,8 @@
       "Manufacturing-ready Gerber files",
       "Prototype fabrication and assembly",
       "Hardware bring-up, debugging, and validation testing"
-    ]
+    ],
+    "category": "Consumer Electronics"
   },
   {
     "image": "/images/portfolio/uploads/pdlc-driver/mp108ss6-aozym42.webp",
@@ -95,7 +98,8 @@
       "PCB layout",
       "Firmware Development",
       "App Development"
-    ]
+    ],
+    "category": "Low Power Electronics"
   },
   {
     "image": "/images/portfolio/uploads/motor-controller-design/mp0zip0d-5xqj477.webp",
@@ -180,7 +184,8 @@
       "Test Board Design",
       "BOM Management",
       "Fabrication Files"
-    ]
+    ],
+    "category": "Power Electronics"
   },
   {
     "image": "/images/portfolio/uploads/robotics-motor-control-board/mw0mluuq-c9lxzxu.webp",
