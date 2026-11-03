@@ -64,6 +64,8 @@ function validatePortfolioItem(row: unknown): PortfolioItem | null {
   const deliverables = Array.isArray(delRaw)
     ? delRaw.filter((x): x is string => typeof x === "string" && x.trim().length > 0)
     : [];
+  const category =
+    typeof o.category === "string" ? o.category.trim().slice(0, 80) : "";
   const image = images[0]!;
   if (!title || !slug || !description) return null;
   return {
@@ -76,6 +78,7 @@ function validatePortfolioItem(row: unknown): PortfolioItem | null {
     Class: Class || "md:mt-0",
     description,
     deliverables,
+    ...(category ? { category } : {}),
   };
 }
 

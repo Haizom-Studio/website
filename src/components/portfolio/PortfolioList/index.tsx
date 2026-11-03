@@ -1,11 +1,14 @@
 'use client'
 
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Icon } from '@iconify/react'
 import type { PortfolioItem } from '@/app/api/data'
 import { filterAndSortPortfolio, parseSearchTokens } from '@/utils/portfolioSearch'
+import { portfolioCategory, portfolioCategoryCounts } from '@/lib/portfolio-categories'
+
+const ALL = 'All'
 
 type Props = {
   items: PortfolioItem[]
@@ -13,10 +16,31 @@ type Props = {
 
 const PortfolioList = ({ items }: Props) => {
   const [query, setQuery] = useState('')
+  const [category, setCategory] = useState<string>(ALL)
 
-  const filtered = useMemo(() => filterAndSortPortfolio(items, query), [items, query])
+  const categories = useMemo(() => portfolioCategoryCounts(items), [items])
+
+  // Read ?category= on first load so filtered views can be shared as links.
+  useEffect(() => {
+    const fromUrl = new URLSearchParams(window.location.search).get('category')
+    if (fromUrl && categories.some((c) => c.name === fromUrl)) setCategory(fromUrl)
+  }, [categories])
+
+  function selectCategory(name: string) {
+    setCategory(name)
+    const url = new URL(window.location.href)
+    if (name === ALL) url.searchParams.delete('category')
+    else url.searchParams.set('category', name)
+    window.history.replaceState(null, '', url.toString())
+  }
+
+  const inCategory = useMemo(
+    () => (category === ALL ? items : items.filter((item) => portfolioCategory(item) === category)),
+    [items, category]
+  )
+  const filtered = useMemo(() => filterAndSortPortfolio(inCategory, query), [inCategory, query])
   const tokens = useMemo(() => parseSearchTokens(query), [query])
-  const showingAll = tokens.length === 0
+  const showingAll = tokens.length === 0 && category === ALL
 
   return (
     <section id='portfolio' className='md:pb-24 pb-16 pt-8 dark:bg-darkmode'>
@@ -46,14 +70,38 @@ const PortfolioList = ({ items }: Props) => {
               ? `${items.length} project${items.length === 1 ? '' : 's'}`
               : filtered.length === 0
                 ? 'No projects match your search'
-                : `${filtered.length} of ${items.length} project${items.length === 1 ? '' : 's'} — keywords are combined (all must match)`}
+                : tokens.length === 0
+                  ? `${filtered.length} of ${items.length} project${items.length === 1 ? '' : 's'}`
+                  : `${filtered.length} of ${items.length} project${items.length === 1 ? '' : 's'} — keywords are combined (all must match)`}
           </p>
         </div>
+        {categories.length > 1 ? (
+          <div className='mx-auto mb-12 flex max-w-5xl flex-wrap justify-center gap-2' role='group' aria-label='Filter projects by category'>
+            {[{ name: ALL, count: items.length }, ...categories].map((c) => {
+              const active = c.name === category
+              return (
+                <button
+                  key={c.name}
+                  type='button'
+                  onClick={() => selectCategory(c.name)}
+                  aria-pressed={active}
+                  className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                    active
+                      ? 'border-primary bg-primary text-white'
+                      : 'border-border bg-white text-midnight_text hover:border-primary hover:text-primary dark:border-dark_border dark:bg-darklight dark:text-white dark:hover:border-primary dark:hover:text-primary'
+                  }`}>
+                  {c.name}
+                  <span className={`ml-1.5 text-xs ${active ? 'text-white/80' : 'text-grey dark:text-white/40'}`}>{c.count}</span>
+                </button>
+              )
+            })}
+          </div>
+        ) : null}
       </div>
       <div className='flex flex-wrap gap-[2.125rem] lg:px-[2.125rem] px-0 max-w-[120rem] w-full justify-center m-auto'>
         {filtered.map((item, index) => (
           <Link key={item.slug || index} href={`/portfolio/${item.slug}`} passHref>
-            <div className={`w-[18rem] group ${item.Class}`}>
+            <div className={`w-[18rem] group ${showingAll ? item.Class : ''}`}>
               <div className='relative overflow-hidden rounded-lg bg-white dark:bg-white/5 aspect-[3/2] w-full group-hover:scale-[1.1] group-hover:cursor-pointer transition-all duration-500'>
                 <Image
                   src={item.image}
