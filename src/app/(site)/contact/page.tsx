@@ -1,8 +1,12 @@
-import ContactForm from "@/components/Contact/Form";
-import ContactInfo from "@/components/Contact/ContactInfo";
-import Location from "@/components/Contact/OfficeLocation";
-import React from "react";
-import HeroSub from "@/components/SharedComponent/HeroSub";
+import { redirect } from "next/navigation";
+// Contact page hidden (Upwork terms): visitors are sent to the home page.
+// The original page is kept below so it can be restored later.
+//
+// import ContactForm from "@/components/Contact/Form";
+// import ContactInfo from "@/components/Contact/ContactInfo";
+// import Location from "@/components/Contact/OfficeLocation";
+// import React from "react";
+// import HeroSub from "@/components/SharedComponent/HeroSub";
 import { Metadata } from "next";
 export const metadata: Metadata = {
     title: "Contact",
@@ -10,22 +14,23 @@ export const metadata: Metadata = {
 };
 
 const page = () => {
-  const breadcrumbLinks = [
-    { href: "/", text: "Home" },
-    { href: "/contact", text: "Contact" },
-  ];
-  return (
-    <>
-      <HeroSub
-        title="Contact Us"
-        description="Discover a wealth of insightful materials meticulously crafted to provide you with a comprehensive understanding of the latest trends."
-        breadcrumbLinks={breadcrumbLinks}
-      />
-      <ContactInfo />
-      <ContactForm />
-      <Location />
-    </>
-  );
+  redirect("/");
+  // const breadcrumbLinks = [
+  //   { href: "/", text: "Home" },
+  //   { href: "/contact", text: "Contact" },
+  // ];
+  // return (
+  //   <>
+  //     <HeroSub
+  //       title="Contact Us"
+  //       description="Discover a wealth of insightful materials meticulously crafted to provide you with a comprehensive understanding of the latest trends."
+  //       breadcrumbLinks={breadcrumbLinks}
+  //     />
+  //     <ContactInfo />
+  //     <ContactForm />
+  //     <Location />
+  //   </>
+  // );
 };
 
 export default page;

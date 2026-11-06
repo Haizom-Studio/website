@@ -10,12 +10,12 @@ type Msg = { role: "user" | "assistant"; content: string };
 const QUICK_LINKS: { label: string; href: string }[] = [
   { label: "Services", href: "/services" },
   { label: "Portfolio", href: "/portfolio" },
-  { label: "Contact", href: "/contact" },
+  // { label: "Contact", href: "/contact" },
   { label: "Blog", href: "/blog" },
 ];
 
 const INTRO =
-  "Hi — I am Haizom Studio’s site assistant. Ask about services, portfolio, quotes, or how to reach our team.";
+  "Hi — I am Haizom Studio’s site assistant. Ask about our services, portfolio, or how to start a project.";
 
 /** Renders plain text with clickable https:// and mailto: links (no Markdown). */
 function ChatMessageBody({ text, isUser }: { text: string; isUser: boolean }) {

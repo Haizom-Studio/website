@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import {
-  getChatPublicBaseUrl,
+  // getChatPublicBaseUrl,
   tryWorkersAiReply,
 } from "@/lib/chat-workers-ai";
 
@@ -8,9 +8,12 @@ export const runtime = "edge";
 
 const MAX_LEN = 2000;
 
-function contactPageUrl(): string {
-  return `${getChatPublicBaseUrl()}/contact`;
-}
+// Direct contact details hidden (Upwork terms).
+// function contactPageUrl(): string {
+//   return `${getChatPublicBaseUrl()}/contact`;
+// }
+const START_PROJECT =
+  "To start a project or request a quote, please send us a message on Upwork: https://www.upwork.com/freelancers/bilaldawar";
 
 function replyForMessage(raw: string): string {
   const m = raw.trim().toLowerCase();
@@ -39,11 +42,13 @@ function replyForMessage(raw: string): string {
   }
 
   if (/\b(quote|pricing|price|budget|cost|how\s*much|estimate)\b/.test(m)) {
-    return `Quotes depend on scope, timeline, and integrations. Request a quote on our Contact page: ${contactPageUrl()} — add a short brief (goal, timeline, budget range) and we will follow up.`;
+    // return `Quotes depend on scope, timeline, and integrations. Request a quote on our Contact page: ${contactPageUrl()} — add a short brief (goal, timeline, budget range) and we will follow up.`;
+    return `Quotes depend on scope, timeline, and integrations. ${START_PROJECT} Include a short brief (goal, timeline, budget range) and we will follow up.`;
   }
 
   if (/\b(contact|email|reach|call|phone|book|meeting|call)\b/.test(m)) {
-    return `Reach us at contact@haizomstudios.com or +92 334 5577900. Send a project brief here: ${contactPageUrl()}`;
+    // return `Reach us at contact@haizomstudios.com or +92 334 5577900. Send a project brief here: ${contactPageUrl()}`;
+    return START_PROJECT;
   }
 
   if (/\b(about|who\s*are\s*you|team|company)\b/.test(m)) {

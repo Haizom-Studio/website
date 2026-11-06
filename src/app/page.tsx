@@ -7,7 +7,7 @@ import Services from '@/components/Home/Services';
 import Portfolio from '@/components/SharedComponent/portfollio'
 import Testimonial from '@/components/SharedComponent/Testimonial'
 import Blog from '@/components/SharedComponent/Blog'
-import Contactform from '@/components/Home/Contact';
+// import Contactform from '@/components/Home/Contact';
 export const metadata: Metadata = {
   title: "Haizom Studio",
   description: "Delivering innovative, reliable engineering solutions—from concept to execution.",
@@ -23,7 +23,7 @@ export default function Home() {
       <Portfolio />
       <Testimonial />
       {/* <Blog /> */}
-      <Contactform />
+      {/* <Contactform /> */}
     </main>
   )
 }

@@ -396,14 +396,25 @@ export default function TermsAndConditionsPage() {
                   19. Contact
                 </h2>
                 <p>
-                  For questions about these Terms &amp; Conditions, contact us at{" "}
+                  For questions about these Terms &amp; Conditions, please send
+                  us a message on{" "}
+                  <a
+                    href="https://www.upwork.com/freelancers/bilaldawar"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline font-medium"
+                  >
+                    Upwork
+                  </a>
+                  .
+                  {/* contact us at{" "}
                   <a
                     href="mailto:contact@haizomstudios.com"
                     className="text-primary hover:underline font-medium"
                   >
                     contact@haizomstudios.com
                   </a>
-                  .
+                  . */}
                 </p>
               </section>
             </div>
