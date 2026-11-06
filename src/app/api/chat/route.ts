@@ -13,7 +13,7 @@ const MAX_LEN = 2000;
 //   return `${getChatPublicBaseUrl()}/contact`;
 // }
 const START_PROJECT =
-  "To start a project or request a quote, please send us a message on Upwork.";
+  "To start a project or request a quote, please send us a message on Upwork: https://www.upwork.com/freelancers/bilaldawar";
 
 function replyForMessage(raw: string): string {
   const m = raw.trim().toLowerCase();

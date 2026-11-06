@@ -26,7 +26,9 @@ const Footer: FC = () => {
                 Ready to get started?
               </h2>
               <Link
-                href='#'
+                href='https://www.upwork.com/freelancers/bilaldawar'
+                target='_blank'
+                rel='noopener noreferrer'
                 className='px-9 py-3 rounded-lg bg-primary text-white hover:bg-blue-700 hover:shadow-none'>
                 Get Started
               </Link>

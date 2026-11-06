@@ -25,7 +25,9 @@ const Hero = () => {
             A brief introduction about myself and my professional objectives.
           </p>
           <a
-            href='#learn-more'
+            href='https://www.upwork.com/freelancers/bilaldawar'
+            target='_blank'
+            rel='noopener noreferrer'
             className='py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300 px-8'>
             Get Started
           </a>
