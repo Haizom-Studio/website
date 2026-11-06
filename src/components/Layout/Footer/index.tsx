@@ -2,14 +2,14 @@ import React, { FC } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getImgPath } from '@/utils/image'
-import NewsletterForm from './NewsletterForm'
+// import NewsletterForm from './NewsletterForm'
 
 const Footer: FC = () => {
   return (
     <footer className='bg-darkmode relative z-1 border-t border-dark_border px-6'>
       <div className='container mx-auto max-w-6xl px-4'>
         <div className='grid md:grid-cols-12 grid-cols-1 sm:grid-cols-12'>
-          <div className='md:col-span-4 sm:col-span-6 col-span-12 sm:border-r border-b border-solid border-dark_border flex items-center sm:border-b-0 sm:min-h-25 py-10 shrink-0 '>
+          <div className='col-span-12 flex items-center sm:min-h-25 py-10 shrink-0 '>
             <div className='sm:content-normal sm:text-start text-center content-center sm:w-auto w-full'>
               <Link href='/' className='md:block flex justify-center'>
                 <Image
@@ -32,6 +32,7 @@ const Footer: FC = () => {
               </Link>
             </div>
           </div>
+          {/* Direct contact details and newsletter sign-up hidden (Upwork terms).
           <div className='md:col-span-4 sm:col-span-6 col-span-12 sm:flex items-center sm:min-h-25 py-10 justify-center shrink-0 md:border-r border-b sm:border-b-0 border-solid border-dark_border'>
             <div className='flex flex-col md:items-start items-center'>
               <span className='text-lg font-bold text-white pb-4 inline-block'>
@@ -130,6 +131,7 @@ const Footer: FC = () => {
               <NewsletterForm />
             </div>
           </div>
+          */}
         </div>
       </div>
       <div className='text-center gap-4 md:gap-0 flex-wrap p-7 border-t border-solid border-dark_border'>
@@ -155,11 +157,11 @@ const Footer: FC = () => {
                 Blog
               </Link>
             </li>
-            <li className='text-base text-white/50'>
+            {/* <li className='text-base text-white/50'>
               <Link href='/contact' className='hover:text-primary'>
                 Contact
               </Link>
-            </li>
+            </li> */}
             <li className='text-base text-white/50'>
               <Link href='/terms-and-conditions' className='hover:text-primary'>
                 Terms &amp; Conditions
