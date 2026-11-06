@@ -34,10 +34,10 @@ const ServiceDetail: FC<ServiceDetailProps> = ({ service }) => {
             <Image
               src={service.image}
               alt={service.alt}
-              width={1200}
-              height={600}
+              width={2000}
+              height={1125}
               priority
-              className='w-full h-[600px] object-cover'
+              className='w-full h-auto rounded-lg'
               sizes='(max-width: 1152px) 100vw, 1152px'
             />
           </div>

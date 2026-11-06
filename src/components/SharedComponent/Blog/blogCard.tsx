@@ -4,7 +4,7 @@ import { Blog } from "@/types/blog";
 import { format } from "date-fns";
 import Link from "next/link";
 
-const FALLBACK_COVER = "/images/blog/blog_1.png";
+const FALLBACK_COVER = "/images/blog/blog_1.webp";
 
 function coverImageSrc(coverImage?: string) {
   if (!coverImage || typeof coverImage !== "string") return FALLBACK_COVER;

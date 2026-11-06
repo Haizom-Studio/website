@@ -12,7 +12,7 @@ type Props = {
 }
 
 export default function PortfolioImageCarousel({ images, alt }: Props) {
-  const slides = images.length > 0 ? images : ['/images/portfolio/cozycasa.png']
+  const slides = images.length > 0 ? images : ['/images/services/schematic-capture-pcb-design.webp']
   const multi = slides.length > 1
 
   const settings = {

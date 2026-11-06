@@ -22,7 +22,9 @@ const Hero = () => {
             Delivering innovative, reliable engineering solutions—from concept to execution.
           </h1>
           <p className='text-grey dark:text-white/70 text-xl font-semibold'>
-            A brief introduction about myself and my professional objectives.
+            We design electronics and the software around them: schematics and
+            multi-layer PCBs, prototypes, firmware, and the web and mobile apps
+            that connect to your product.
           </p>
           <a
             href='https://www.upwork.com/freelancers/bilaldawar'
@@ -34,24 +36,24 @@ const Hero = () => {
           <div className='flex items-center mt-12 gap-4'>
             <div className='flex items-center'>
               <Image
-                src={getImgPath('/images/hero/hero-profile-1.jpg')}
-                alt='hero-image'
+                src={getImgPath('/images/hero/hero-board-1.webp')}
+                alt='STM32H7 flight controller PCB'
                 width={40}
                 height={40}
                 quality={100}
                 className='w-10! h-10! rounded-full border border-solid border-white -ml-0'
               />
               <Image
-                src={getImgPath('/images/hero/hero-profile-2.jpg')}
-                alt='hero-image'
+                src={getImgPath('/images/hero/hero-board-2.webp')}
+                alt='LoRaWAN environmental sensor PCB'
                 width={40}
                 height={40}
                 quality={100}
                 className='w-10! h-10! rounded-full border border-solid border-white -ml-3'
               />
               <Image
-                src={getImgPath('/images/hero/hero-profile-3.jpg')}
-                alt='hero-image'
+                src={getImgPath('/images/hero/hero-board-3.webp')}
+                alt='Wearable ECG monitor PCB'
                 width={40}
                 height={40}
                 quality={100}
@@ -60,11 +62,14 @@ const Hero = () => {
             </div>
             <div>
               <p className='text-sm font-normal text-grey max-w-56'>
-                Need help?{' '}
-                <Link href='#' className='text-primary hover:text-blue-700'>
-                  Contact our experts
-                </Link>{' '}
-                Tell us about your project
+                Have a product idea?{' '}
+                <Link
+                  href='https://www.upwork.com/freelancers/bilaldawar'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='text-primary hover:text-blue-700'>
+                  Start a project on Upwork
+                </Link>
               </p>
             </div>
           </div>
@@ -73,7 +78,7 @@ const Hero = () => {
         <div className="md:col-span-6 col-span-12 relative before:absolute before:content-[''] before:bg-[url('/images/hero/line-leyar.svg')] before:bg-no-repeat before:left-1/2 before:top-0 before:h-24 before:w-52 before:-z-10 before:translate-x-70% before:-translate-y-40% lg:before:inline-block before:hidden after:absolute after:content-[''] after:bg-[url('/images/hero/round-leyar.svg')] after:bg-no-repeat xl:after:inline-block after:hidden after:left-0 after:bottom-0 after:h-6.25 after:w-6.25 after:-z-10 after:-translate-x-1/2 after:translate-y-1/2">
           <Image
             src={getImgPath('/images/hero/hero-image.webp')}
-            alt='hero-image'
+            alt='Haizom Studios engineer working on a PCB layout'
             width={1638}
             height={1713}
             quality={85}

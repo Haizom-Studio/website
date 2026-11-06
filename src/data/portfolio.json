@@ -4,34 +4,38 @@
     "images": [
       "/images/portfolio/uploads/chatbot-ai-solutions/mnhdcast-j60ncee.png"
     ],
-    "alt": "Cozycasa project preview",
-    "title": "Chatbot Ai Solutions",
+    "alt": "Homepage of an AI platform marketing website designed and built by Haizom Studios",
+    "title": "AI Platform Marketing Website",
     "slug": "chatbot-ai-solutions",
-    "info": "Chatbot Ai Solutions",
+    "info": "Web Development",
     "Class": "md:mt-0",
-    "description": "A quick view of industry specific problems solved with design by the awesome team at Haizom Studio.\n\nFrom the designers and engineers who are creating the next generation of web and mobile experiences, to anyone putting a website together for the first time. We provide elegant solutions that set new standards for online publishing.\n\nDigital technology has made our world more transparent and interconnected, posing new challenges and opportunities for every business. A holistic, user-centric perspective is what truly sets one apart.",
+    "description": "A marketing website designed and developed by Haizom Studios for an AI software company. The client offers AI tools that streamline operations, improve communication and support learning, and needed a site that explains the platform clearly and turns visitors into trial sign-ups.\n\nWe designed a clean, light interface with a bold headline, a single clear call to action and generous white space, so the product message comes first. The layout carries through to the Home, About and Contact pages with a consistent header and navigation.\n\nThe site was built responsive from the start, so it reads well on phones, tablets and desktops, and was set up with fast loading and SEO basics before launch.",
     "deliverables": [
-      "Chatbot Ai Solutions for your business"
+      "Website UI design",
+      "Responsive website development",
+      "Home, About and Contact pages",
+      "Free-trial call-to-action flow",
+      "Performance and SEO setup",
+      "Launch and handoff"
     ],
-    "category": "Software & AI"
+    "category": "Web Development"
   },
   {
     "image": "/images/portfolio/uploads/healthcare-evv-platform/mnhdgl54-j40lrh4.png",
     "images": [
       "/images/portfolio/uploads/healthcare-evv-platform/mnhdgl54-j40lrh4.png"
     ],
-    "alt": "Healthcare website development",
-    "title": "Healthcare EVV Platform",
+    "alt": "Homepage of a healthcare platform website designed and built by Haizom Studios",
+    "title": "Healthcare EVV Platform Website",
     "slug": "healthcare-evv-platform",
-    "info": "Healthcare EVV Platform",
+    "info": "Web Development",
     "Class": "md:mt-24",
-    "description": "A quick view of industry specific problems solved with design by the awesome team at Haizom Studios.\n\nFrom the designers and engineers who are creating the next generation of web and mobile experiences, to anyone putting a website together for the first time. We provide elegant solutions that set new standards for online publishing.\n\nDigital technology has made our world more transparent and interconnected, posing new challenges and opportunities for every business. A holistic, user-centric perspective is what truly sets one apart.",
+    "description": "A website designed and developed by Haizom Studios for a healthcare technology company that offers AI-driven clinical solutions, including electronic visit verification (EVV) and SaaS, UCaaS and FHIR-enabled platform services.\n\nThe site presents a broad product range in a way healthcare buyers can navigate quickly: a full-width hero with the company's positioning, menus for products, platform and resources, and prominent demo-request calls to action throughout.\n\nWe built it fully responsive, with a structure the client's team can extend as new products and resources are added.",
     "deliverables": [
-      "Logo",
-      "Website",
-      "UI design",
-      "Responsive layouts",
-      "Campaign templates",
+      "Website UI design",
+      "Responsive website development",
+      "Product, platform and resources pages",
+      "Demo request call-to-action",
       "Handoff documentation"
     ],
     "category": "Web Development"
@@ -88,12 +92,12 @@
     "images": [
       "/images/portfolio/uploads/pdlc-driver/mp108ss6-aozym42.webp"
     ],
-    "alt": "Controller PCB",
+    "alt": "PDLC smart film driver PCB with Bluetooth controller and boost converter",
     "title": "Low Power PDLC Film Driver based on nrf52xxx series",
     "slug": "pdlc-driver",
-    "info": "Low Power Circuit",
+    "info": "Low Power Electronics",
     "Class": "md:mt-0",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.\n\nCras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper.\n\nDuis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent egestas leo in pede.\n\nPraesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam nibh.\n\nMauris ac mauris sed pede pellentesque fermentum. Maecenas adipiscing ante non diam sodales hendrerit.",
+    "description": "A battery-powered driver for PDLC smart film (switchable privacy glass), designed by Haizom Studios around the nRF52 Bluetooth Low Energy SoC. PDLC film turns from frosted to clear when it is driven with an AC voltage, so the board raises a low battery voltage to the film's drive level and switches it into an AC waveform across the film.\n\nA wide-input boost converter generates the high-voltage rail, and an H-bridge output stage alternates the polarity to produce the AC drive without a mains transformer. The nRF52 controls the output and connects over Bluetooth Low Energy to a companion app, so the film can be switched from a phone.\n\nBetween commands the firmware keeps the radio and power stages in low-power states, so the driver can stay on standby for long periods on battery. The design went through several iterations, including Bluetooth controller, boost and H-bridge test boards and a USB-C powered development board, to tune output voltage, efficiency and standby current.",
     "deliverables": [
       "PCB layout",
       "Firmware Development",

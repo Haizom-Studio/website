@@ -116,7 +116,7 @@ export async function POST(req: Request) {
     process.env.BLOG_DEFAULT_AUTHOR?.trim() || "Haizom Studio";
   const authorImage =
     process.env.BLOG_DEFAULT_AUTHOR_IMAGE?.trim() ||
-    "/images/blogdetail-page/silicaman.png";
+    "/images/blogdetail-page/haizom-studio.webp";
 
   const date = new Date().toISOString().slice(0, 10);
   const id = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
@@ -168,7 +168,7 @@ export async function POST(req: Request) {
       );
     }
   } else {
-    coverPath = "images/blog/blog_1.png";
+    coverPath = "images/blog/blog_1.webp";
   }
 
   let mdxBody = content;

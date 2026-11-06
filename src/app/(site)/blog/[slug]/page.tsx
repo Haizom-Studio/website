@@ -23,7 +23,7 @@ export async function generateMetadata({
     return {
       title: 'Blog',
       description:
-        'Discover a wealth of insightful materials meticulously crafted to provide you with a comprehensive understanding of the latest trends.',
+        'Practical notes from our engineering work on PCB design, prototyping, firmware and web development.',
     }
   }
   const post = getPostBySlug(slug, ['title', 'excerpt', 'date'])

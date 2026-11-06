@@ -28,7 +28,7 @@ const Testimonial = () => {
         <div>
           <Image
             src={getImgPath('/images/testimonial/vector-smart.png')}
-            alt='logo'
+            alt=''
             width={150}
             height={0}
             quality={100}

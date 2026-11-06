@@ -84,7 +84,7 @@ export const servicesinfo: ServiceItem[] = [
             'Assembly notes, test points & revision history',
             'Layout review with SI/PI/thermal risk called out',
         ],
-        image: getImgPath('/images/portfolio/mars.png'),
+        image: getImgPath('/images/services/schematic-capture-pcb-design.webp'),
         alt: 'Schematic capture and PCB design',
     },
     {
@@ -103,7 +103,7 @@ export const servicesinfo: ServiceItem[] = [
             'Issue triage across electrical / mechanical / firmware',
             'Revision history & handoff for the next spin',
         ],
-        image: getImgPath('/images/portfolio/cozycasa.png'),
+        image: getImgPath('/images/services/prototyping-bring-up.webp'),
         alt: 'Prototyping and hardware bring-up',
     },
     {
@@ -122,7 +122,7 @@ export const servicesinfo: ServiceItem[] = [
             'Performance, SEO basics & production config',
             'Deploy pipeline notes and handoff docs',
         ],
-        image: getImgPath('/images/portfolio/roket-squred.png'),
+        image: getImgPath('/images/services/web-development.webp'),
         alt: 'Web development',
     },
     {
@@ -141,7 +141,7 @@ export const servicesinfo: ServiceItem[] = [
             'Offline, sync & error-handling patterns',
             'Handoff docs & monitoring hooks',
         ],
-        image: getImgPath('/images/portfolio/humans.png'),
+        image: getImgPath('/images/services/app-development.webp'),
         alt: 'Mobile app development',
     },
     {
@@ -160,7 +160,7 @@ export const servicesinfo: ServiceItem[] = [
             'Dashboard and admin layouts when required',
             'Design QA support with engineering',
         ],
-        image: getImgPath('/images/portfolio/panda-logo.png'),
+        image: getImgPath('/images/services/ui-ux-dashboards.webp'),
         alt: 'UI, UX and dashboard design',
     },
     {
@@ -179,7 +179,7 @@ export const servicesinfo: ServiceItem[] = [
             'Connectivity, provisioning & OTA strategy',
             'Logging, diagnostics & field-debug hooks',
         ],
-        image: getImgPath('/images/portfolio/cozycasa.png'),
+        image: getImgPath('/images/services/firmware-sensor-fusion.webp'),
         alt: 'Firmware and sensor fusion',
     },
 ];
@@ -194,7 +194,7 @@ export const Servicebox = servicesinfo.map((s) => ({
 
 function normalizePortfolioImagePath(path: string): string {
     const t = path.trim();
-    if (!t) return "/images/portfolio/cozycasa.png";
+    if (!t) return "/images/services/schematic-capture-pcb-design.webp";
     return t.startsWith("/") ? t : `/${t}`;
 }
 
