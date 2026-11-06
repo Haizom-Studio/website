@@ -6,7 +6,7 @@ import Counter from "@/components/Home/Counter";
 import Progresswork from "@/components/Home/WorkProgress";
 export const metadata: Metadata = {
     title: "About",
-    description: "Discover a wealth of insightful materials meticulously crafted to provide you with a comprehensive understanding of the latest trends.",
+    description: "An engineering studio for electronics and software: PCB design, prototyping, firmware, and web and mobile apps.",
 };
 
 const page = () => {
@@ -18,7 +18,7 @@ const page = () => {
     <>
       <HeroSub
         title="About Us"
-        description="Discover a wealth of insightful materials meticulously crafted to provide you with a comprehensive understanding of the latest trends."
+        description="An engineering studio for electronics and software: PCB design, prototyping, firmware, and web and mobile apps."
         breadcrumbLinks={breadcrumbLinks}
       />
        <Counter isColorMode={true} />

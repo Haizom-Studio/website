@@ -7,7 +7,7 @@ import Progresswork from "@/components/Home/WorkProgress";
 import Services from "@/components/Home/Services";
 export const metadata: Metadata = {
     title: "Services",
-    description: "Discover a wealth of insightful materials meticulously crafted to provide you with a comprehensive understanding of the latest trends.",
+    description: "From schematic capture and PCB layout to firmware, web and mobile apps: what we offer and what you receive at the end of each project.",
 };
 
 const page = () => {
@@ -19,7 +19,7 @@ const page = () => {
     <>
       <HeroSub
         title="Services"
-        description="Discover a wealth of insightful materials meticulously crafted to provide you with a comprehensive understanding of the latest trends."
+        description="From schematic capture and PCB layout to firmware, web and mobile apps: what we offer and what you receive at the end of each project."
         breadcrumbLinks={breadcrumbLinks}
       />
       <Services/>

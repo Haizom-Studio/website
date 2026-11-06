@@ -168,7 +168,7 @@ export async function PUT(req: Request, context: RouteCtx) {
 
   const date =
     (body.date ?? "").trim() || new Date().toISOString().slice(0, 10);
-  const coverImage = (body.coverImage ?? "").trim() || "/images/blog/blog_1.png";
+  const coverImage = (body.coverImage ?? "").trim() || "/images/blog/blog_1.webp";
   const author =
     (body.author ?? "").trim() ||
     process.env.BLOG_DEFAULT_AUTHOR?.trim() ||
@@ -176,7 +176,7 @@ export async function PUT(req: Request, context: RouteCtx) {
   const authorImage =
     (body.authorImage ?? "").trim() ||
     process.env.BLOG_DEFAULT_AUTHOR_IMAGE?.trim() ||
-    "/images/blogdetail-page/silicaman.png";
+    "/images/blogdetail-page/haizom-studio.webp";
 
   const path = `${GITHUB_BLOG_DIR}/${slug}.mdx`;
   const mdx = buildMdxFile({

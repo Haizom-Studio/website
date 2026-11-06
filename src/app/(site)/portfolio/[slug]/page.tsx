@@ -21,10 +21,10 @@ export async function generateMetadata({
   const { slug } = await params
   const project = getPortfolioBySlug(slug)
   if (!project) {
-    return { title: 'Project | Portfolio | Venus' }
+    return { title: 'Project | Portfolio' }
   }
   return {
-    title: `${project.title} | Portfolio | Venus`,
+    title: `${project.title} | Portfolio`,
     description: project.description.split('\n\n')[0] ?? project.info,
   }
 }

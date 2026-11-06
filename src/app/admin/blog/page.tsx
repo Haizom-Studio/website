@@ -80,7 +80,7 @@ export default function AdminBlogPublishPage() {
     }
     setPreviewLoading(true);
     try {
-      let coverForPreview = "/images/blog/blog_1.png";
+      let coverForPreview = "/images/blog/blog_1.webp";
       if (imageFile) {
         coverForPreview = await readFileAsDataUrl(imageFile);
       }
@@ -93,7 +93,7 @@ export default function AdminBlogPublishPage() {
           excerpt: excerpt.trim() || undefined,
           content: content.trim(),
           coverImage: coverForPreview.startsWith("data:")
-            ? "/images/blog/blog_1.png"
+            ? "/images/blog/blog_1.webp"
             : undefined,
         }),
       });

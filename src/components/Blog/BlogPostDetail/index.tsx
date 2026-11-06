@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { format } from 'date-fns'
 import HeroSub from '@/components/SharedComponent/HeroSub'
 
-const FALLBACK_COVER = '/images/blog/blog_1.png'
+const FALLBACK_COVER = '/images/blog/blog_1.webp'
 
 function coverImageSrc(coverImage?: string) {
   if (!coverImage || typeof coverImage !== 'string') return FALLBACK_COVER
@@ -45,7 +45,7 @@ const BlogPostDetail: FC<BlogPostDetailProps> = ({
 
   const authorName = author?.trim() || 'Author'
   const authorImg =
-    authorImage?.trim() || '/images/blogdetail-page/silicaman.png'
+    authorImage?.trim() || '/images/blogdetail-page/haizom-studio.webp'
 
   return (
     <>

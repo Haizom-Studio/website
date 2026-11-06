@@ -10,7 +10,7 @@ import { redirect } from "next/navigation";
 import { Metadata } from "next";
 export const metadata: Metadata = {
     title: "Contact",
-    description: "Discover a wealth of insightful materials meticulously crafted to provide you with a comprehensive understanding of the latest trends.",
+    description: "Start a project with Haizom Studios.",
 };
 
 const page = () => {

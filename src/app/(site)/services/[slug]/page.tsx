@@ -18,10 +18,10 @@ export async function generateMetadata({
   const { slug } = await params
   const service = getServiceBySlug(slug)
   if (!service) {
-    return { title: 'Service | Venus' }
+    return { title: 'Service' }
   }
   return {
-    title: `${service.title} | Services | Venus`,
+    title: `${service.title} | Services`,
     description: service.description,
   }
 }
